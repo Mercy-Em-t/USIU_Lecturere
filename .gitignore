@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
+*.class
+*.sqlite3
 .env

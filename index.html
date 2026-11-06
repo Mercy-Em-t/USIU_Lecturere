@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>USIU-Africa Accessible Lecturer Assessment & Blackboard Grader</title>
+  <title>USIU-Africa Accessible Lecturer Assessment & Blackboard Grader v2.0</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
       --bg: #05070b;
@@ -13,6 +14,7 @@
       --accent: #ffd166;
       --green: #06d6a0;
       --blue: #4cc9f0;
+      --danger: #ff6b6b;
       --base-size: 20px;
     }
 
@@ -24,6 +26,7 @@
       --accent: #003566;
       --green: #006400;
       --blue: #001d3d;
+      --danger: #9b0000;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,7 +41,7 @@
     }
 
     .container {
-      max-width: 1180px;
+      max-width: 1240px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -74,9 +77,9 @@
       background: var(--accent);
       color: #000;
       border: 3px solid #000;
-      padding: 14px 22px;
+      padding: 12px 20px;
       border-radius: 14px;
-      font-size: 1em;
+      font-size: 0.95em;
       font-weight: 900;
       cursor: pointer;
       transition: transform 0.12s ease;
@@ -84,15 +87,53 @@
 
     .big-btn:hover { transform: scale(1.03); }
     .big-btn:active { transform: scale(0.98); }
+    .big-btn:focus-visible { outline: 4px dashed var(--green); outline-offset: 4px; }
 
-    .btn-speak {
-      background: var(--green);
-      color: #000;
+    .btn-speak { background: var(--green); color: #000; }
+    .btn-post { background: var(--blue); color: #000; }
+
+    /* SHORTCUTS PILL BAR */
+    .shortcuts-bar {
+      background: var(--card);
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 10px 18px;
+      font-size: 0.85em;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .btn-post {
-      background: var(--blue);
+    .kbd {
+      background: var(--accent);
       color: #000;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 900;
+    }
+
+    /* DRAG AND DROP ZONE */
+    .drop-zone {
+      background: var(--card);
+      border: 4px dashed var(--green);
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+
+    .drop-zone.dragover {
+      background: rgba(6, 214, 160, 0.18);
+      transform: scale(1.01);
+    }
+
+    .drop-zone-title {
+      font-size: 1.3em;
+      font-weight: 900;
+      color: var(--green);
+      margin-bottom: 6px;
     }
 
     /* 3-STEP WORKFLOW GRID */
@@ -102,7 +143,7 @@
       gap: 18px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
       .workflow-steps { grid-template-columns: 1fr; }
     }
 
@@ -146,7 +187,7 @@
     .grade-pill {
       background: var(--green);
       color: #000;
-      font-size: 1.6em;
+      font-size: 1.55em;
       font-weight: 900;
       padding: 10px 24px;
       border-radius: 16px;
@@ -156,8 +197,29 @@
     .criterion-row {
       background: rgba(255, 255, 255, 0.05);
       border-left: 6px solid var(--accent);
-      padding: 14px 18px;
-      border-radius: 10px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    body.light-contrast .criterion-row {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 24px;
+      accent-color: var(--green);
+      cursor: pointer;
     }
 
     input, select, textarea {
@@ -170,145 +232,571 @@
       font-size: 1em;
       font-weight: 700;
     }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 0.8em;
+      background: var(--accent);
+      color: #000;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- TOP LOW-VISION ACCESSIBILITY TOOLBAR -->
-    <div class="a11y-bar">
+    <div class="a11y-bar" role="region" aria-label="Low Vision Accessibility Controls">
       <div>
-        <div class="a11y-title">🎓 USIU-Africa Accessible Lecturer Grading Hub</div>
-        <div>Low-Vision High-Contrast Mode • Locked Academic Rubric (No Prompt Drift)</div>
+        <div class="a11y-title">🎓 USIU-Africa Accessible Lecturer Grading Hub v2.0</div>
+        <div>
+          Low-Vision High-Contrast Mode • Locked Academic Rubric (Zero Prompt Drift)
+          <span id="serverBadge" class="status-badge">Mode: Local Browser + REST Ready</span>
+        </div>
       </div>
       <div class="a11y-controls">
-        <button class="big-btn" onclick="setZoom(20)">🔍 100%</button>
-        <button class="big-btn" onclick="setZoom(25)">🔍 135% Large</button>
-        <button class="big-btn" onclick="setZoom(30)">🔍 175% Giant</button>
+        <button class="big-btn" onclick="setZoom(20)" title="Standard 100% Text">🔍 100%</button>
+        <button class="big-btn" onclick="setZoom(25)" title="Large 135% Text">🔍 135% Large</button>
+        <button class="big-btn" onclick="setZoom(30)" title="Giant 175% Text">🔍 175% Giant</button>
         <button class="big-btn" onclick="toggleContrast()">🌓 High-Contrast Cream/Dark</button>
         <button class="big-btn btn-speak" onclick="speakCurrentStudent()">🔊 READ GRADE ALOUD</button>
         <button class="big-btn" onclick="stopSpeech()">⏹️ Stop Audio</button>
       </div>
     </div>
 
+    <!-- VOICE-FIRST KEYBOARD NAVIGATION BAR -->
+    <div class="shortcuts-bar" role="note" aria-label="Voice-First Keyboard Shortcuts">
+      <div><strong>⌨️ Zero-Mouse Low-Vision Shortcuts:</strong></div>
+      <div><span class="kbd">Space</span> Read Grade Aloud</div>
+      <div><span class="kbd">N</span> / <span class="kbd">P</span> Next / Previous Student</div>
+      <div><span class="kbd">1</span>–<span class="kbd">4</span> Hear Criterion 1–4</div>
+      <div><span class="kbd">Alt+Z</span> Cycle Zoom (100/135/175%)</div>
+      <div><span class="kbd">Alt+C</span> Toggle Cream/Obsidian</div>
+    </div>
+
+    <!-- MULTI-FORMAT DRAG-AND-DROP INGESTION ZONE -->
+    <div
+      id="dropZone"
+      class="drop-zone"
+      tabindex="0"
+      role="button"
+      aria-label="Drag and drop student submissions or click to browse files"
+      onclick="document.getElementById('fileInput').click()"
+    >
+      <div class="drop-zone-title">📂 DRAG & DROP STUDENT SUBMISSIONS OR BLACKBOARD BULK .ZIP HERE</div>
+      <div>
+        Supports <strong>.pdf</strong>, <strong>.docx</strong>, <strong>.txt</strong>, <strong>.md</strong>, and
+        <strong>Blackboard Grade Center Bulk Download (.zip)</strong> • Auto-parses USIU Student IDs (`66xxxx`)
+      </div>
+      <input
+        type="file"
+        id="fileInput"
+        multiple
+        accept=".txt,.md,.docx,.pdf,.zip"
+        style="display:none"
+        onchange="handleSelectedFiles(this.files)"
+      />
+    </div>
+
     <!-- ONE-POINT 3-STEP WORKFLOW -->
     <div class="workflow-steps">
       <div class="step-card">
-        <div class="step-num">STEP 1: USIU Blackboard Source</div>
-        <label>Course & Assignment Column:</label>
-        <select id="courseSelect">
-          <option value="APT3040">APT3040 — Enterprise Systems & Telemetry (USIU)</option>
-          <option value="BUS4010">BUS4010 — Strategic Management & Logistics</option>
-          <option value="IRL3020">IRL3020 — International Relations Research</option>
+        <div class="step-num">STEP 1: USIU School & Locked Rubric</div>
+        <label for="rubricSelect">Select USIU School Rubric:</label>
+        <select id="rubricSelect" onchange="onRubricChanged()">
+          <option value="standard_research_paper">SST / General — Standardized Research & Term Paper (APT3040 / SWE3020)</option>
+          <option value="csb_business_case_study">CSB — Chandaria School of Business Case Study (BUS4010 / MBA6010)</option>
+          <option value="shss_humanities_essay">SHSS — Humanities & International Relations Policy Essay (IRL3020 / PSY3010)</option>
         </select>
         <button class="big-btn" onclick="pullFromBlackboard()">📥 1. Pull Submissions from Blackboard</button>
       </div>
 
       <div class="step-card">
-        <div class="step-num">STEP 2: Locked Rubric Marking</div>
-        <label>Select Student Submission:</label>
+        <div class="step-num">STEP 2: Student Selection & Marking</div>
+        <label for="studentSelect">Select Student Submission (<span id="studentCountLabel">0</span> loaded):</label>
         <select id="studentSelect" onchange="renderSelectedStudent()"></select>
-        <button class="big-btn btn-speak" onclick="gradeCustomSubmissionPrompt()">➕ Paste / Grade Another Paper</button>
+        <div style="display:flex; gap:10px;">
+          <button class="big-btn" style="flex:1;" onclick="stepStudent(-1)">⬅️ Prev (P)</button>
+          <button class="big-btn" style="flex:1;" onclick="stepStudent(1)">Next (N) ➡️</button>
+        </div>
       </div>
 
       <div class="step-card">
-        <div class="step-num">STEP 3: Post to USIU Blackboard</div>
-        <label>Sync Marks & Rubric Feedback:</label>
+        <div class="step-num">STEP 3: Sync to USIU Blackboard</div>
+        <label>Export or Live REST PATCH (`blackboard.usiu.ac.ke`):</label>
         <button class="big-btn btn-post" onclick="postToBlackboard()">📤 3. Post All Grades to Blackboard</button>
-        <button class="big-btn" onclick="downloadBlackboardCsv()">⬇️ Download Blackboard CSV</button>
+        <div style="display:flex; gap:10px;">
+          <button class="big-btn" style="flex:1;" onclick="downloadBlackboardCsv()">⬇️ Grade Center CSV</button>
+          <button class="big-btn" style="flex:1;" onclick="downloadAuditJson()">⬇️ Audit JSON</button>
+        </div>
       </div>
     </div>
 
     <!-- ACTIVE STUDENT LARGE-PRINT ASSESSMENT CARD -->
-    <div class="student-card" id="assessmentCard"></div>
+    <div class="student-card" id="assessmentCard" aria-live="polite"></div>
   </div>
 
   <script>
-    const submissions = [
-      {
-        id: "665421",
-        name: "Amina Wanjiku",
-        score: 92.5,
-        letter: "A",
-        gpa: "4.0",
-        standing: "Distinction — Exceptional mastery of course concepts and empirical citations.",
+    const API_BASE = "http://127.0.0.1:8085";
+    let backendOnline = false;
+    let zoomIndex = 0;
+    const zoomLevels = [20, 25, 30];
+
+    const USIU_SCALE = [
+      { min: 90, letter: "A",  gpa: "4.0", standing: "Distinction — Exceptional mastery of course concepts" },
+      { min: 87, letter: "A-", gpa: "3.7", standing: "Excellent — Strong analytical depth and evidence" },
+      { min: 84, letter: "B+", gpa: "3.3", standing: "Very Good — Well-structured argument with minor gaps" },
+      { min: 80, letter: "B",  gpa: "3.0", standing: "Good — Solid understanding and competent execution" },
+      { min: 77, letter: "B-", gpa: "2.7", standing: "Above Average — Clear effort but needs deeper synthesis" },
+      { min: 74, letter: "C+", gpa: "2.3", standing: "Satisfactory Plus — Meets core criteria" },
+      { min: 70, letter: "C",  gpa: "2.0", standing: "Satisfactory — Acceptable baseline work" },
+      { min: 67, letter: "C-", gpa: "1.7", standing: "Marginal Pass — Weak citation or structural issues" },
+      { min: 64, letter: "D+", gpa: "1.3", standing: "Below Average — Incomplete analysis" },
+      { min: 62, letter: "D",  gpa: "1.0", standing: "Minimum Pass — Significant conceptual gaps" },
+      { min: 60, letter: "D-", gpa: "0.7", standing: "Low Pass — Barely meets minimum submission threshold" },
+      { min: 0,  letter: "F",  gpa: "0.0", standing: "Fail — Does not meet academic standards" }
+    ];
+
+    const RUBRICS = {
+      standard_research_paper: {
+        id: "standard_research_paper",
+        title: "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
         criteria: [
-          { name: "1. Thesis, Problem Formulation & Core Argument", earned: 28.5, weight: 30, quote: "Our central hypothesis states that real-time predictive restocking reduces stockout latency by over 42%." },
-          { name: "2. Empirical Evidence, Literature & Citations", earned: 28.0, weight: 30, quote: "According to Kamau et al. (2024) and the Nairobi Logistics Study (Ochieng, 2023)..." },
-          { name: "3. Critical Evaluation, Methodology & Depth", earned: 22.5, weight: 25, quote: "However, when compared against legacy batch-processing methodologies, real-time telemetry introduces cybersecurity implications..." },
-          { name: "4. Academic Structure, Coherence & APA 7th Style", earned: 13.5, weight: 15, quote: "Clear Introduction, Literature, Methodology, and APA 7th References." }
+          { id: "thesis_clarity", name: "1. Thesis, Problem Formulation & Core Argument", weight: 30, keywords: ["objective", "hypothesis", "problem", "thesis", "purpose", "framework", "strategy", "research", "aim", "architecture", "telemetry"] },
+          { id: "evidence_citations", name: "2. Empirical Evidence, Literature & APA 7th Citations", weight: 30, keywords: ["study", "data", "evidence", "according", "et al", "202", "199", "table", "findings", "source", "reference", "literature"] },
+          { id: "critical_analysis", name: "3. Critical Evaluation, Methodology & Depth", weight: 25, keywords: ["however", "analysis", "methodology", "compared", "implication", "limitation", "evaluate", "impact", "because", "therefore", "trade-off"] },
+          { id: "academic_structure", name: "4. Academic Structure, Coherence & APA 7th Style", weight: 15, keywords: ["introduction", "conclusion", "references", "section", "summary", "recommendations", "abstract"] }
+        ]
+      },
+      csb_business_case_study: {
+        id: "csb_business_case_study",
+        title: "Chandaria School of Business (CSB) Strategic Case Study Rubric",
+        criteria: [
+          { id: "strategic_diagnosis", name: "1. Strategic Problem Diagnosis & Regional Context", weight: 25, keywords: ["market", "competitive", "problem", "challenge", "stakeholder", "industry", "kenya", "africa", "nairobi", "supply chain", "logistics"] },
+          { id: "analytical_frameworks", name: "2. Application of SWOT / PESTEL / Porter's 5 Forces", weight: 30, keywords: ["swot", "pestel", "porter", "strength", "weakness", "opportunity", "threat", "value chain", "strategy", "framework", "advantage"] },
+          { id: "financial_operational_evidence", name: "3. Financial & Operational Data Justification", weight: 25, keywords: ["revenue", "cost", "margin", "roi", "growth", "percent", "kes", "usd", "table", "data", "efficiency", "stockout", "latency"] },
+          { id: "action_plan", name: "4. Actionable Recommendations & Implementation Roadmap", weight: 20, keywords: ["recommend", "implementation", "timeline", "risk", "mitigation", "conclusion", "governance", "roadmap"] }
+        ]
+      },
+      shss_humanities_essay: {
+        id: "shss_humanities_essay",
+        title: "School of Humanities & Social Sciences (SHSS) Critical Policy & IR Rubric",
+        criteria: [
+          { id: "theoretical_framing", name: "1. Theoretical Framing, Thesis & Conceptual Clarity", weight: 30, keywords: ["theory", "thesis", "paradigm", "realism", "liberalism", "constructivism", "cognitive", "policy", "argument", "discourse", "perspective"] },
+          { id: "historical_empirical_sources", name: "2. Primary/Secondary Sources & APA 7th Scholarship", weight: 30, keywords: ["treaty", "study", "according", "et al", "202", "199", "scholar", "historical", "evidence", "empirical", "archive", "united nations", "au"] },
+          { id: "comparative_critique", name: "3. Comparative Analysis, Counter-Arguments & Nuance", weight: 25, keywords: ["however", "conversely", "critique", "limitation", "compared", "implication", "whereas", "ethics", "regional", "sovereignty", "diplomacy"] },
+          { id: "rhetorical_coherence", name: "4. Rhetorical Coherence, Structure & APA 7th Formatting", weight: 15, keywords: ["introduction", "conclusion", "references", "section", "synthesis", "recommendations"] }
+        ]
+      }
+    };
+
+    let submissions = [
+      {
+        student_id: "665421",
+        student_name: "Amina Wanjiku",
+        source_filename: "665421_Amina_Wanjiku.txt",
+        rubric_id: "standard_research_paper",
+        word_count: 174,
+        citations_detected: 3,
+        total_score: 94.3,
+        letter_grade: "A",
+        gpa_points: 4.0,
+        standing: "Distinction — Exceptional mastery of course concepts",
+        criteria_breakdown: [
+          { id: "thesis_clarity", criterion: "1. Thesis, Problem Formulation & Core Argument", earned: 29.4, weight: 30, evidence_quote: "The primary objective and central hypothesis of this research paper is to evaluate how real-time predictive telemetry frameworks reduce pharmaceutical supply..." },
+          { id: "evidence_citations", criterion: "2. Empirical Evidence, Literature & APA 7th Citations", earned: 30.0, weight: 30, evidence_quote: "According to empirical data collected by Kamau et al. (2024) and the Nairobi Metropolitan Logistics Study (Ochieng & Wambui, 2023)..." },
+          { id: "critical_analysis", criterion: "3. Critical Evaluation, Methodology & Depth", earned: 24.5, weight: 25, evidence_quote: "However, when compared against legacy ERP batch-processing methodologies, continuous edge telemetry introduces significant cybersecurity implications..." },
+          { id: "academic_structure", criterion: "4. Academic Structure, Coherence & APA 7th Style", earned: 10.4, weight: 15, evidence_quote: "Section 1: Introduction & Problem Statement..." }
         ],
-        feedback: "Excellent paper, Amina. Your hypothesis is quantifiable, well-grounded in regional literature (Kamau, 2024; Ochieng, 2023), and critically evaluates cost vs. security trade-offs."
+        feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (APT3040 / BUS4010) Student: Amina Wanjiku (665421) | Score: 94.3/100 (A | GPA 4.0) Overall Standing: Distinction — Exceptional mastery of course concepts."
       },
       {
-        id: "667890",
-        name: "Brian Otieno",
-        score: 75.0,
-        letter: "C+",
-        gpa: "2.3",
-        standing: "Satisfactory Plus — Clear baseline topic coverage, but missing peer-reviewed APA citations.",
-        criteria: [
-          { name: "1. Thesis, Problem Formulation & Core Argument", earned: 23.0, weight: 30, quote: "The purpose is to show that computers help stores keep track of items." },
-          { name: "2. Empirical Evidence, Literature & Citations", earned: 18.5, weight: 30, quote: "No formal in-text APA (Year) citations detected; relies on general observations." },
-          { name: "3. Critical Evaluation, Methodology & Depth", earned: 20.5, weight: 25, quote: "However, software can be expensive for small businesses." },
-          { name: "4. Academic Structure, Coherence & APA 7th Style", earned: 13.0, weight: 15, quote: "Organized into Introduction, Main Discussion, and Conclusion." }
+        student_id: "668312",
+        student_name: "Faith Chepkoech",
+        source_filename: "668312_Faith_Chepkoech.txt",
+        rubric_id: "standard_research_paper",
+        word_count: 169,
+        citations_detected: 3,
+        total_score: 94.1,
+        letter_grade: "A",
+        gpa_points: 4.0,
+        standing: "Distinction — Exceptional mastery of course concepts",
+        criteria_breakdown: [
+          { id: "thesis_clarity", criterion: "1. Thesis, Problem Formulation & Core Argument", earned: 29.3, weight: 30, evidence_quote: "This research paper formulates a strategic cybersecurity governance framework for mobile money microservices in East Africa..." },
+          { id: "evidence_citations", criterion: "2. Empirical Evidence, Literature & APA 7th Citations", earned: 30.0, weight: 30, evidence_quote: "According to Njoroge et al. (2024) and the Central Bank FinTech Resilience Report (Mutua, 2023)..." },
+          { id: "critical_analysis", criterion: "3. Critical Evaluation, Methodology & Depth", earned: 24.4, weight: 25, evidence_quote: "However, our comparative methodology reveals a critical latency trade-off..." },
+          { id: "academic_structure", criterion: "4. Academic Structure, Coherence & APA 7th Style", earned: 10.4, weight: 15, evidence_quote: "Organized into Introduction, Empirical Literature, Comparative Methodology, and Conclusion." }
         ],
-        feedback: "Good effort, Brian. Your structure is clear, but to reach an A or B grade at USIU-Africa, you must support your claims with peer-reviewed APA 7th citations and empirical data."
+        feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (APT3040 / BUS4010) Student: Faith Chepkoech (668312) | Score: 94.1/100 (A | GPA 4.0) Overall Standing: Distinction — Exceptional mastery of course concepts."
+      },
+      {
+        student_id: "666104",
+        student_name: "Kelvin Mwangi",
+        source_filename: "666104_Kelvin_Mwangi.txt",
+        rubric_id: "standard_research_paper",
+        word_count: 118,
+        citations_detected: 1,
+        total_score: 87.7,
+        letter_grade: "A-",
+        gpa_points: 3.7,
+        standing: "Excellent — Strong analytical depth and evidence",
+        criteria_breakdown: [
+          { id: "thesis_clarity", criterion: "1. Thesis, Problem Formulation & Core Argument", earned: 27.1, weight: 30, evidence_quote: "The purpose and objective of this study is to examine cloud ERP adoption strategies among medium-sized retail enterprises in Kenya..." },
+          { id: "evidence_citations", criterion: "2. Empirical Evidence, Literature & APA 7th Citations", earned: 26.8, weight: 30, evidence_quote: "According to a regional survey by Kariuki (2022), cloud migration reduces upfront hardware expenditure..." },
+          { id: "critical_analysis", criterion: "3. Critical Evaluation, Methodology & Depth", earned: 22.6, weight: 25, evidence_quote: "However, bandwidth limitations and vendor lock-in remain key operational challenges..." },
+          { id: "academic_structure", criterion: "4. Academic Structure, Coherence & APA 7th Style", earned: 11.2, weight: 15, evidence_quote: "Includes Introduction, Analysis Section, and Conclusion." }
+        ],
+        feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (APT3040 / BUS4010) Student: Kelvin Mwangi (666104) | Score: 87.7/100 (A- | GPA 3.7) Overall Standing: Excellent — Strong analytical depth and evidence."
+      },
+      {
+        student_id: "667890",
+        student_name: "Brian Otieno",
+        source_filename: "667890_Brian_Otieno.txt",
+        rubric_id: "standard_research_paper",
+        word_count: 72,
+        citations_detected: 0,
+        total_score: 64.3,
+        letter_grade: "D+",
+        gpa_points: 1.3,
+        standing: "Below Average — Incomplete analysis",
+        criteria_breakdown: [
+          { id: "thesis_clarity", criterion: "1. Thesis, Problem Formulation & Core Argument", earned: 19.6, weight: 30, evidence_quote: "The purpose of this writeup is to show that computers help supermarkets keep track of items on their shelves..." },
+          { id: "evidence_citations", criterion: "2. Empirical Evidence, Literature & APA 7th Citations", earned: 14.5, weight: 30, evidence_quote: "Many shops in Nairobi use computers every day to count boxes." },
+          { id: "critical_analysis", criterion: "3. Critical Evaluation, Methodology & Depth", earned: 19.3, weight: 25, evidence_quote: "However, buying software can be expensive for small businesses because of maintenance." },
+          { id: "academic_structure", criterion: "4. Academic Structure, Coherence & APA 7th Style", earned: 10.9, weight: 15, evidence_quote: "Short introduction and conclusion summary." }
+        ],
+        feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (APT3040 / BUS4010) Student: Brian Otieno (667890) | Score: 64.3/100 (D+ | GPA 1.3) Overall Standing: Below Average — Incomplete analysis."
       }
     ];
 
+    function mapScoreToUsiu(score) {
+      for (const row of USIU_SCALE) {
+        if (score >= row.min) return row;
+      }
+      return USIU_SCALE[USIU_SCALE.length - 1];
+    }
+
+    function parseFilenameIdentity(filename) {
+      const stem = filename.replace(/\.[^/.]+$/, "");
+      const bbMatch = stem.match(/^.+?_([A-Za-z0-9\-]+)_attempt_\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}_(.+)$/i);
+      if (bbMatch) {
+        const sid = bbMatch[1];
+        const sname = bbMatch[2].replace(/[_-]/g, " ").replace(/\b(final|essay|paper|assignment|submission|draft)\b/gi, "").trim();
+        return { id: sid, name: sname.length >= 3 ? sname : `Student ${sid}` };
+      }
+      const idMatch = stem.match(/^(\d{5,8})[_\-\s]+(.+)$/);
+      if (idMatch) {
+        return { id: idMatch[1], name: idMatch[2].replace(/[_-]/g, " ").trim() };
+      }
+      return { id: "66" + Math.floor(1000 + Math.random() * 8999), name: stem.replace(/[_-]/g, " ").trim() || "USIU Student" };
+    }
+
+    function evaluateSubmissionClientSide(studentId, studentName, text, rubricId, sourceFilename) {
+      const rubric = RUBRICS[rubricId] || RUBRICS.standard_research_paper;
+      const words = (text.toLowerCase().match(/\b\w+\b/g) || []);
+      const wordCount = words.length;
+      const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 25);
+      const citations = (text.match(/\([A-Za-z\s,&.\-]+,?\s*(?:19|20)\d{2}[a-z]?\)/g) || []).length;
+
+      let totalScore = 0;
+      const criteriaBreakdown = rubric.criteria.map(crit => {
+        const hits = crit.keywords.filter(kw => words.includes(kw.toLowerCase()) || text.toLowerCase().includes(kw.toLowerCase())).length;
+        const kwRatio = Math.min(1.0, hits / Math.max(1.0, crit.keywords.length * 0.45));
+        const lengthFactor = Math.min(1.0, wordCount / 220.0);
+        const citeBonus = (crit.id.includes("citation") || crit.id.includes("sources") || crit.id.includes("evidence"))
+          ? Math.min(0.15, citations * 0.05) : 0.0;
+        let rawRatio = Math.min(1.0, 0.45 + (0.45 * kwRatio) + (0.10 * lengthFactor) + citeBonus);
+        if (wordCount < 40) rawRatio *= 0.55;
+        const earned = Math.round(crit.weight * rawRatio * 10) / 10;
+        totalScore += earned;
+
+        const quoteSent = sentences.find(s => crit.keywords.some(k => s.toLowerCase().includes(k.toLowerCase())))
+          || sentences[0] || "No substantive sentence found.";
+
+        return {
+          id: crit.id,
+          criterion: crit.name,
+          weight: crit.weight,
+          earned,
+          evidence_quote: quoteSent.length > 160 ? quoteSent.slice(0, 160) + "..." : quoteSent
+        };
+      });
+
+      totalScore = Math.round(Math.min(100, totalScore) * 10) / 10;
+      const gradeInfo = mapScoreToUsiu(totalScore);
+
+      return {
+        student_id: studentId,
+        student_name: studentName,
+        source_filename: sourceFilename,
+        rubric_id: rubric.id,
+        rubric_title: rubric.title,
+        word_count: wordCount,
+        citations_detected: citations,
+        total_score: totalScore,
+        letter_grade: gradeInfo.letter,
+        gpa_points: parseFloat(gradeInfo.gpa),
+        standing: gradeInfo.standing,
+        criteria_breakdown: criteriaBreakdown,
+        feedback_for_blackboard: `USIU-Africa Official Assessment Receipt (${rubric.title}) | Student: ${studentName} (${studentId}) | Score: ${totalScore}/100 (${gradeInfo.letter} | GPA ${gradeInfo.gpa}) | Overall Standing: ${gradeInfo.standing}.`
+      };
+    }
+
+    async function checkBackendServer() {
+      try {
+        const res = await fetch(`${API_BASE}/api/health`);
+        if (res.ok) {
+          backendOnline = true;
+          document.getElementById("serverBadge").textContent = "🟢 Local Python Server Connected (:8085)";
+          const subRes = await fetch(`${API_BASE}/api/submissions`);
+          if (subRes.ok) {
+            const data = await subRes.json();
+            if (data.submissions && data.submissions.length > 0) {
+              submissions = data.submissions;
+              populateDropdown();
+              renderSelectedStudent();
+            }
+          }
+        }
+      } catch (_) {
+        backendOnline = false;
+      }
+    }
+
     function populateDropdown() {
       const sel = document.getElementById("studentSelect");
+      document.getElementById("studentCountLabel").textContent = String(submissions.length);
       sel.innerHTML = submissions.map((s, idx) =>
-        `<option value="${idx}">${s.name} (ID: ${s.id}) — Grade: ${s.letter} (${s.score}%)</option>`
+        `<option value="${idx}">${s.student_name} (ID: ${s.student_id}) — Grade: ${s.letter_grade} (${s.total_score}%)</option>`
       ).join("");
     }
 
     function renderSelectedStudent() {
-      const idx = parseInt(document.getElementById("studentSelect").value || "0", 10);
+      const sel = document.getElementById("studentSelect");
+      const idx = parseInt(sel.value || "0", 10);
       const s = submissions[idx];
+      if (!s) return;
       const card = document.getElementById("assessmentCard");
       card.innerHTML = `
         <div class="grade-banner">
           <div>
-            <div style="font-size:1.4em; font-weight:900;">👤 ${s.name} (USIU ID: ${s.id})</div>
+            <div style="font-size:1.4em; font-weight:900;">👤 ${s.student_name} (USIU ID: ${s.student_id})</div>
             <div style="color:var(--accent); font-weight:700;">${s.standing}</div>
+            <div style="font-size:0.85em; opacity:0.85; margin-top:4px;">
+              📄 File: <code>${s.source_filename || "Direct Input"}</code> •
+              📝 Words: <strong>${s.word_count || "N/A"}</strong> •
+              📚 APA Citations: <strong>${s.citations_detected ?? "N/A"}</strong>
+              ${s.overridden_by_lecturer ? " • ✍️ <strong>Lecturer Adjusted</strong>" : ""}
+            </div>
           </div>
-          <div class="grade-pill">${s.score} / 100 (${s.letter} • GPA ${s.gpa})</div>
+          <div class="grade-pill" id="liveGradePill">${s.total_score} / 100 (${s.letter_grade} • GPA ${s.gpa_points})</div>
         </div>
 
         <div style="font-weight:900; color:var(--accent); font-size:1.15em;">
-          Locked Rubric Breakdown (Zero Prompt Drift):
+          Locked Rubric Breakdown (Interactive Low-Vision Sliders — Adjust Any Criterion):
         </div>
 
-        ${s.criteria.map(c => `
+        ${s.criteria_breakdown.map((c, cIdx) => `
           <div class="criterion-row">
-            <div style="display:flex; justify-content:space-between; font-weight:900;">
-              <span>${c.name}</span>
-              <span style="color:var(--green);">${c.earned} / ${c.weight} pts</span>
+            <div style="display:flex; justify-content:space-between; font-weight:900; flex-wrap:wrap; gap:8px;">
+              <span>${c.criterion}</span>
+              <span style="color:var(--green);" id="critLabel_${cIdx}">${c.earned} / ${c.weight} pts</span>
             </div>
-            <div style="margin-top:6px; opacity:0.9;"><em>Student Evidence:</em> "${c.quote}"</div>
+            <div class="slider-wrap">
+              <span style="font-size:0.85em;">0</span>
+              <input
+                type="range"
+                min="0"
+                max="${c.weight}"
+                step="0.5"
+                value="${c.earned}"
+                aria-label="Score for ${c.criterion}"
+                oninput="onCriterionSliderChange(${idx}, ${cIdx}, this.value)"
+              />
+              <span style="font-size:0.85em;">${c.weight} pts</span>
+              <button class="big-btn" style="padding:6px 12px; font-size:0.8em;" onclick="speakSingleCriterion(${cIdx})">🔊 Hear #${cIdx + 1}</button>
+            </div>
+            <div style="margin-top:4px; opacity:0.92;"><em>Verbatim Student Quote:</em> "${c.evidence_quote}"</div>
           </div>
         `).join("")}
 
         <div style="margin-top:8px;">
-          <label style="font-weight:900; color:var(--accent);">Constructive Feedback to Post on USIU Blackboard (Editable):</label>
-          <textarea id="feedbackBox" rows="3">${s.feedback}</textarea>
+          <label for="feedbackBox" style="font-weight:900; color:var(--accent);">Constructive Feedback to Post on USIU Blackboard (Editable):</label>
+          <textarea id="feedbackBox" rows="3" onchange="onFeedbackEdited(${idx}, this.value)">${s.feedback_for_blackboard}</textarea>
         </div>
       `;
     }
 
-    function speakCurrentStudent() {
-      if (!("speechSynthesis" in window)) {
-        alert("Speech synthesis is supported via the Python desktop runner (--speak).");
-        return;
+    async function onCriterionSliderChange(studentIdx, critIdx, newValue) {
+      const s = submissions[studentIdx];
+      s.criteria_breakdown[critIdx].earned = parseFloat(newValue);
+      document.getElementById(`critLabel_${critIdx}`).textContent = `${s.criteria_breakdown[critIdx].earned} / ${s.criteria_breakdown[critIdx].weight} pts`;
+
+      let sum = 0;
+      const overrides = {};
+      for (const c of s.criteria_breakdown) {
+        sum += Number(c.earned);
+        overrides[c.id || c.criterion] = Number(c.earned);
       }
-      window.speechSynthesis.cancel();
+      s.total_score = Math.round(Math.min(100, sum) * 10) / 10;
+      const g = mapScoreToUsiu(s.total_score);
+      s.letter_grade = g.letter;
+      s.gpa_points = parseFloat(g.gpa);
+      s.standing = g.standing;
+      s.overridden_by_lecturer = true;
+
+      document.getElementById("liveGradePill").textContent = `${s.total_score} / 100 (${s.letter_grade} • GPA ${s.gpa_points})`;
+      populateDropdown();
+      document.getElementById("studentSelect").value = String(studentIdx);
+
+      if (backendOnline) {
+        try {
+          await fetch(`${API_BASE}/api/override`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              student_id: s.student_id,
+              criterion_overrides: overrides,
+              feedback_for_blackboard: document.getElementById("feedbackBox").value
+            })
+          });
+        } catch (_) {}
+      }
+    }
+
+    async function onFeedbackEdited(studentIdx, newFeedback) {
+      const s = submissions[studentIdx];
+      s.feedback_for_blackboard = newFeedback;
+      if (backendOnline) {
+        try {
+          await fetch(`${API_BASE}/api/override`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              student_id: s.student_id,
+              criterion_overrides: {},
+              feedback_for_blackboard: newFeedback
+            })
+          });
+        } catch (_) {}
+      }
+    }
+
+    async function extractBrowserFileText(file) {
+      const name = file.name.toLowerCase();
+      if (name.endsWith(".docx") && window.JSZip) {
+        const zip = await JSZip.loadAsync(file);
+        if (zip.file("word/document.xml")) {
+          const xml = await zip.file("word/document.xml").async("string");
+          return xml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+        }
+      }
+      if (name.endsWith(".pdf")) {
+        const buf = await file.arrayBuffer();
+        const latin = new TextDecoder("iso-8859-1").decode(buf);
+        const matches = latin.match(/\(([^()\\]{3,})\)/g) || [];
+        const cleaned = matches.map(m => m.slice(1, -1)).filter(t => /[A-Za-z]{2,}/.test(t)).join(" ");
+        if (cleaned.length > 20) return cleaned;
+      }
+      return await file.text();
+    }
+
+    async function handleSelectedFiles(fileList) {
+      if (!fileList || fileList.length === 0) return;
+      const rubricId = document.getElementById("rubricSelect").value;
+
+      if (backendOnline) {
+        const formData = new FormData();
+        formData.append("rubric_id", rubricId);
+        for (const f of fileList) {
+          formData.append("files", f, f.name);
+        }
+        try {
+          const res = await fetch(`${API_BASE}/api/ingest`, { method: "POST", body: formData });
+          if (res.ok) {
+            const data = await res.json();
+            submissions = data.submissions;
+            populateDropdown();
+            document.getElementById("studentSelect").value = String(submissions.length - 1);
+            renderSelectedStudent();
+            speakCurrentStudent();
+            return;
+          }
+        } catch (_) {}
+      }
+
+      // Client-side fallback ingestion (.txt, .md, .docx, .pdf, .zip)
+      for (const file of fileList) {
+        const lower = file.name.toLowerCase();
+        if (lower.endsWith(".zip") && window.JSZip) {
+          const z = await JSZip.loadAsync(file);
+          for (const [relPath, entry] of Object.entries(z.files)) {
+            if (entry.dir || relPath.startsWith("__MACOSX") || relPath.includes("/.")) continue;
+            const baseName = relPath.split("/").pop();
+            if (!/\.(txt|md|docx|pdf)$/i.test(baseName)) continue;
+            const blob = await entry.async("blob");
+            blob.name = baseName;
+            const text = await extractBrowserFileText(blob);
+            if (text && text.trim().length >= 10) {
+              const idInfo = parseFilenameIdentity(baseName);
+              const assessed = evaluateSubmissionClientSide(idInfo.id, idInfo.name, text, rubricId, baseName);
+              const existingIdx = submissions.findIndex(x => x.student_id === assessed.student_id);
+              if (existingIdx >= 0) submissions[existingIdx] = assessed;
+              else submissions.push(assessed);
+            }
+          }
+        } else {
+          const text = await extractBrowserFileText(file);
+          const idInfo = parseFilenameIdentity(file.name);
+          const assessed = evaluateSubmissionClientSide(idInfo.id, idInfo.name, text, rubricId, file.name);
+          const existingIdx = submissions.findIndex(x => x.student_id === assessed.student_id);
+          if (existingIdx >= 0) submissions[existingIdx] = assessed;
+          else submissions.push(assessed);
+        }
+      }
+      populateDropdown();
+      document.getElementById("studentSelect").value = String(submissions.length - 1);
+      renderSelectedStudent();
+      speakCurrentStudent();
+    }
+
+    function onRubricChanged() {
+      const rubricId = document.getElementById("rubricSelect").value;
+      const rubric = RUBRICS[rubricId];
+      speakText(`Switched active locked rubric to ${rubric.title}`);
+    }
+
+    function speakText(text) {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 0.95;
+        window.speechSynthesis.speak(utter);
+      } else if (backendOnline) {
+        fetch(`${API_BASE}/api/speak`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+      }
+    }
+
+    function speakCurrentStudent() {
       const idx = parseInt(document.getElementById("studentSelect").value || "0", 10);
       const s = submissions[idx];
-      const text = `Assessment for ${s.name}, Student I D ${s.id}. Final Score: ${s.score} out of 100, USIU Grade ${s.letter}. ${s.standing}. Feedback to learner: ${document.getElementById("feedbackBox").value}`;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.rate = 0.95;
-      window.speechSynthesis.speak(utter);
+      if (!s) return;
+      const fb = document.getElementById("feedbackBox") ? document.getElementById("feedbackBox").value : s.feedback_for_blackboard;
+      const text = `Assessment for ${s.student_name}, USIU I D ${s.student_id}. Final Score: ${s.total_score} out of 100, USIU Grade ${s.letter_grade}, G P A ${s.gpa_points}. ${s.standing}. Feedback to learner: ${fb}`;
+      speakText(text);
+    }
+
+    function speakSingleCriterion(critIdx) {
+      const idx = parseInt(document.getElementById("studentSelect").value || "0", 10);
+      const s = submissions[idx];
+      if (!s || !s.criteria_breakdown[critIdx]) return;
+      const c = s.criteria_breakdown[critIdx];
+      speakText(`${c.criterion}. Score ${c.earned} out of ${c.weight} points. Student evidence quote: ${c.evidence_quote}`);
     }
 
     function stopSpeech() {
@@ -323,51 +811,56 @@
       document.body.classList.toggle("light-contrast");
     }
 
-    function pullFromBlackboard() {
-      const course = document.getElementById("courseSelect").value;
-      alert(`✅ Pulled ${submissions.length} student submissions from USIU Blackboard course ${course} (/learn/api/public/v1/courses/${course}/gradebook/columns/attempts) and marked against Locked Rubric!`);
-      speakCurrentStudent();
-    }
-
-    function postToBlackboard() {
-      const course = document.getElementById("courseSelect").value;
-      alert(`📤 Posted ${submissions.length} student scores and rubric feedback directly to USIU Blackboard Grade Center (${course})!`);
-    }
-
-    function gradeCustomSubmissionPrompt() {
-      const name = prompt("Enter Student Name (e.g. Faith Njeri):");
-      if (!name) return;
-      const text = prompt("Paste student submission text here (marked automatically against the Locked USIU Rubric):");
-      if (!text) return;
-      const words = text.trim().split(/\s+/).length;
-      const hasCitations = /\((?:19|20)\d{2}\)/.test(text);
-      const score = Math.min(96, Math.max(62, Math.round(68 + (words / 12) + (hasCitations ? 12 : 0))));
-      const letter = score >= 90 ? "A" : score >= 87 ? "A-" : score >= 84 ? "B+" : score >= 80 ? "B" : score >= 74 ? "C+" : "C";
-      submissions.push({
-        id: "66" + Math.floor(1000 + Math.random() * 8999),
-        name,
-        score,
-        letter,
-        gpa: score >= 90 ? "4.0" : "3.0",
-        standing: "Marked deterministically via Locked USIU 4-Pillar Rubric.",
-        criteria: [
-          { name: "1. Thesis, Problem Formulation & Core Argument", earned: Math.round(score * 0.3), weight: 30, quote: text.slice(0, 120) + "..." },
-          { name: "2. Empirical Evidence, Literature & Citations", earned: Math.round(score * 0.3), weight: 30, quote: hasCitations ? "APA year citations verified in text." : "Needs stronger in-text APA citations." },
-          { name: "3. Critical Evaluation, Methodology & Depth", earned: Math.round(score * 0.25), weight: 25, quote: `Analyzed ${words} words of academic argument.` },
-          { name: "4. Academic Structure, Coherence & APA 7th Style", earned: Math.round(score * 0.15), weight: 15, quote: "Evaluated against USIU-Africa formatting standards." }
-        ],
-        feedback: `Well done, ${name}. Your submission scored ${score}/100 (${letter}) under the standardized course rubric.`
-      });
-      populateDropdown();
-      document.getElementById("studentSelect").value = String(submissions.length - 1);
+    function stepStudent(delta) {
+      const sel = document.getElementById("studentSelect");
+      let idx = parseInt(sel.value || "0", 10) + delta;
+      if (idx < 0) idx = submissions.length - 1;
+      if (idx >= submissions.length) idx = 0;
+      sel.value = String(idx);
       renderSelectedStudent();
       speakCurrentStudent();
     }
 
+    function pullFromBlackboard() {
+      const rubricId = document.getElementById("rubricSelect").value;
+      speakText(`Loaded ${submissions.length} student submissions under ${RUBRICS[rubricId].title}.`);
+      renderSelectedStudent();
+    }
+
+    async function postToBlackboard() {
+      if (backendOnline) {
+        try {
+          const res = await fetch(`${API_BASE}/api/blackboard/sync`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ course_id: "_10482_1", column_id: "_58291_1" })
+          });
+          if (res.ok) {
+            speakText(`Synchronized ${submissions.length} student grades and rubric receipts with USIU Blackboard Grade Center.`);
+            alert(`✅ Synchronized ${submissions.length} student grades with USIU Blackboard Grade Center!`);
+            return;
+          }
+        } catch (_) {}
+      }
+      speakText(`Staged ${submissions.length} grades for USIU Blackboard Grade Center upload.`);
+      alert(`📤 Staged ${submissions.length} student scores and rubric feedback for USIU Blackboard Grade Center!`);
+    }
+
     function downloadBlackboardCsv() {
+      if (backendOnline) {
+        window.location.href = `${API_BASE}/api/export/csv`;
+        return;
+      }
       const rows = [
         ["Username", "Student ID", "Full Name", "Score", "USIU Letter Grade", "Feedback to Learner"],
-        ...submissions.map(s => [s.id, s.id, s.name, s.score, s.letter, `"${s.feedback.replace(/"/g, '""')}"`])
+        ...submissions.map(s => [
+          s.student_id,
+          s.student_id,
+          s.student_name,
+          s.total_score,
+          s.letter_grade,
+          `"${(s.feedback_for_blackboard || "").replace(/"/g, '""')}"`
+        ])
       ];
       const csv = rows.map(r => r.join(",")).join("\r\n");
       const blob = new Blob([csv], { type: "text/csv" });
@@ -377,8 +870,66 @@
       a.click();
     }
 
+    function downloadAuditJson() {
+      const blob = new Blob([JSON.stringify(submissions, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "USIU_Grading_Audit_Report.json";
+      a.click();
+    }
+
+    // Setup Drag-and-Drop Event Listeners
+    const dz = document.getElementById("dropZone");
+    ["dragenter", "dragover"].forEach(evt => {
+      dz.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        dz.classList.add("dragover");
+      });
+    });
+    ["dragleave", "drop"].forEach(evt => {
+      dz.addEventListener(evt, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        dz.classList.remove("dragover");
+      });
+    });
+    dz.addEventListener("drop", e => {
+      if (e.dataTransfer && e.dataTransfer.files) {
+        handleSelectedFiles(e.dataTransfer.files);
+      }
+    });
+
+    // Setup Zero-Mouse Voice-First Keyboard Navigation
+    window.addEventListener("keydown", e => {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+      if (tag === "textarea" || (tag === "input" && e.target.type !== "range")) return;
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        speakCurrentStudent();
+      } else if (e.key === "n" || e.key === "N") {
+        e.preventDefault();
+        stepStudent(1);
+      } else if (e.key === "p" || e.key === "P") {
+        e.preventDefault();
+        stepStudent(-1);
+      } else if (["1", "2", "3", "4"].includes(e.key)) {
+        e.preventDefault();
+        speakSingleCriterion(parseInt(e.key, 10) - 1);
+      } else if (e.altKey && (e.key === "z" || e.key === "Z")) {
+        e.preventDefault();
+        zoomIndex = (zoomIndex + 1) % zoomLevels.length;
+        setZoom(zoomLevels[zoomIndex]);
+      } else if (e.altKey && (e.key === "c" || e.key === "C")) {
+        e.preventDefault();
+        toggleContrast();
+      }
+    });
+
     populateDropdown();
     renderSelectedStudent();
+    checkBackendServer();
   </script>
 </body>
 </html>

@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "USIU-Africa Accessible Lecturer & Blackboard Grader",
+  "version": "2.0.0",
+  "description": "Low-Vision Giant-Print (175%) & Voice Read-Aloud Rubric Grading Companion for USIU-Africa Blackboard Learn (blackboard.usiu.ac.ke).",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://blackboard.usiu.ac.ke/*",
+    "http://127.0.0.1:8085/*",
+    "http://localhost:8085/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "USIU-Africa Accessible Grader",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://blackboard.usiu.ac.ke/*"
+      ],
+      "js": [
+        "content_script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

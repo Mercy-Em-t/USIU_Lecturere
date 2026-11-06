@@ -1,62 +1,103 @@
 {
+  "institution": "United States International University - Africa (USIU-Africa)",
+  "version": "2.0.0",
   "rubrics": {
     "standard_research_paper": {
-      "title": "USIU-Africa Standardized Research & Term Paper Rubric",
+      "id": "standard_research_paper",
+      "title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
+      "school": "School of Science & Technology (SST)",
+      "courses": ["APT3040", "IST4035", "SWE3020", "GEN1010"],
       "total_points": 100,
       "criteria": [
         {
           "id": "thesis_clarity",
           "name": "1. Thesis, Problem Formulation & Core Argument",
           "weight": 30,
-          "keywords": ["objective", "hypothesis", "problem", "thesis", "purpose", "framework", "strategy", "research", "aim"]
+          "keywords": ["objective", "hypothesis", "problem", "thesis", "purpose", "framework", "strategy", "research", "aim", "architecture", "telemetry"]
         },
         {
           "id": "evidence_citations",
           "name": "2. Empirical Evidence, Literature & APA 7th Citations",
           "weight": 30,
-          "keywords": ["study", "data", "evidence", "according", "et al", "202", "199", "table", "findings", "source", "reference"]
+          "keywords": ["study", "data", "evidence", "according", "et al", "202", "199", "table", "findings", "source", "reference", "literature"]
         },
         {
           "id": "critical_analysis",
           "name": "3. Critical Evaluation, Methodology & Depth",
           "weight": 25,
-          "keywords": ["however", "analysis", "methodology", "compared", "implication", "limitation", "evaluate", "impact", "because", "therefore"]
+          "keywords": ["however", "analysis", "methodology", "compared", "implication", "limitation", "evaluate", "impact", "because", "therefore", "trade-off"]
         },
         {
           "id": "academic_structure",
           "name": "4. Academic Structure, Coherence & APA 7th Style",
           "weight": 15,
-          "keywords": ["introduction", "conclusion", "references", "section", "summary", "recommendations"]
+          "keywords": ["introduction", "conclusion", "references", "section", "summary", "recommendations", "abstract"]
         }
       ]
     },
     "csb_business_case_study": {
-      "title": "Chandaria School of Business (CSB) Case Study Rubric",
+      "id": "csb_business_case_study",
+      "title": "Chandaria School of Business (CSB) Strategic Case Study Rubric",
+      "school": "Chandaria School of Business (CSB)",
+      "courses": ["BUS4010", "MKT3010", "FIN2010", "MBA6010"],
       "total_points": 100,
       "criteria": [
         {
           "id": "strategic_diagnosis",
-          "name": "1. Strategic Problem Diagnosis & Context",
+          "name": "1. Strategic Problem Diagnosis & Regional Context",
           "weight": 25,
-          "keywords": ["market", "competitive", "problem", "challenge", "stakeholder", "industry", "kenya", "africa"]
+          "keywords": ["market", "competitive", "problem", "challenge", "stakeholder", "industry", "kenya", "africa", "nairobi", "supply chain", "logistics"]
         },
         {
           "id": "analytical_frameworks",
           "name": "2. Application of SWOT / PESTEL / Porter's 5 Forces",
           "weight": 30,
-          "keywords": ["swot", "pestel", "porter", "strength", "weakness", "opportunity", "threat", "value chain", "strategy"]
+          "keywords": ["swot", "pestel", "porter", "strength", "weakness", "opportunity", "threat", "value chain", "strategy", "framework", "advantage"]
         },
         {
           "id": "financial_operational_evidence",
           "name": "3. Financial & Operational Data Justification",
           "weight": 25,
-          "keywords": ["revenue", "cost", "margin", "roi", "growth", "percent", "kes", "usd", "table", "data"]
+          "keywords": ["revenue", "cost", "margin", "roi", "growth", "percent", "kes", "usd", "table", "data", "efficiency", "stockout", "latency"]
         },
         {
           "id": "action_plan",
           "name": "4. Actionable Recommendations & Implementation Roadmap",
           "weight": 20,
-          "keywords": ["recommend", "implementation", "timeline", "risk", "mitigation", "conclusion"]
+          "keywords": ["recommend", "implementation", "timeline", "risk", "mitigation", "conclusion", "governance", "roadmap"]
+        }
+      ]
+    },
+    "shss_humanities_essay": {
+      "id": "shss_humanities_essay",
+      "title": "School of Humanities & Social Sciences (SHSS) Critical Policy & IR Rubric",
+      "school": "School of Humanities & Social Sciences (SHSS)",
+      "courses": ["IRL3020", "PSY3010", "CMS2010", "dev3050"],
+      "total_points": 100,
+      "criteria": [
+        {
+          "id": "theoretical_framing",
+          "name": "1. Theoretical Framing, Thesis & Conceptual Clarity",
+          "weight": 30,
+          "keywords": ["theory", "thesis", "paradigm", "realism", "liberalism", "constructivism", "cognitive", "policy", "argument", "discourse", "perspective"]
+        },
+        {
+          "id": "historical_empirical_sources",
+          "name": "2. Primary/Secondary Sources & APA 7th Scholarship",
+          "weight": 30,
+          "keywords": ["treaty", "study", "according", "et al", "202", "199", "scholar", "historical", "evidence", "empirical", "archive", "united nations", "au"]
+        },
+        {
+          "id": "comparative_critique",
+          "name": "3. Comparative Analysis, Counter-Arguments & Nuance",
+          "weight": 25,
+          "keywords": ["however", "conversely", "critique", "limitation", "compared", "implication", "whereas", "ethics", "regional", "sovereignty", "diplomacy"]
+        },
+        {
+          "id": "rhetorical_coherence",
+          "name": "4. Rhetorical Coherence, Structure & APA 7th Formatting",
+          "weight": 15,
+          "keywords": ["introduction", "conclusion", "references", "section", "synthesis", "recommendations"]
         }
       ]
     }
