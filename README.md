@@ -37,7 +37,8 @@ USIU_Lecturere/
 │   ├── usiu_blackboard_grader.py                              # Multi-Format Grader (.pdf, .docx, .txt, .zip) & SAPI TTS
 │   ├── usiu_lecturer_server.py                                # Python 3 HTTP/REST & SQLite 3NF Local Server (:8085)
 │   ├── USIULecturerServer.java                                # Enterprise Java 21 Pure-JDK HTTP/CLI Grading Server (:8086)
-│   └── usiu_bb_browser_bridge.js                              # Authenticated Session Bridge for blackboard.usiu.ac.ke
+│   ├── usiu_bb_browser_bridge.js                              # Authenticated Session Bridge for blackboard.usiu.ac.ke
+│   └── usiu_lecturer_discovery_survey_form.gs                 # Google Apps Script (FormApp) to Auto-Build Faculty Survey
 ├── extension/                                                 # Packaged Chrome/Edge Manifest V3 Browser Extension
 │   ├── manifest.json                                          # MV3 Manifest targeting https://blackboard.usiu.ac.ke/*
 │   ├── background.js                                          # Service Worker Bridge to Local Server (:8085)
@@ -49,7 +50,8 @@ USIU_Lecturere/
 │   ├── 02_SYSTEMS_ANALYSIS_AND_DESIGN_SAD.md                  # Dennis, Wixom & Roth SAD (Feasibility NPV/ROI, DFD, 3NF ERD)
 │   ├── 03_PSEUDOCODE_AND_PROGRAM_SPECIFICATIONS.md            # Formal Algorithmic Pseudocode for Every Program File
 │   ├── 04_USER_MANUAL_LECTURER_GUIDE.md                       # Step-by-Step Giant-Print Lecturer User Manual
-│   └── 05_TECHNICAL_ARCHITECTURE_AND_MAINTENANCE_MANUAL.md    # Technical Architecture, REST API, SQLite 3NF & Security Manual
+│   ├── 05_TECHNICAL_ARCHITECTURE_AND_MAINTENANCE_MANUAL.md    # Technical Architecture, REST API, SQLite 3NF & Security Manual
+│   └── 06_USER_DISCOVERY_SURVEY_AND_INTERVIEW_GUIDE.md        # Mom-Test Hypotheses, 15 Interview Questions & Google Form Guide
 ├── tests/
 │   └── test_usiu_suite.py                                     # Automated Unit & Integration Test Suite (100% Pass)
 └── data/
