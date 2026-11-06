@@ -46,8 +46,10 @@ from usiu_blackboard_grader import (
     extract_submission_text,
     format_blackboard_csv_string,
     get_rubric_by_id,
+    ingest_course_material_document,
     ingest_zip_bytes,
     load_all_rubrics,
+    load_course_knowledge_base,
     parse_student_identity_from_filename,
     recalculate_with_overrides,
     save_custom_rubric,
@@ -330,11 +332,16 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
         if path == "/api/rubrics":
             self._send_json({
                 "rubrics": load_all_rubrics(),
+                "knowledge_base": load_course_knowledge_base(),
                 "grading_scale": [
                     {"min": t, "letter": l, "gpa": g, "standing": d}
                     for t, l, g, d in USIU_GRADE_SCALE
                 ],
             })
+            return
+
+        if path == "/api/knowledge":
+            self._send_json(load_course_knowledge_base())
             return
 
         if path == "/api/submissions":
@@ -459,6 +466,47 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
                 json.dumps(all_rows, indent=2), encoding="utf-8"
             )
             self._send_json({"status": "UPDATED", "assessment": updated, "submissions": all_rows})
+            return
+
+        if path == "/api/knowledge/ingest":
+            ingested_materials = []
+            if "multipart/form-data" in content_type:
+                fields, files = parse_multipart_files(content_type, body)
+                course_code = fields.get("course_code", "APT3040")
+                for fname, fbytes in files:
+                    text = extract_submission_bytes(fname, fbytes)
+                    if text and len(text.strip()) > 10:
+                        mat = ingest_course_material_document(fname, course_code, text)
+                        ingested_materials.append(mat)
+            else:
+                payload = json.loads(body.decode("utf-8") or "{}")
+                title = payload.get("title", "Uploaded Lecture Notes")
+                course_code = payload.get("course_code", "APT3040")
+                text = payload.get("text", "")
+                if text and len(text.strip()) > 10:
+                    mat = ingest_course_material_document(title, course_code, text)
+                    ingested_materials.append(mat)
+
+            # Re-evaluate all existing student submissions with the newly expanded course knowledge base
+            rubric = get_rubric_by_id("standard_research_paper")
+            sample_dir = DATA_DIR / "sample_submissions"
+            bb_client = USIUBlackboardClient("https://blackboard.usiu.ac.ke")
+            for f in sorted(sample_dir.glob("*")):
+                if f.suffix.lower() in {".txt", ".md", ".docx", ".pdf"}:
+                    sid, sname = parse_student_identity_from_filename(f.name)
+                    text = extract_submission_text(f)
+                    res = evaluate_submission_deterministic(sid, sname, text, rubric, source_filename=f.name)
+                    res["blackboard_sync"] = bb_client.post_grade_to_blackboard(
+                        "_10482_1", "_58291_1", sid, res["total_score"], res["feedback_for_blackboard"]
+                    )
+                    self.db.upsert_assessment(res)
+
+            self._send_json({
+                "status": "COURSE_MATERIAL_INGESTED",
+                "ingested_materials": ingested_materials,
+                "knowledge_base": load_course_knowledge_base(),
+                "submissions": self.db.list_assessments()
+            })
             return
 
         if path == "/api/rubrics/save":

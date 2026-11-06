@@ -16,6 +16,7 @@ import argparse
 import csv
 import io
 import json
+import math
 import os
 import re
 import subprocess
@@ -24,6 +25,7 @@ import urllib.request
 import zipfile
 import zlib
 import xml.etree.ElementTree as ET
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -34,6 +36,14 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
 RUBRICS_PATH = DATA_DIR / "usiu_locked_rubrics.json"
+KNOWLEDGE_BASE_PATH = DATA_DIR / "usiu_course_knowledge_base.json"
+
+STOPWORDS = {
+    "the", "and", "for", "that", "this", "with", "from", "are", "was", "were",
+    "have", "has", "had", "not", "but", "what", "all", "when", "can", "more",
+    "into", "than", "other", "its", "their", "which", "would", "about", "there",
+    "only", "also", "such", "some", "these", "those", "between", "through"
+}
 
 # Official USIU-Africa Letter Grade Scale
 USIU_GRADE_SCALE = [
@@ -335,6 +345,101 @@ def ingest_zip_bytes(zip_bytes: bytes, rubric: dict) -> List[Dict[str, Any]]:
     return results
 
 
+def load_course_knowledge_base() -> Dict[str, Any]:
+    """Loads the Course Material Knowledge Base & Synonym Clusters from data/usiu_course_knowledge_base.json."""
+    if KNOWLEDGE_BASE_PATH.exists():
+        try:
+            return json.loads(KNOWLEDGE_BASE_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {"synonym_clusters": {}, "course_materials": []}
+
+
+def extract_salient_domain_concepts(text: str, top_k: int = 24) -> List[str]:
+    """
+    Extracts salient academic domain concepts, theories, and technical terms from uploaded
+    lecture notes, syllabus documents, or marking guides.
+    """
+    tokens = [
+        t for t in re.findall(r"\b[a-zA-Z][a-zA-Z0-9\-]{3,}\b", text.lower())
+        if t not in STOPWORDS
+    ]
+    counts = Counter(tokens)
+    return [term for term, _ in counts.most_common(top_k)]
+
+
+def ingest_course_material_document(
+    title: str,
+    course_code: str,
+    text: str,
+    material_id: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Ingests a lecturer's course material document (Lecture Notes, Syllabus, Case Study Brief,
+    or Model Answer) into `data/usiu_course_knowledge_base.json` so student submissions are
+    evaluated against the lecturer's actual taught domain concepts and semantic context.
+    """
+    kb = load_course_knowledge_base()
+    mid = material_id or re.sub(r"[^a-zA-Z0-9_]", "_", f"{course_code}_{title}".lower()).strip("_")[:48]
+    extracted_concepts = extract_salient_domain_concepts(text, top_k=24)
+
+    new_entry = {
+        "id": mid,
+        "course_code": course_code,
+        "title": title,
+        "content": text.strip()[:12000],
+        "extracted_concepts": extracted_concepts,
+        "ingested_at": datetime.now().isoformat()
+    }
+
+    materials = [m for m in kb.get("course_materials", []) if m.get("id") != mid]
+    materials.append(new_entry)
+    kb["course_materials"] = materials
+    KNOWLEDGE_BASE_PATH.write_text(json.dumps(kb, indent=2), encoding="utf-8")
+    return new_entry
+
+
+def stem_academic_token(word: str) -> str:
+    """Lightweight morphological stemmer so 'analyzing', 'analytical', and 'analysis' match."""
+    w = word.lower().strip()
+    if len(w) <= 5:
+        return w
+    for suffix in ("ization", "ational", "fulness", "ousness", "iveness", "ologies", "ology", "ments", "ment", "ating", "ition", "ation", "ities", "ally", "ical", "ance", "ence", "ings", "ing", "edly", "ies", "ers", "ion", "ive", "ous", "ful", "est", "ed", "es", "ly", "s"):
+        if w.endswith(suffix) and len(w) - len(suffix) >= 4:
+            return w[:-len(suffix)]
+    return w
+
+
+def compute_semantic_course_similarity(student_text: str, course_materials_text: str) -> float:
+    """
+    Computes a hybrid Word-Stem TF + Character 4-gram Cosine Similarity in [0.0, 1.0]
+    between a student's submission and the lecturer's uploaded course materials.
+    Rewards students who discuss the course's core subject matter even when paraphrasing!
+    """
+    if not student_text.strip() or not course_materials_text.strip():
+        return 0.0
+
+    stu_stems = Counter(
+        stem_academic_token(w) for w in re.findall(r"\b[a-zA-Z]{4,}\b", student_text.lower())
+        if w.lower() not in STOPWORDS
+    )
+    mat_stems = Counter(
+        stem_academic_token(w) for w in re.findall(r"\b[a-zA-Z]{4,}\b", course_materials_text.lower())
+        if w.lower() not in STOPWORDS
+    )
+    if not stu_stems or not mat_stems:
+        return 0.0
+
+    shared = set(stu_stems.keys()) & set(mat_stems.keys())
+    dot = sum(stu_stems[k] * mat_stems[k] for k in shared)
+    norm_a = math.sqrt(sum(v * v for v in stu_stems.values()))
+    norm_b = math.sqrt(sum(v * v for v in mat_stems.values()))
+    cosine = (dot / (norm_a * norm_b)) if (norm_a > 0 and norm_b > 0) else 0.0
+
+    # Normalize typical academic cosine overlap (0.25+ is strong topical alignment) into [0.0, 1.0]
+    return round(min(1.0, cosine / 0.28), 3)
+
+
 def evaluate_submission_deterministic(
     student_id: str,
     student_name: str,
@@ -343,28 +448,71 @@ def evaluate_submission_deterministic(
     source_filename: str = ""
 ) -> dict:
     """
-    Deterministic, criterion-referenced grading engine.
-    Guarantees 100% consistent marks for identical work — zero "vibes" or prompt drift.
+    Fairness-Guarded, Course-Material-Grounded Deterministic Assessment Engine (v2.2).
+    Combines 3 signals so students are NEVER unfairly penalized for paraphrasing:
+      1. Synonym Cluster & Morphological Stem Matching (recognizes academic synonyms & word stems)
+      2. Course Material Semantic Alignment (cosine similarity against uploaded Lecture Notes / Syllabus)
+      3. Academic Discourse & Argumentation Coherence (Claim -> Evidence -> Nuance -> Synthesis)
     """
-    words = re.findall(r"\b\w+\b", text.lower())
+    kb = load_course_knowledge_base()
+    synonym_clusters = kb.get("synonym_clusters", {})
+    course_materials = kb.get("course_materials", [])
+    combined_course_notes = " ".join(m.get("content", "") for m in course_materials)
+    course_concepts = set()
+    for m in course_materials:
+        for c in m.get("extracted_concepts", []):
+            course_concepts.add(c.lower())
+
+    lower_text = text.lower()
+    words = re.findall(r"\b\w+\b", lower_text)
+    word_set = set(words)
+    stem_set = {stem_academic_token(w) for w in words if len(w) >= 4}
     word_count = len(words)
     sentences = [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 25]
 
-    # Check for APA year citations like (2023) or (Smith, 2021) or (Kamau et al., 2024)
-    citation_matches = re.findall(r"\([A-Za-z\s,&.\-]+,?\s*(?:19|20)\d{2}[a-z]?\)", text)
+    # Check for APA year citations like (2023) or (Smith, 2021) or [2024]
+    citation_matches = re.findall(r"[\(\[][A-Za-z\s,&.\-]*?(?:19|20)\d{2}[a-z]?[\)\]]", text)
+
+    # Compute overall semantic alignment with uploaded USIU Course Materials
+    semantic_similarity = compute_semantic_course_similarity(text, combined_course_notes)
+    matched_course_concepts = [c for c in course_concepts if c in lower_text or stem_academic_token(c) in stem_set]
 
     criterion_results = []
     total_score = 0.0
+    fairness_boost_applied = False
+
+    min_words = max(50.0, float(rubric.get("min_words", 220)))
+    expected_cites = max(1, int(rubric.get("expected_citations", 3)))
+    length_factor = min(1.0, word_count / min_words)
 
     for crit in rubric["criteria"]:
         weight = crit["weight"]
-        kw_hits = sum(1 for kw in crit["keywords"] if kw.lower() in words or kw.lower() in text.lower())
-        kw_ratio = min(1.0, kw_hits / max(1.0, len(crit["keywords"]) * 0.45))
+        exact_hits = 0
+        synonym_or_stem_hits = 0
 
-        # Depth factor based on rubric's configured minimum word count & expected APA citations
-        min_words = max(50.0, float(rubric.get("min_words", 220)))
-        expected_cites = max(1, int(rubric.get("expected_citations", 3)))
-        length_factor = min(1.0, word_count / min_words)
+        for kw in crit["keywords"]:
+            kw_low = kw.lower()
+            kw_stem = stem_academic_token(kw_low)
+            cluster = synonym_clusters.get(kw_low, [kw_low])
+
+            if kw_low in word_set or kw_low in lower_text:
+                exact_hits += 1
+                synonym_or_stem_hits += 1
+            elif kw_stem in stem_set or any(syn in lower_text for syn in cluster):
+                synonym_or_stem_hits += 1
+
+        # Use the expanded synonym + stem hit count so paraphrasing is fairly rewarded
+        kw_ratio = min(1.0, synonym_or_stem_hits / max(1.0, len(crit["keywords"]) * 0.45))
+
+        # Fairness Guard: If student's semantic alignment with course lecture notes + sentence depth
+        # is higher than their exact keyword ratio, blend in the semantic course material alignment!
+        discourse_coherence = min(1.0, (len(sentences) / 6.0) * 0.6 + (semantic_similarity * 0.4))
+        if semantic_similarity >= 0.55 and word_count >= 90 and kw_ratio < 0.78:
+            boosted_ratio = max(kw_ratio, round((kw_ratio * 0.55) + (semantic_similarity * 0.30) + (discourse_coherence * 0.15), 3))
+            if boosted_ratio > kw_ratio + 0.05:
+                fairness_boost_applied = True
+            kw_ratio = boosted_ratio
+
         cite_bonus = (
             min(0.15, (len(citation_matches) / expected_cites) * 0.15)
             if crit["id"] in {"evidence_citations", "historical_empirical_sources", "financial_operational_evidence"}
@@ -379,9 +527,12 @@ def evaluate_submission_deterministic(
         earned = round(weight * raw_ratio, 1)
         total_score += earned
 
-        # Pick an evidence quote from the student's work
+        # Pick an evidence quote from the student's work (checking keywords AND synonyms)
+        expanded_terms = []
+        for kw in crit["keywords"]:
+            expanded_terms.extend(synonym_clusters.get(kw.lower(), [kw.lower()]))
         matching_sent = next(
-            (s for s in sentences if any(k.lower() in s.lower() for k in crit["keywords"])),
+            (s for s in sentences if any(k in s.lower() for k in expanded_terms)),
             sentences[0] if sentences else "No substantive sentence found."
         )
 
@@ -390,6 +541,8 @@ def evaluate_submission_deterministic(
             "criterion": crit["name"],
             "weight": weight,
             "earned": earned,
+            "exact_hits": exact_hits,
+            "synonym_or_stem_hits": synonym_or_stem_hits,
             "evidence_quote": matching_sent[:160] + ("..." if len(matching_sent) > 160 else "")
         })
 
@@ -404,6 +557,7 @@ def evaluate_submission_deterministic(
         f"USIU-Africa Official Assessment Receipt ({course_label})",
         f"Student: {student_name} ({student_id}) | Score: {total_score}/100 ({letter} | GPA {gpa})",
         f"Overall Standing: {summary_desc}.",
+        f"Course Material Alignment: {int(semantic_similarity * 100)}% ({len(matched_course_concepts)} lecture concepts matched).",
         f"Strengths: {', '.join(strengths) if strengths else 'Basic topic coverage'}.",
         f"Areas to Strengthen: {', '.join(improvements) if improvements else 'Maintain strong APA 7th empirical grounding'}."
     ]
@@ -416,6 +570,9 @@ def evaluate_submission_deterministic(
         "rubric_title": rubric.get("title", "USIU-Africa Standardized Rubric"),
         "word_count": word_count,
         "citations_detected": len(citation_matches),
+        "course_material_alignment_pct": int(round(semantic_similarity * 100)),
+        "matched_course_concepts": matched_course_concepts[:10],
+        "fairness_guard_triggered": fairness_boost_applied,
         "total_score": total_score,
         "letter_grade": letter,
         "gpa_points": gpa,

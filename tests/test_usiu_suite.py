@@ -26,6 +26,7 @@ from usiu_blackboard_grader import (
     extract_submission_text,
     format_blackboard_csv_string,
     get_rubric_by_id,
+    ingest_course_material_document,
     ingest_zip_bytes,
     load_all_rubrics,
     parse_student_identity_from_filename,
@@ -142,6 +143,38 @@ class TestUSIUAccessibleGraderSuite(unittest.TestCase):
         self.assertEqual(sum(c["weight"] for c in custom["criteria"]), 100.0)
         loaded = get_rubric_by_id("apt3040_midterm_custom")
         self.assertEqual(loaded["min_words"], 150)
+
+    def test_course_material_knowledge_base_and_paraphrase_fairness_guard(self):
+        # 1. Ingest a new Lecturer Course Notes / Syllabus document
+        mat = ingest_course_material_document(
+            title="APT3040 Week 5 Distributed Ledger & Supply Chain Lecture",
+            course_code="APT3040",
+            text=(
+                "Predictive telemetry and zero-trust RBAC architectures eliminate stockout bottlenecks "
+                "across Nairobi pharmaceutical distribution corridors. Empirical investigations by "
+                "Kamau (2024) and Ochieng (2023) demonstrate 42% latency reductions."
+            )
+        )
+        self.assertIn("telemetry", mat["extracted_concepts"])
+
+        # 2. Evaluate a student essay that heavily paraphrases using synonyms ("aim", "core claim",
+        # "conversely", "drawback", "demonstrates", "background", "way forward") instead of exact keywords
+        paraphrased_essay = (
+            "Background and Context: The primary aim and core claim of this inquiry is to examine how "
+            "predictive telemetry models mitigate pharmaceutical stockout bottlenecks in Nairobi. "
+            "Empirical Survey Results: Quantitative metrics established by Kamau (2024) and Ochieng (2023) "
+            "demonstrate that continuous monitoring lowers distribution latency by 42 percent. "
+            "Diagnostic Critique: Conversely, a major drawback and operational constraint is that edge "
+            "sensors require zero-trust RBAC governance and AES-256 encryption. "
+            "Way Forward and Works Cited: We propose a phased mitigation blueprint for Kenyan distributors. "
+            "Works Cited: Kamau (2024); Ochieng (2023)."
+        )
+        rubric = get_rubric_by_id("standard_research_paper")
+        res = evaluate_submission_deterministic("669888", "Grace Wambui", paraphrased_essay, rubric)
+
+        # Verify the student is NOT unfairly penalized and achieves an A/A- (>= 87%)
+        self.assertGreaterEqual(res["total_score"], 87.0)
+        self.assertGreaterEqual(res["course_material_alignment_pct"], 55)
 
 
 if __name__ == "__main__":
