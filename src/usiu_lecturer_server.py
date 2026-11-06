@@ -50,6 +50,7 @@ from usiu_blackboard_grader import (
     load_all_rubrics,
     parse_student_identity_from_filename,
     recalculate_with_overrides,
+    save_custom_rubric,
     speak_aloud_windows,
 )
 
@@ -458,6 +459,33 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
                 json.dumps(all_rows, indent=2), encoding="utf-8"
             )
             self._send_json({"status": "UPDATED", "assessment": updated, "submissions": all_rows})
+            return
+
+        if path == "/api/rubrics/save":
+            payload = json.loads(body.decode("utf-8") or "{}")
+            try:
+                saved = save_custom_rubric(payload)
+                # Optionally re-evaluate existing submissions if requested
+                if payload.get("regrade_existing"):
+                    sample_dir = DATA_DIR / "sample_submissions"
+                    bb_client = USIUBlackboardClient("https://blackboard.usiu.ac.ke")
+                    for f in sorted(sample_dir.glob("*")):
+                        if f.suffix.lower() in {".txt", ".md", ".docx", ".pdf"}:
+                            sid, sname = parse_student_identity_from_filename(f.name)
+                            text = extract_submission_text(f)
+                            res = evaluate_submission_deterministic(sid, sname, text, saved, source_filename=f.name)
+                            res["blackboard_sync"] = bb_client.post_grade_to_blackboard(
+                                "_10482_1", "_58291_1", sid, res["total_score"], res["feedback_for_blackboard"]
+                            )
+                            self.db.upsert_assessment(res)
+                self._send_json({
+                    "status": "RUBRIC_SAVED",
+                    "rubric": saved,
+                    "rubrics": load_all_rubrics(),
+                    "submissions": self.db.list_assessments()
+                })
+            except Exception as exc:
+                self._send_json({"error": str(exc)}, status=400)
             return
 
         if path == "/api/speak":

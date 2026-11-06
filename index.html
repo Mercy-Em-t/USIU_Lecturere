@@ -308,7 +308,10 @@
           <option value="csb_business_case_study">CSB — Chandaria School of Business Case Study (BUS4010 / MBA6010)</option>
           <option value="shss_humanities_essay">SHSS — Humanities & International Relations Policy Essay (IRL3020 / PSY3010)</option>
         </select>
-        <button class="big-btn" onclick="pullFromBlackboard()">📥 1. Pull Submissions from Blackboard</button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="big-btn" style="flex:1;" onclick="toggleConfigStudio()">⚙️ Configure Assignment & Rubric</button>
+          <button class="big-btn btn-post" style="flex:1;" onclick="toggleBridgeConsole()">🔌 Blackboard Live Bridge</button>
+        </div>
       </div>
 
       <div class="step-card">
@@ -330,6 +333,86 @@
           <button class="big-btn" style="flex:1;" onclick="downloadAuditJson()">⬇️ Audit JSON</button>
         </div>
       </div>
+    </div>
+
+    <!-- LECTURER ASSIGNMENT & RUBRIC CONFIGURATION STUDIO (HOW TO MARK & WHAT TO LOOK FOR) -->
+    <div class="student-card" id="configStudioPanel" style="display:none; border-color:var(--accent);">
+      <div class="grade-banner">
+        <div>
+          <div style="font-size:1.35em; font-weight:900; color:var(--accent);">⚙️ Assignment & Rubric Configuration Studio</div>
+          <div>Configure <strong>How to Mark</strong> (Pillar Weights, Word Count, APA Citations) & <strong>What to Look For</strong> (Required Keywords / Concepts)</div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="big-btn btn-speak" onclick="speakActiveRubricConfig()">🔊 Read Marking Rules Aloud</button>
+          <button class="big-btn" onclick="toggleConfigStudio()">✖️ Close Studio</button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+        <div>
+          <label>Assignment / Rubric Title:</label>
+          <input type="text" id="cfgRubricTitle" value="USIU-Africa Custom Course Rubric" />
+        </div>
+        <div>
+          <label>USIU Course Code (e.g. APT3040, BUS4010):</label>
+          <input type="text" id="cfgCourseCode" value="APT3040" />
+        </div>
+        <div>
+          <label>Target Word Count (100% Depth Threshold):</label>
+          <input type="number" id="cfgMinWords" value="220" min="50" max="5000" />
+        </div>
+        <div>
+          <label>Expected APA 7th Citations (Full Bonus):</label>
+          <input type="number" id="cfgMinCitations" value="3" min="0" max="30" />
+        </div>
+      </div>
+
+      <div>
+        <label>Assignment Question / Prompt & Marking Instructions:</label>
+        <textarea id="cfgAssignmentPrompt" rows="2">Evaluate how enterprise telemetry or strategic frameworks improve operational resilience in Kenya/East Africa, supported by peer-reviewed APA 7th citations.</textarea>
+      </div>
+
+      <div style="font-weight:900; color:var(--accent); font-size:1.1em;">
+        4-Pillar Marking Criteria — Configure Weight (%) & Keywords/Concepts to Look For:
+      </div>
+      <div id="cfgCriteriaContainer" style="display:flex; flex-direction:column; gap:14px;"></div>
+
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;">
+        <button class="big-btn btn-speak" onclick="saveAndApplyCustomRubric()">💾 Save Custom Rubric & Re-Mark All Submissions</button>
+        <button class="big-btn" onclick="loadCurrentRubricIntoStudio()">🔄 Reset to Selected School Template</button>
+      </div>
+    </div>
+
+    <!-- BLACKBOARD LEARN v4001.4.0 ENDPOINT & SESSION BRIDGE CONSOLE -->
+    <div class="student-card" id="bridgeConsolePanel" style="display:none; border-color:var(--blue);">
+      <div class="grade-banner">
+        <div>
+          <div style="font-size:1.35em; font-weight:900; color:var(--blue);">🔌 USIU Blackboard Learn v4001.4.0 Endpoint & Query Bridge</div>
+          <div>Target LMS: <code>https://blackboard.usiu.ac.ke</code> • Uses Lecturer's Authenticated Session (Zero Password Storage)</div>
+        </div>
+        <button class="big-btn" onclick="toggleBridgeConsole()">✖️ Close Bridge</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:16px;">
+        <div>
+          <label>Blackboard Course ID:</label>
+          <input type="text" id="bbCourseIdInput" value="_10482_1" oninput="updateLiveEndpointPreview()" />
+        </div>
+        <div>
+          <label>Gradebook Column (Assignment) ID:</label>
+          <input type="text" id="bbColumnIdInput" value="_58291_1" oninput="updateLiveEndpointPreview()" />
+        </div>
+        <div>
+          <label>Connection Mode:</label>
+          <select id="bbSyncModeSelect">
+            <option value="DUAL">Dual-Mode: Authenticated Session Cookie + Offline CSV Fallback</option>
+            <option value="SESSION">Mode B: Logged-In Browser Extension Session (credentials: include)</option>
+            <option value="CSV">Mode A: Official Grade Center Offline ZIP-In / CSV-Out</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="liveEndpointQueriesBox" style="background:rgba(255,255,255,0.05); border-left:6px solid var(--blue); padding:16px; border-radius:12px; font-family:Consolas, monospace; font-size:0.88em; display:flex; flex-direction:column; gap:8px;"></div>
     </div>
 
     <!-- ACTIVE STUDENT LARGE-PRINT ASSESSMENT CARD -->
@@ -799,7 +882,181 @@
     function onRubricChanged() {
       const rubricId = document.getElementById("rubricSelect").value;
       const rubric = RUBRICS[rubricId];
-      speakText(`Switched active locked rubric to ${rubric.title}`);
+      loadCurrentRubricIntoStudio();
+      regradeAllClientSubmissions(rubricId);
+      speakText(`Switched active locked rubric to ${rubric.title} and re-marked ${submissions.length} submissions.`);
+    }
+
+    function toggleConfigStudio() {
+      const panel = document.getElementById("configStudioPanel");
+      const isHidden = panel.style.display === "none";
+      panel.style.display = isHidden ? "flex" : "none";
+      if (isHidden) {
+        loadCurrentRubricIntoStudio();
+        speakText("Opened Assignment and Rubric Configuration Studio. Configure pillar weights and keywords to look for.");
+      }
+    }
+
+    function toggleBridgeConsole() {
+      const panel = document.getElementById("bridgeConsolePanel");
+      const isHidden = panel.style.display === "none";
+      panel.style.display = isHidden ? "flex" : "none";
+      if (isHidden) {
+        updateLiveEndpointPreview();
+        speakText("Opened USIU Blackboard Learn Endpoint and Session Bridge Console.");
+      }
+    }
+
+    function loadCurrentRubricIntoStudio() {
+      const rubricId = document.getElementById("rubricSelect").value;
+      const r = RUBRICS[rubricId] || RUBRICS.standard_research_paper;
+      document.getElementById("cfgRubricTitle").value = r.title;
+      document.getElementById("cfgCourseCode").value = r.course_code || "APT3040 / BUS4010";
+      document.getElementById("cfgMinWords").value = r.min_words || 220;
+      document.getElementById("cfgMinCitations").value = r.expected_citations ?? 3;
+      if (r.assignment_prompt) {
+        document.getElementById("cfgAssignmentPrompt").value = r.assignment_prompt;
+      }
+
+      const container = document.getElementById("cfgCriteriaContainer");
+      container.innerHTML = r.criteria.map((c, idx) => `
+        <div class="criterion-row">
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:12px;">
+            <div>
+              <label>Criterion #${idx + 1} Name (What Pillar to Grade):</label>
+              <input type="text" id="cfgCritName_${idx}" value="${c.name}" />
+            </div>
+            <div>
+              <label>Weight (Points out of 100):</label>
+              <input type="number" id="cfgCritWeight_${idx}" value="${c.weight}" min="5" max="100" />
+            </div>
+          </div>
+          <div style="margin-top:8px;">
+            <label>Keywords & Concepts to Look For in Student Paper (comma-separated):</label>
+            <input type="text" id="cfgCritKeywords_${idx}" value="${c.keywords.join(", ")}" />
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function speakActiveRubricConfig() {
+      const title = document.getElementById("cfgRubricTitle").value;
+      const minW = document.getElementById("cfgMinWords").value;
+      const minC = document.getElementById("cfgMinCitations").value;
+      const promptTxt = document.getElementById("cfgAssignmentPrompt").value;
+      speakText(`Active Marking Configuration: ${title}. Target length: ${minW} words. Expected A P A citations: ${minC}. Assignment prompt: ${promptTxt}`);
+    }
+
+    function regradeAllClientSubmissions(rubricId) {
+      const rubric = RUBRICS[rubricId] || RUBRICS.standard_research_paper;
+      // Preserve student raw text or synthesize from their existing quotes + word count if needed
+      submissions = submissions.map(s => {
+        if (s.raw_text) {
+          return evaluateSubmissionClientSide(s.student_id, s.student_name, s.raw_text, rubricId, s.source_filename);
+        }
+        const syntheticText = s.criteria_breakdown.map(c => c.evidence_quote).join(". ");
+        const res = evaluateSubmissionClientSide(s.student_id, s.student_name, syntheticText, rubricId, s.source_filename);
+        res.word_count = s.word_count || res.word_count;
+        res.citations_detected = s.citations_detected ?? res.citations_detected;
+        return res;
+      });
+      populateDropdown();
+      renderSelectedStudent();
+    }
+
+    async function saveAndApplyCustomRubric() {
+      const title = document.getElementById("cfgRubricTitle").value.trim() || "USIU Custom Rubric";
+      const courseCode = document.getElementById("cfgCourseCode").value.trim() || "USIU Course";
+      const minWords = parseInt(document.getElementById("cfgMinWords").value || "220", 10);
+      const expectedCitations = parseInt(document.getElementById("cfgMinCitations").value || "3", 10);
+      const assignmentPrompt = document.getElementById("cfgAssignmentPrompt").value.trim();
+
+      const rawCriteria = [];
+      let sumW = 0;
+      for (let i = 0; i < 4; i++) {
+        const nameEl = document.getElementById(`cfgCritName_${i}`);
+        const weightEl = document.getElementById(`cfgCritWeight_${i}`);
+        const kwEl = document.getElementById(`cfgCritKeywords_${i}`);
+        if (!nameEl) continue;
+        const w = parseFloat(weightEl.value || "25");
+        sumW += w;
+        const kws = kwEl.value.split(",").map(k => k.trim().toLowerCase()).filter(Boolean);
+        rawCriteria.push({
+          id: `custom_crit_${i + 1}`,
+          name: nameEl.value.trim() || `${i + 1}. Criterion ${i + 1}`,
+          weight: w,
+          keywords: kws.length ? kws : ["analysis", "evidence"]
+        });
+      }
+
+      // Normalize weights to 100
+      let running = 0;
+      rawCriteria.forEach((c, idx) => {
+        if (idx === rawCriteria.length - 1) {
+          c.weight = Math.round((100 - running) * 10) / 10;
+        } else {
+          c.weight = Math.round((c.weight / (sumW || 100)) * 100 * 10) / 10;
+          running += c.weight;
+        }
+      });
+
+      const customId = "custom_" + courseCode.toLowerCase().replace(/[^a-z0-9]/g, "_");
+      const newRubric = {
+        id: customId,
+        title: `${courseCode} — ${title}`,
+        course_code: courseCode,
+        assignment_prompt: assignmentPrompt,
+        min_words: minWords,
+        expected_citations: expectedCitations,
+        criteria: rawCriteria
+      };
+
+      RUBRICS[customId] = newRubric;
+      const sel = document.getElementById("rubricSelect");
+      if (![...sel.options].some(o => o.value === customId)) {
+        const opt = document.createElement("option");
+        opt.value = customId;
+        opt.textContent = `⭐ Custom: ${newRubric.title}`;
+        sel.appendChild(opt);
+      }
+      sel.value = customId;
+
+      if (backendOnline) {
+        try {
+          const res = await fetch(`${API_BASE}/api/rubrics/save`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...newRubric, regrade_existing: true })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.submissions) submissions = data.submissions;
+            populateDropdown();
+            renderSelectedStudent();
+            speakText(`Saved custom rubric ${newRubric.title} and re-marked all ${submissions.length} student submissions.`);
+            return;
+          }
+        } catch (_) {}
+      }
+
+      regradeAllClientSubmissions(customId);
+      speakText(`Saved custom rubric ${newRubric.title} and re-marked all ${submissions.length} student submissions.`);
+    }
+
+    function updateLiveEndpointPreview() {
+      const cid = document.getElementById("bbCourseIdInput").value.trim() || "_10482_1";
+      const colId = document.getElementById("bbColumnIdInput").value.trim() || "_58291_1";
+      const idx = parseInt(document.getElementById("studentSelect").value || "0", 10);
+      const stu = submissions[idx] || { student_id: "665421", total_score: 97.8 };
+      const box = document.getElementById("liveEndpointQueriesBox");
+      box.innerHTML = `
+        <div><strong>1. Verify LMS Version:</strong> <code>GET https://blackboard.usiu.ac.ke/learn/api/public/v1/system/version</code></div>
+        <div><strong>2. List My Courses:</strong> <code>GET https://blackboard.usiu.ac.ke/learn/api/public/v1/users/me/courses?expand=course</code></div>
+        <div><strong>3. List Gradebook Columns:</strong> <code>GET https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/${cid}/gradebook/columns</code></div>
+        <div><strong>4. Pull Student Attempts:</strong> <code>GET https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/${cid}/gradebook/columns/${colId}/attempts</code></div>
+        <div><strong>5. Download Attempt File:</strong> <code>GET https://blackboard.usiu.ac.ke/learn/api/public/v1/courses/${cid}/gradebook/columns/${colId}/attempts/{attemptId}/files/{fileId}/download</code></div>
+        <div><strong>6. PATCH Active Student Grade (${stu.student_id}):</strong> <code>PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/${cid}/gradebook/columns/${colId}/users/${stu.student_id}</code> &rarr; <code>{"score": ${stu.total_score}}</code></div>
+      `;
     }
 
     function speakText(text) {

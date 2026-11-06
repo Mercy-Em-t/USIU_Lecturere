@@ -30,6 +30,7 @@ from usiu_blackboard_grader import (
     load_all_rubrics,
     parse_student_identity_from_filename,
     recalculate_with_overrides,
+    save_custom_rubric,
     score_to_usiu_letter,
 )
 from usiu_lecturer_server import USIUGradingDatabase
@@ -121,6 +122,26 @@ class TestUSIUAccessibleGraderSuite(unittest.TestCase):
         self.assertIn("667890", csv_out)
         self.assertIn("Brian Otieno", csv_out)
         temp_db_path.unlink(missing_ok=True)
+
+    def test_custom_assignment_rubric_configuration(self):
+        custom = save_custom_rubric({
+            "id": "apt3040_midterm_custom",
+            "title": "APT3040 Midterm Telemetry & Zero-Trust Rubric",
+            "course_code": "APT3040",
+            "assignment_prompt": "Analyze zero-trust telemetry in Kenyan banking.",
+            "min_words": 150,
+            "expected_citations": 2,
+            "criteria": [
+                {"name": "1. Telemetry Architecture", "weight": 40, "keywords": "telemetry, objective, hypothesis, architecture"},
+                {"name": "2. Kenyan Empirical Citations", "weight": 30, "keywords": "kamau, study, data, 2024"},
+                {"name": "3. Cybersecurity Trade-offs", "weight": 20, "keywords": "cybersecurity, however, methodology"},
+                {"name": "4. APA Structure", "weight": 10, "keywords": "introduction, conclusion, references"},
+            ]
+        })
+        self.assertEqual(custom["id"], "apt3040_midterm_custom")
+        self.assertEqual(sum(c["weight"] for c in custom["criteria"]), 100.0)
+        loaded = get_rubric_by_id("apt3040_midterm_custom")
+        self.assertEqual(loaded["min_words"], 150)
 
 
 if __name__ == "__main__":

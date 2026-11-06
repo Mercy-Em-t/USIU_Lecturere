@@ -98,6 +98,62 @@ def load_all_rubrics() -> Dict[str, Any]:
     return {"standard_research_paper": DEFAULT_LOCKED_RUBRIC}
 
 
+def save_custom_rubric(rubric_obj: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Validates and persists a lecturer-configured custom rubric / marking scheme
+    into `data/usiu_locked_rubrics.json` so it can be reused across sessions and courses.
+    Enforces 100-point normalization across criteria weights.
+    """
+    rubric_id = re.sub(r"[^a-zA-Z0-9_]", "_", (rubric_obj.get("id") or rubric_obj.get("title", "custom_rubric")).lower()).strip("_")
+    if not rubric_id:
+        rubric_id = "custom_usiu_rubric"
+
+    raw_criteria = rubric_obj.get("criteria", [])
+    if not raw_criteria:
+        raise ValueError("Custom rubric must define at least one marking criterion.")
+
+    total_w = sum(float(c.get("weight", 25)) for c in raw_criteria) or 100.0
+    normalized_criteria = []
+    running_sum = 0.0
+    for idx, c in enumerate(raw_criteria):
+        cid = re.sub(r"[^a-zA-Z0-9_]", "_", (c.get("id") or c.get("name", f"crit_{idx+1}")).lower()).strip("_")
+        if idx == len(raw_criteria) - 1:
+            weight = round(100.0 - running_sum, 1)
+        else:
+            weight = round((float(c.get("weight", 25)) / total_w) * 100.0, 1)
+            running_sum += weight
+
+        kws = c.get("keywords", [])
+        if isinstance(kws, str):
+            kws = [k.strip().lower() for k in kws.split(",") if k.strip()]
+        else:
+            kws = [str(k).strip().lower() for k in kws if str(k).strip()]
+
+        normalized_criteria.append({
+            "id": cid or f"crit_{idx+1}",
+            "name": c.get("name") or f"{idx+1}. Criterion {idx+1}",
+            "weight": weight,
+            "keywords": kws or ["analysis", "evidence", "study", "objective"]
+        })
+
+    clean_rubric = {
+        "id": rubric_id,
+        "title": rubric_obj.get("title") or f"USIU Custom Rubric ({rubric_id})",
+        "school": rubric_obj.get("school") or "USIU-Africa Faculty Custom",
+        "course_code": rubric_obj.get("course_code") or "USIU Course",
+        "assignment_prompt": rubric_obj.get("assignment_prompt") or "",
+        "min_words": int(rubric_obj.get("min_words", 220)),
+        "expected_citations": int(rubric_obj.get("expected_citations", 3)),
+        "total_points": 100,
+        "criteria": normalized_criteria
+    }
+
+    full_doc = {"institution": "United States International University - Africa (USIU-Africa)", "version": "2.1.0", "rubrics": load_all_rubrics()}
+    full_doc["rubrics"][rubric_id] = clean_rubric
+    RUBRICS_PATH.write_text(json.dumps(full_doc, indent=2), encoding="utf-8")
+    return clean_rubric
+
+
 def get_rubric_by_id(rubric_id: str) -> Dict[str, Any]:
     rubrics = load_all_rubrics()
     rub = rubrics.get(rubric_id) or rubrics.get("standard_research_paper") or DEFAULT_LOCKED_RUBRIC
@@ -305,11 +361,14 @@ def evaluate_submission_deterministic(
         kw_hits = sum(1 for kw in crit["keywords"] if kw.lower() in words or kw.lower() in text.lower())
         kw_ratio = min(1.0, kw_hits / max(1.0, len(crit["keywords"]) * 0.45))
 
-        # Depth factor based on length & citation density
-        length_factor = min(1.0, word_count / 220.0)
+        # Depth factor based on rubric's configured minimum word count & expected APA citations
+        min_words = max(50.0, float(rubric.get("min_words", 220)))
+        expected_cites = max(1, int(rubric.get("expected_citations", 3)))
+        length_factor = min(1.0, word_count / min_words)
         cite_bonus = (
-            min(0.15, len(citation_matches) * 0.05)
+            min(0.15, (len(citation_matches) / expected_cites) * 0.15)
             if crit["id"] in {"evidence_citations", "historical_empirical_sources", "financial_operational_evidence"}
+            or "citation" in crit["name"].lower() or "evidence" in crit["name"].lower()
             else 0.0
         )
 
