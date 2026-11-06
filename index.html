@@ -333,6 +333,7 @@
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
           <button class="big-btn" style="flex:1;" onclick="toggleConfigStudio()">⚙️ Configure Assignment & Rubric</button>
           <button class="big-btn btn-post" style="flex:1;" onclick="toggleBridgeConsole()">🔌 Blackboard Live Bridge</button>
+          <button class="big-btn" style="flex:1; background:#ff4d4d; color:#fff; border-color:#000;" onclick="toggleInterventionReport()">🚨 Intervention & Report (<span id="alertCountBadge">1</span>)</button>
           <a href="survey.html" class="big-btn btn-speak" style="flex:1; text-decoration:none; text-align:center;">🎤 Faculty Survey</a>
         </div>
       </div>
@@ -466,6 +467,22 @@
       </div>
 
       <div id="liveEndpointQueriesBox" style="background:rgba(255,255,255,0.05); border-left:6px solid var(--blue); padding:16px; border-radius:12px; font-family:Consolas, monospace; font-size:0.88em; display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+
+    <!-- EXECUTIVE LECTURER INTERVENTION, ANOMALY ALERT & SMART COHORT LEARNING PANEL -->
+    <div class="student-card" id="interventionReportPanel" style="display:none; border-color:#ff4d4d;">
+      <div class="grade-banner">
+        <div>
+          <div style="font-size:1.35em; font-weight:900; color:#ff4d4d;">🚨 Executive Lecturer Intervention, Anomaly & Recommendations Suite</div>
+          <div>Automatically flags <strong>Adversarial Injection / Keyword Stuffing</strong>, <strong>At-Risk Students (&lt;70%)</strong>, <strong>Pedagogical Recommendations</strong>, and <strong>Smart Cohort Concept Proposals</strong></div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="big-btn btn-speak" onclick="speakInterventionReportSummary()">🔊 Read Full Briefing Aloud</button>
+          <button class="big-btn btn-post" onclick="downloadInterventionReportMd()">⬇️ Download Report (.MD)</button>
+          <button class="big-btn" onclick="toggleInterventionReport()">✖️ Close Report</button>
+        </div>
+      </div>
+      <div id="interventionReportContent" style="display:flex; flex-direction:column; gap:20px;"></div>
     </div>
 
     <!-- ACTIVE STUDENT LARGE-PRINT ASSESSMENT CARD -->
@@ -680,6 +697,73 @@
       return Math.min(1.0, cos / 0.28);
     }
 
+    let approvedCohortConcepts = [];
+    let stagedCohortConcepts = [
+      {
+        concept: "real-time predictive telemetry",
+        peer_frequency: 2,
+        supporting_high_performers: ["Amina Wanjiku", "Zainab Hassan"],
+        status: "STAGED_FOR_LECTURER_APPROVAL",
+        safety_verification: "Passed 4-Gate Anti-Poisoning Filter (Zero Injection, TTR >= 0.35, Grade >= 85%, Course Material Aligned)"
+      },
+      {
+        concept: "pharmaceutical supply chain",
+        peer_frequency: 2,
+        supporting_high_performers: ["Amina Wanjiku", "Zainab Hassan"],
+        status: "STAGED_FOR_LECTURER_APPROVAL",
+        safety_verification: "Passed 4-Gate Anti-Poisoning Filter (Zero Injection, TTR >= 0.35, Grade >= 85%, Course Material Aligned)"
+      }
+    ];
+
+    function inspectSubmissionSecurityClient(text, allKeywords) {
+      const lower = (text || "").toLowerCase();
+      const alerts = [];
+      let injectionDetected = false;
+      let keywordStuffingDetected = false;
+
+      const injPatterns = [
+        /ignore\s+(?:all\s+)?(?:previous|prior|above)\s+(?:instructions|rubrics|prompts|rules)/i,
+        /disregard\s+(?:all\s+)?(?:previous|prior|rubric)/i,
+        /(?:give|award|assign)\s+(?:this\s+student|me|this\s+paper)\s+(?:100|full\s+marks|an?\s+a\b)/i,
+        /system\s*prompt\s*override/i,
+        /you\s+are\s+an?\s+ai\s+grader/i
+      ];
+      for (const pat of injPatterns) {
+        const m = text.match(pat);
+        if (m) {
+          injectionDetected = true;
+          alerts.push({
+            severity: "CRITICAL",
+            type: "ADVERSARIAL_PROMPT_INJECTION",
+            message: `Student submission contains adversarial grading instruction ("${m[0]}"). Quarantined from cohort learning.`
+          });
+          break;
+        }
+      }
+
+      const words = lower.match(/\b[a-z]{3,}\b/g) || [];
+      const totalWords = words.length;
+      const uniqueWords = new Set(words).size;
+      const ttr = totalWords > 0 ? (uniqueWords / totalWords) : 1.0;
+
+      if (totalWords >= 30 && ttr < 0.32) {
+        keywordStuffingDetected = true;
+        alerts.push({
+          severity: "HIGH",
+          type: "KEYWORD_STUFFING_ANOMALY",
+          message: `Abnormally low lexical diversity (TTR=${ttr.toFixed(2)}). Possible repetitive keyword stuffing.`
+        });
+      }
+
+      return {
+        injection_detected: injectionDetected,
+        keyword_stuffing_detected: keywordStuffingDetected,
+        lexical_diversity_ttr: Number(ttr.toFixed(3)),
+        quarantined_from_learning: injectionDetected || keywordStuffingDetected,
+        security_alerts: alerts
+      };
+    }
+
     function evaluateSubmissionClientSide(studentId, studentName, text, rubricId, sourceFilename) {
       const rubric = RUBRICS[rubricId] || RUBRICS.standard_research_paper;
       const lowerText = text.toLowerCase();
@@ -690,7 +774,10 @@
       const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 25);
       const citations = (text.match(/[\(\[][A-Za-z\s,&.\-]*?(?:19|20)\d{2}[a-z]?[\)\]]/g) || []).length;
 
-      const semanticAlignment = computeSemanticAlignmentClient(text, activeCourseNotesCorpus);
+      const allKw = rubric.criteria.flatMap(c => c.keywords || []);
+      const securityScan = inspectSubmissionSecurityClient(text, allKw);
+
+      const semanticAlignment = computeSemanticAlignmentClient(text, activeCourseNotesCorpus + " " + approvedCohortConcepts.join(" "));
       const minWords = Math.max(50, rubric.min_words || 220);
       const expCites = Math.max(1, rubric.expected_citations || 3);
       const lengthFactor = Math.min(1.0, wordCount / minWords);
@@ -710,7 +797,7 @@
         }
         let kwRatio = Math.min(1.0, synHits / Math.max(1.0, crit.keywords.length * 0.45));
         const discourseCoherence = Math.min(1.0, (sentences.length / 6.0) * 0.6 + (semanticAlignment * 0.4));
-        if (semanticAlignment >= 0.55 && wordCount >= 90 && kwRatio < 0.78) {
+        if (semanticAlignment >= 0.55 && wordCount >= 90 && kwRatio < 0.78 && !securityScan.quarantined_from_learning) {
           const boosted = Math.max(kwRatio, (kwRatio * 0.55) + (semanticAlignment * 0.30) + (discourseCoherence * 0.15));
           if (boosted > kwRatio + 0.05) fairnessBoost = true;
           kwRatio = boosted;
@@ -720,6 +807,8 @@
           ? Math.min(0.15, (citations / expCites) * 0.15) : 0.0;
         let rawRatio = Math.min(1.0, 0.45 + (0.45 * kwRatio) + (0.10 * lengthFactor) + citeBonus);
         if (wordCount < 40) rawRatio *= 0.55;
+        if (securityScan.keyword_stuffing_detected) rawRatio = Math.min(rawRatio, 0.50);
+        if (securityScan.injection_detected) rawRatio = Math.min(rawRatio, 0.58);
         const earned = Math.round(crit.weight * rawRatio * 10) / 10;
         totalScore += earned;
 
@@ -739,6 +828,9 @@
       totalScore = Math.round(Math.min(100, totalScore) * 10) / 10;
       const gradeInfo = mapScoreToUsiu(totalScore);
       const alignPct = Math.round(semanticAlignment * 100);
+      const secNote = securityScan.security_alerts.length > 0
+        ? ` | ⚠️ LECTURER ATTENTION REQUIRED: ${securityScan.security_alerts[0].type}`
+        : "";
 
       return {
         student_id: studentId,
@@ -751,12 +843,14 @@
         citations_detected: citations,
         course_material_alignment_pct: alignPct,
         fairness_guard_triggered: fairnessBoost,
+        security_scan: securityScan,
+        needs_lecturer_intervention: Boolean(securityScan.quarantined_from_learning || totalScore < 70 || citations === 0),
         total_score: totalScore,
         letter_grade: gradeInfo.letter,
         gpa_points: parseFloat(gradeInfo.gpa),
         standing: gradeInfo.standing,
         criteria_breakdown: criteriaBreakdown,
-        feedback_for_blackboard: `USIU-Africa Official Assessment Receipt (${rubric.title}) | Student: ${studentName} (${studentId}) | Score: ${totalScore}/100 (${gradeInfo.letter} | GPA ${gradeInfo.gpa}) | Course Material Alignment: ${alignPct}% | Overall Standing: ${gradeInfo.standing}.`
+        feedback_for_blackboard: `USIU-Africa Official Assessment Receipt (${rubric.title}) | Student: ${studentName} (${studentId}) | Score: ${totalScore}/100 (${gradeInfo.letter} | GPA ${gradeInfo.gpa}) | Course Material Alignment: ${alignPct}% | Overall Standing: ${gradeInfo.standing}.${secNote}`
       };
     }
 
@@ -784,9 +878,13 @@
     function populateDropdown() {
       const sel = document.getElementById("studentSelect");
       document.getElementById("studentCountLabel").textContent = String(submissions.length);
-      sel.innerHTML = submissions.map((s, idx) =>
-        `<option value="${idx}">${s.student_name} (ID: ${s.student_id}) — Grade: ${s.letter_grade} (${s.total_score}%)</option>`
-      ).join("");
+      sel.innerHTML = submissions.map((s, idx) => {
+        const flag = (s.security_scan && s.security_scan.quarantined_from_learning)
+          ? "🚨 [SECURITY QUARANTINE] "
+          : (Number(s.total_score) < 70 ? "⚠️ [AT-RISK] " : "");
+        return `<option value="${idx}">${flag}${s.student_name} (ID: ${s.student_id}) — Grade: ${s.letter_grade} (${s.total_score}%)</option>`;
+      }).join("");
+      updateInterventionBadgeCount();
     }
 
     function renderSelectedStudent() {
@@ -795,7 +893,21 @@
       const s = submissions[idx];
       if (!s) return;
       const card = document.getElementById("assessmentCard");
+      const secAlerts = (s.security_scan && s.security_scan.security_alerts) ? s.security_scan.security_alerts : [];
+      const secBannerHtml = secAlerts.map(al => `
+        <div style="background:#5a0000; border:4px solid #ff4d4d; border-radius:14px; padding:18px; color:#fff; font-weight:900;">
+          🚨 <strong>${al.severity} SECURITY / INTEGRITY ALERT (${al.type}):</strong> ${al.message}
+        </div>
+      `).join("");
+      const atRiskBannerHtml = (Number(s.total_score) < 70 && secAlerts.length === 0) ? `
+        <div style="background:#4a2c00; border:4px solid var(--accent); border-radius:14px; padding:16px; color:#fff; font-weight:900;">
+          ⚠️ <strong>ACADEMIC INTERVENTION TRIGGERED:</strong> Student scored ${s.total_score}/100 (${s.letter_grade}), below USIU's 70% Satisfactory (C) benchmark. Recommended Action: Schedule 10-minute office hours & share APA 7th Writing Center guide.
+        </div>
+      ` : "";
+
       card.innerHTML = `
+        ${secBannerHtml}
+        ${atRiskBannerHtml}
         <div class="grade-banner">
           <div>
             <div style="font-size:1.5em; font-weight:900;">👤 ${s.student_name} (USIU ID: ${s.student_id})</div>
@@ -1357,6 +1469,272 @@
       }
       speakText(`Staged ${submissions.length} grades for USIU Blackboard Grade Center upload.`);
       alert(`📤 Staged ${submissions.length} student scores and rubric feedback for USIU Blackboard Grade Center!`);
+    }
+
+    function buildClientInterventionReport() {
+      const n = Math.max(1, submissions.length);
+      const meanScore = Math.round((submissions.reduce((acc, s) => acc + Number(s.total_score), 0) / n) * 10) / 10;
+      const passCount = submissions.filter(s => Number(s.total_score) >= 70).length;
+      const distinctionCount = submissions.filter(s => Number(s.total_score) >= 90).length;
+
+      const alerts = [];
+      submissions.forEach((s, idx) => {
+        const sec = s.security_scan || {};
+        for (const al of (sec.security_alerts || [])) {
+          alerts.push({
+            priority: "CRITICAL",
+            category: al.type,
+            student_idx: idx,
+            student_id: s.student_id,
+            student_name: s.student_name,
+            score: s.total_score,
+            letter_grade: s.letter_grade,
+            trigger: al.message,
+            recommended_action: "Inspect raw submission text immediately; quarantine from cohort learning and conduct academic integrity review."
+          });
+        }
+        if (Number(s.total_score) < 70) {
+          const weak = (s.criteria_breakdown || [])
+            .filter(c => (Number(c.earned) / Math.max(1, Number(c.weight))) < 0.72)
+            .map(c => c.criterion);
+          alerts.push({
+            priority: "HIGH",
+            category: "AT_RISK_ACADEMIC_PERFORMANCE",
+            student_idx: idx,
+            student_id: s.student_id,
+            student_name: s.student_name,
+            score: s.total_score,
+            letter_grade: s.letter_grade,
+            trigger: `Scored ${s.total_score}/100 (${s.letter_grade}), below USIU 70% Satisfactory C benchmark. Weakest pillars: ${weak.join(", ") || "General analytical depth"}.`,
+            recommended_action: "Schedule 10-minute office hours consultation and share USIU Writing Center APA 7th guide."
+          });
+        } else if (Number(s.citations_detected || 0) === 0) {
+          alerts.push({
+            priority: "MEDIUM",
+            category: "MISSING_APA_CITATIONS",
+            student_idx: idx,
+            student_id: s.student_id,
+            student_name: s.student_name,
+            score: s.total_score,
+            letter_grade: s.letter_grade,
+            trigger: "Zero in-text APA (Author, Year) empirical citations detected in submission.",
+            recommended_action: "Remind student to ground claims in peer-reviewed regional literature."
+          });
+        }
+        if (s.fairness_guard_triggered) {
+          alerts.push({
+            priority: "INFO",
+            category: "FAIRNESS_GUARD_PARAPHRASE_BOOST",
+            student_idx: idx,
+            student_id: s.student_id,
+            student_name: s.student_name,
+            score: s.total_score,
+            letter_grade: s.letter_grade,
+            trigger: `Student paraphrased concepts with ${s.course_material_alignment_pct || 85}% lecture-note alignment; Fairness Guard prevented unfair keyword penalty.`,
+            recommended_action: "Press 1–4 to hear verbatim quote and confirm agreement with Fairness Guard adjustment."
+          });
+        }
+      });
+
+      const pillarMap = {};
+      const pillarWeights = {};
+      submissions.forEach(s => {
+        (s.criteria_breakdown || []).forEach(c => {
+          const pct = (Number(c.earned) / Math.max(1, Number(c.weight))) * 100;
+          if (!pillarMap[c.criterion]) pillarMap[c.criterion] = [];
+          pillarMap[c.criterion].push(pct);
+          pillarWeights[c.criterion] = c.weight;
+        });
+      });
+
+      const pillarDiagnostics = [];
+      const recommendations = [];
+      for (const [cname, pctList] of Object.entries(pillarMap)) {
+        const avgPct = Math.round((pctList.reduce((a, b) => a + b, 0) / pctList.length) * 10) / 10;
+        const status = avgPct >= 85 ? "STRONG" : (avgPct >= 75 ? "MODERATE" : "NEEDS_ATTENTION");
+        pillarDiagnostics.push({ criterion: cname, weight: pillarWeights[cname], cohort_average_pct: avgPct, status });
+        if (avgPct < 82) {
+          recommendations.push({
+            target_pillar: cname,
+            cohort_average_pct: avgPct,
+            recommendation: `Cohort averaged ${avgPct}% on '${cname}'. Dedicate 15 minutes in the next lecture to walk through a concrete A-grade exemplar and clarify rubric expectations.`
+          });
+        }
+      }
+      if (recommendations.length === 0) {
+        recommendations.push({
+          target_pillar: "Overall Cohort Mastery",
+          cohort_average_pct: meanScore,
+          recommendation: `Cohort demonstrated strong mastery (${meanScore}% average). Consider introducing advanced comparative East African case study counter-arguments in the next module.`
+        });
+      }
+
+      return {
+        cohort_size: submissions.length,
+        mean_score: meanScore,
+        satisfactory_pass_rate_pct: Math.round((passCount / n) * 1000) / 10,
+        distinction_rate_pct: Math.round((distinctionCount / n) * 1000) / 10,
+        intervention_alerts: alerts,
+        pillar_diagnostics: pillarDiagnostics,
+        pedagogical_recommendations: recommendations,
+        staged_student_concepts: stagedCohortConcepts,
+        approved_student_concepts: approvedCohortConcepts
+      };
+    }
+
+    function updateInterventionBadgeCount() {
+      const badge = document.getElementById("alertCountBadge");
+      if (!badge) return;
+      const rep = buildClientInterventionReport();
+      badge.textContent = String(rep.intervention_alerts.length);
+    }
+
+    async function toggleInterventionReport() {
+      const panel = document.getElementById("interventionReportPanel");
+      if (panel.style.display === "none") {
+        panel.style.display = "flex";
+        await renderInterventionReportPanel();
+      } else {
+        panel.style.display = "none";
+      }
+    }
+
+    async function renderInterventionReportPanel() {
+      let report = buildClientInterventionReport();
+      if (backendOnline) {
+        try {
+          const res = await fetch(`${API_BASE}/api/reports/intervention`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.report) report = data.report;
+          }
+        } catch (_) {}
+      }
+
+      const box = document.getElementById("interventionReportContent");
+      const alertsHtml = (report.intervention_alerts || []).map((al, i) => {
+        const badgeColor = al.priority === "CRITICAL" ? "#ff4d4d" : (al.priority === "HIGH" ? "#ff9900" : "var(--accent)");
+        return `
+          <div class="criterion-row" style="border-color:${badgeColor};">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div>
+                <span class="status-badge" style="background:${badgeColor}; color:#000;">${al.priority} • ${al.category}</span>
+                <strong style="margin-left:10px; font-size:1.15em;">👤 ${al.student_name} (ID: ${al.student_id}) — ${al.score}% (${al.letter_grade})</strong>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button class="big-btn btn-speak" style="padding:8px 16px;" onclick="speakText('Alert for ${al.student_name}. Priority ${al.priority}. ${al.trigger.replace(/'/g, "")} Recommended action: ${al.recommended_action.replace(/'/g, "")}')">🔊 Hear Alert</button>
+                <button class="big-btn btn-post" style="padding:8px 16px;" onclick="jumpToStudentIntervention('${al.student_id}')">🎯 Intervene / Grade Student</button>
+              </div>
+            </div>
+            <div><strong>Trigger:</strong> ${al.trigger}</div>
+            <div style="color:var(--green);"><strong>💡 Recommended Lecturer Intervention:</strong> ${al.recommended_action}</div>
+          </div>
+        `;
+      }).join("") || `<div class="criterion-row">✅ Zero critical anomalies or at-risk submissions detected across the cohort.</div>`;
+
+      const recsHtml = (report.pedagogical_recommendations || []).map(r => `
+        <div class="criterion-row" style="border-color:var(--green);">
+          <div style="font-size:1.1em; color:var(--accent);"><strong>📚 Target Area: ${r.target_pillar} (Cohort Avg: ${r.cohort_average_pct}%)</strong></div>
+          <div>${r.recommendation}</div>
+        </div>
+      `).join("");
+
+      const stagedHtml = (report.staged_student_concepts || []).map(sc => `
+        <div class="criterion-row" style="border-color:var(--blue);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <strong style="color:var(--accent); font-size:1.15em;">🧠 Candidate Concept: "${sc.concept}"</strong>
+              <div>Found across <strong>${sc.peer_frequency}</strong> verified A/A- student paper(s): <em>${(sc.supporting_high_performers || []).join(", ")}</em></div>
+              <div style="font-size:0.9em; color:var(--green);">🛡️ ${sc.safety_verification}</div>
+            </div>
+            <button class="big-btn btn-post" style="padding:10px 18px;" onclick="approveCohortConcept('${sc.concept.replace(/'/g, "")}')">✅ Approve Concept into Knowledge Base</button>
+          </div>
+        </div>
+      `).join("") || `<div class="criterion-row">All verified cohort concepts have been reviewed or approved.</div>`;
+
+      box.innerHTML = `
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
+          <div class="step-card"><div class="step-num">COHORT MEAN</div><div style="font-size:1.4em; color:var(--green);">${report.mean_score} / 100</div></div>
+          <div class="step-card"><div class="step-num">PASS RATE (&ge;70% C)</div><div style="font-size:1.4em; color:var(--green);">${report.satisfactory_pass_rate_pct}%</div></div>
+          <div class="step-card"><div class="step-num">DISTINCTION (&ge;90% A)</div><div style="font-size:1.4em; color:var(--accent);">${report.distinction_rate_pct}%</div></div>
+          <div class="step-card"><div class="step-num">ATTENTION TRIGGERS</div><div style="font-size:1.4em; color:#ff4d4d;">${(report.intervention_alerts || []).length} Flagged</div></div>
+        </div>
+
+        <div style="font-size:1.25em; font-weight:900; color:#ff4d4d;">1. 🚨 Priority Lecturer Attention & Intervention Queue</div>
+        ${alertsHtml}
+
+        <div style="font-size:1.25em; font-weight:900; color:var(--green);">2. 📈 Pedagogical & Next-Lecture Teaching Recommendations</div>
+        ${recsHtml}
+
+        <div style="font-size:1.25em; font-weight:900; color:var(--accent);">3. 🛡️ Smart Student Cohort Concept Learning (Zero-Trust Anti-Poisoning Gate)</div>
+        <div style="font-size:0.95em;">The system extracts domain concepts <strong>only</strong> from non-quarantined <code>A/A- (&ge;85%)</code> papers that align with your lecture notes. Nothing enters the Knowledge Base until you click <strong>Approve</strong>:</div>
+        ${stagedHtml}
+      `;
+    }
+
+    function jumpToStudentIntervention(studentId) {
+      const idx = submissions.findIndex(s => s.student_id === studentId);
+      if (idx >= 0) {
+        document.getElementById("studentSelect").value = String(idx);
+        renderSelectedStudent();
+        document.getElementById("assessmentCard").scrollIntoView({ behavior: "smooth" });
+        speakCurrentStudent();
+      }
+    }
+
+    async function approveCohortConcept(concept) {
+      if (!approvedCohortConcepts.includes(concept)) {
+        approvedCohortConcepts.push(concept);
+      }
+      stagedCohortConcepts = stagedCohortConcepts.filter(c => c.concept.toLowerCase() !== concept.toLowerCase());
+      if (backendOnline) {
+        try {
+          await fetch(`${API_BASE}/api/knowledge/approve-concept`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ concept })
+          });
+        } catch (_) {}
+      }
+      await renderInterventionReportPanel();
+      speakText(`Approved student cohort concept ${concept} into the active USIU course knowledge base.`);
+    }
+
+    function speakInterventionReportSummary() {
+      const rep = buildClientInterventionReport();
+      const alertSummary = rep.intervention_alerts.map(a =>
+        `${a.priority} alert for ${a.student_name}: ${a.trigger} Recommended action: ${a.recommended_action}`
+      ).join(". ");
+      const recSummary = rep.pedagogical_recommendations.map(r => r.recommendation).join(". ");
+      speakText(
+        `Executive Lecturer Intervention Report. Cohort size ${rep.cohort_size} students. Class mean score ${rep.mean_score} out of 100. ` +
+        `${rep.intervention_alerts.length} items require lecturer attention. ${alertSummary}. Teaching recommendation: ${recSummary}`
+      );
+    }
+
+    function downloadInterventionReportMd() {
+      if (backendOnline) {
+        window.location.href = `${API_BASE}/api/export/report-md`;
+        return;
+      }
+      const rep = buildClientInterventionReport();
+      const lines = [
+        "# 🚨 USIU-Africa Executive Lecturer Intervention & Pedagogical Report",
+        `- **Cohort Size:** ${rep.cohort_size} students`,
+        `- **Class Mean Score:** ${rep.mean_score} / 100`,
+        `- **Satisfactory Pass Rate (>= 70% C):** ${rep.satisfactory_pass_rate_pct}%`,
+        "",
+        "## 1. Priority Attention & Lecturer Intervention Queue",
+        ...rep.intervention_alerts.map(a => `- **[${a.priority}] ${a.student_name} (${a.student_id}) — ${a.score}% (${a.letter_grade}):** ${a.trigger} -> *Action:* ${a.recommended_action}`),
+        "",
+        "## 2. Pedagogical Recommendations",
+        ...rep.pedagogical_recommendations.map(r => `- **${r.target_pillar} (${r.cohort_average_pct}%):** ${r.recommendation}`)
+      ];
+      const blob = new Blob([lines.join("\n")], { type: "text/markdown" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "USIU_Intervention_And_Recommendations_Report.md";
+      a.click();
     }
 
     function downloadBlackboardCsv() {

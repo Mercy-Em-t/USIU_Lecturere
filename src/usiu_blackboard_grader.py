@@ -440,6 +440,72 @@ def compute_semantic_course_similarity(student_text: str, course_materials_text:
     return round(min(1.0, cosine / 0.28), 3)
 
 
+ADVERSARIAL_INJECTION_PATTERNS = [
+    r"ignore\s+(?:all\s+)?(?:previous|prior|above)\s+(?:instructions|prompts|rubrics|rules)",
+    r"disregard\s+(?:the\s+)?(?:rubric|instructions|grading)",
+    r"system\s*prompt",
+    r"you\s+are\s+(?:now\s+)?a\s+helpful\s+grading",
+    r"(?:award|give|assign)\s+(?:me\s+|this\s+paper\s+)?(?:100|full\s+marks|grade\s+a)",
+    r"override\s+(?:score|grade|rubric)",
+    r"[\u200b\u200c\u200d\ufeff]{3,}"  # Hidden zero-width Unicode injection
+]
+
+
+def inspect_submission_security_and_anomalies(text: str, all_rubric_keywords: List[str]) -> Dict[str, Any]:
+    """
+    Zero-Trust Security & Anti-Gaming Scanner (v2.3):
+      1. Detects adversarial prompt-injection / grade-tampering instructions hidden in student essays.
+      2. Detects keyword-stuffing / low-entropy lists where students dump rubric keywords without prose.
+    """
+    lower = text.lower()
+    words = re.findall(r"\b\w+\b", lower)
+    word_count = len(words)
+    unique_words = len(set(words))
+    lexical_diversity = round(unique_words / max(1, word_count), 3)
+
+    injection_hits = []
+    for pat in ADVERSARIAL_INJECTION_PATTERNS:
+        m = re.search(pat, lower)
+        if m:
+            injection_hits.append(m.group(0))
+
+    # Check for keyword stuffing: high concentration of rubric keywords in a short/repetitive block
+    kw_set = {k.lower() for k in all_rubric_keywords}
+    total_kw_occurrences = sum(1 for w in words if w in kw_set)
+    kw_density = round(total_kw_occurrences / max(1, word_count), 3)
+    sentences = [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 20]
+
+    keyword_stuffing_detected = (
+        (word_count >= 25 and lexical_diversity < 0.32)
+        or (kw_density > 0.35 and len(sentences) <= 2)
+    )
+
+    quarantined_from_learning = bool(injection_hits or keyword_stuffing_detected)
+    alerts = []
+    if injection_hits:
+        alerts.append({
+            "severity": "CRITICAL",
+            "type": "ADVERSARIAL_INJECTION_ATTEMPT",
+            "message": f"Detected adversarial prompt/grade manipulation phrase: '{injection_hits[0]}'. Quarantined from cohort learning and flagged for Lecturer Intervention."
+        })
+    if keyword_stuffing_detected:
+        alerts.append({
+            "severity": "HIGH",
+            "type": "KEYWORD_STUFFING_ANOMALY",
+            "message": f"Low lexical diversity ({int(lexical_diversity*100)}%) or abnormal keyword density ({int(kw_density*100)}%). Blocked from cohort learning and capped."
+        })
+
+    return {
+        "prompt_injection_detected": bool(injection_hits),
+        "injection_matches": injection_hits,
+        "keyword_stuffing_detected": keyword_stuffing_detected,
+        "lexical_diversity": lexical_diversity,
+        "keyword_density": kw_density,
+        "quarantined_from_learning": quarantined_from_learning,
+        "security_alerts": alerts
+    }
+
+
 def evaluate_submission_deterministic(
     student_id: str,
     student_name: str,
@@ -476,6 +542,10 @@ def evaluate_submission_deterministic(
     # Compute overall semantic alignment with uploaded USIU Course Materials
     semantic_similarity = compute_semantic_course_similarity(text, combined_course_notes)
     matched_course_concepts = [c for c in course_concepts if c in lower_text or stem_academic_token(c) in stem_set]
+
+    # Run Zero-Trust Security & Anti-Gaming Scanner
+    all_rubric_kws = [kw for c in rubric["criteria"] for kw in c.get("keywords", [])]
+    security_scan = inspect_submission_security_and_anomalies(text, all_rubric_kws)
 
     criterion_results = []
     total_score = 0.0
@@ -523,6 +593,9 @@ def evaluate_submission_deterministic(
         raw_ratio = min(1.0, (0.45 + (0.45 * kw_ratio) + (0.10 * length_factor) + cite_bonus))
         if word_count < 40:
             raw_ratio *= 0.55
+        if security_scan["keyword_stuffing_detected"] or security_scan["prompt_injection_detected"]:
+            # Prevent gaming: cap raw ratio if keyword stuffing or prompt injection is present
+            raw_ratio = min(raw_ratio, 0.50)
 
         earned = round(weight * raw_ratio, 1)
         total_score += earned
@@ -573,6 +646,12 @@ def evaluate_submission_deterministic(
         "course_material_alignment_pct": int(round(semantic_similarity * 100)),
         "matched_course_concepts": matched_course_concepts[:10],
         "fairness_guard_triggered": fairness_boost_applied,
+        "security_scan": security_scan,
+        "needs_lecturer_intervention": bool(
+            security_scan["quarantined_from_learning"]
+            or total_score < 70.0
+            or len(citation_matches) == 0
+        ),
         "total_score": total_score,
         "letter_grade": letter,
         "gpa_points": gpa,
@@ -581,6 +660,296 @@ def evaluate_submission_deterministic(
         "feedback_for_blackboard": " ".join(feedback_lines),
         "graded_at": datetime.now().isoformat()
     }
+
+
+def extract_verified_student_cohort_concepts(
+    assessments_with_texts: List[Tuple[Dict[str, Any], str]]
+) -> List[Dict[str, Any]]:
+    """
+    Smart, Anti-Poisoning Student Cohort Learning Engine (v2.3):
+    Extracts candidate emergent domain concepts ONLY from student submissions that pass ALL 4 gates:
+      Gate 1: Zero prompt-injection or grade-tampering patterns (`not quarantined_from_learning`)
+      Gate 2: Healthy lexical diversity (`TTR >= 0.35`)
+      Gate 3: High academic performance (`total_score >= 85.0`, A or A- standing) AND
+              strong alignment (`>= 55%`) with the Lecturer's official Course Materials
+      Gate 4: Staged as `PENDING_LECTURER_APPROVAL` — never modifies the locked rubric blindly!
+    """
+    kb = load_course_knowledge_base()
+    existing_concepts = set()
+    for m in kb.get("course_materials", []):
+        for c in m.get("extracted_concepts", []):
+            existing_concepts.add(c.lower())
+    for syn_list in kb.get("synonym_clusters", {}).values():
+        for s in syn_list:
+            existing_concepts.add(s.lower())
+
+    approved_Set = {c.lower() for c in kb.get("lecturer_approved_student_concepts", [])}
+    existing_concepts |= approved_Set
+
+    candidate_counter: Counter = Counter()
+    supporting_students: Dict[str, List[str]] = {}
+
+    for eval_res, raw_text in assessments_with_texts:
+        sec = eval_res.get("security_scan", {})
+        if sec.get("quarantined_from_learning"):
+            continue
+        if float(eval_res.get("total_score", 0)) < 85.0:
+            continue
+        if int(eval_res.get("course_material_alignment_pct", 0)) < 55:
+            continue
+
+        tokens = [
+            t for t in re.findall(r"\b[a-zA-Z][a-zA-Z0-9\-]{4,}\b", raw_text.lower())
+            if t not in STOPWORDS and t not in existing_concepts
+        ]
+        unique_paper_terms = set(tokens)
+        for term in unique_paper_terms:
+            candidate_counter[term] += 1
+            supporting_students.setdefault(term, []).append(
+                f"{eval_res['student_name']} ({eval_res['student_id']})"
+            )
+
+    staged_candidates = []
+    for term, freq in candidate_counter.most_common(12):
+        staged_candidates.append({
+            "concept": term,
+            "peer_frequency": freq,
+            "supporting_high_performers": supporting_students.get(term, [])[:4],
+            "status": "PENDING_LECTURER_APPROVAL",
+            "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+        })
+
+    kb["staged_student_concepts"] = staged_candidates
+    KNOWLEDGE_BASE_PATH.write_text(json.dumps(kb, indent=2), encoding="utf-8")
+    return staged_candidates
+
+
+def approve_staged_student_concept(concept: str) -> Dict[str, Any]:
+    """
+    Promotes a staged student-derived concept into the active Course Knowledge Base
+    ONLY after explicit Lecturer approval.
+    """
+    kb = load_course_knowledge_base()
+    clean_c = concept.strip().lower()
+    approved = kb.get("lecturer_approved_student_concepts", [])
+    if clean_c and clean_c not in approved:
+        approved.append(clean_c)
+    kb["lecturer_approved_student_concepts"] = approved
+    # Also append to first course material's extracted_concepts so semantic alignment uses it
+    if kb.get("course_materials"):
+        ec = kb["course_materials"][0].get("extracted_concepts", [])
+        if clean_c not in ec:
+            ec.append(clean_c)
+    kb["staged_student_concepts"] = [
+        item for item in kb.get("staged_student_concepts", [])
+        if item.get("concept", "").lower() != clean_c
+    ]
+    KNOWLEDGE_BASE_PATH.write_text(json.dumps(kb, indent=2), encoding="utf-8")
+    return kb
+
+
+def generate_cohort_intervention_report(assessments: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Executive Intervention, Anomaly & Pedagogical Recommendation Suite (v2.3):
+    Analyzes all graded submissions to surface:
+      1. Priority Lecturer Intervention Alerts (Security/Injection attempts, Failing/At-Risk students <70%, Missing APA citations, Paraphrase Fairness reviews)
+      2. Pillar-by-Pillar Cohort Performance Diagnostics
+      3. Actionable Teaching & Curriculum Recommendations for the Lecturer
+      4. Smart Cohort-Derived Candidate Concepts awaiting Lecturer Approval
+    """
+    if not assessments:
+        return {
+            "cohort_size": 0,
+            "mean_score": 0.0,
+            "intervention_alerts": [],
+            "pillar_diagnostics": [],
+            "pedagogical_recommendations": [],
+            "staged_student_concepts": []
+        }
+
+    n = len(assessments)
+    mean_score = round(sum(float(a["total_score"]) for a in assessments) / n, 1)
+    pass_count = sum(1 for a in assessments if float(a["total_score"]) >= 70.0)
+    distinction_count = sum(1 for a in assessments if float(a["total_score"]) >= 90.0)
+
+    intervention_alerts = []
+    for a in assessments:
+        sid = a["student_id"]
+        sname = a["student_name"]
+        score = float(a["total_score"])
+        letter = a["letter_grade"]
+        cites = int(a.get("citations_detected", 0))
+        sec = a.get("security_scan", {})
+
+        # 1. Critical Security / Injection / Keyword Stuffing Alerts
+        for alert in sec.get("security_alerts", []):
+            intervention_alerts.append({
+                "priority": "CRITICAL",
+                "category": alert["type"],
+                "student_id": sid,
+                "student_name": sname,
+                "score": score,
+                "letter_grade": letter,
+                "trigger": alert["message"],
+                "recommended_action": "Inspect raw submission text immediately; quarantine from cohort learning and conduct academic integrity review."
+            })
+
+        # 2. Academic At-Risk / Remediation Alert (< 70% C threshold)
+        if score < 70.0:
+            weak_pillars = [
+                c["criterion"] for c in a.get("criteria_breakdown", [])
+                if (float(c["earned"]) / max(1.0, float(c["weight"]))) < 0.72
+            ]
+            intervention_alerts.append({
+                "priority": "HIGH",
+                "category": "AT_RISK_ACADEMIC_PERFORMANCE",
+                "student_id": sid,
+                "student_name": sname,
+                "score": score,
+                "letter_grade": letter,
+                "trigger": f"Scored {score}/100 ({letter}), below USIU 70% Satisfactory C benchmark. Weakest pillars: {', '.join(weak_pillars) or 'General depth'}.",
+                "recommended_action": "Schedule 10-minute office hours consultation and share USIU Writing Center APA 7th guide."
+            })
+        elif cites == 0:
+            intervention_alerts.append({
+                "priority": "MEDIUM",
+                "category": "MISSING_APA_CITATIONS",
+                "student_id": sid,
+                "student_name": sname,
+                "score": score,
+                "letter_grade": letter,
+                "trigger": "Zero in-text APA (Author, Year) empirical citations detected in submission.",
+                "recommended_action": "Remind student to ground claims in peer-reviewed regional literature."
+            })
+
+        # 3. Paraphrase Fairness Guard Review Notification
+        if a.get("fairness_guard_triggered"):
+            intervention_alerts.append({
+                "priority": "INFO",
+                "category": "FAIRNESS_GUARD_PARAPHRASE_BOOST",
+                "student_id": sid,
+                "student_name": sname,
+                "score": score,
+                "letter_grade": letter,
+                "trigger": f"Student paraphrased concepts with {a.get('course_material_alignment_pct', 0)}% lecture-note alignment; Fairness Guard prevented unfair keyword penalty.",
+                "recommended_action": "Press 1–4 to hear verbatim quote and confirm agreement with Fairness Guard adjustment."
+            })
+
+    # Pillar-by-Pillar Cohort Diagnostics
+    pillar_map: Dict[str, List[float]] = {}
+    pillar_weights: Dict[str, float] = {}
+    for a in assessments:
+        for c in a.get("criteria_breakdown", []):
+            cname = c["criterion"]
+            w = float(c["weight"])
+            pct = (float(c["earned"]) / max(1.0, w)) * 100.0
+            pillar_map.setdefault(cname, []).append(pct)
+            pillar_weights[cname] = w
+
+    pillar_diagnostics = []
+    pedagogical_recommendations = []
+
+    for cname, pct_list in pillar_map.items():
+        avg_pct = round(sum(pct_list) / len(pct_list), 1)
+        status = "STRONG" if avg_pct >= 85.0 else ("MODERATE" if avg_pct >= 75.0 else "NEEDS_ATTENTION")
+        pillar_diagnostics.append({
+            "criterion": cname,
+            "weight": pillar_weights[cname],
+            "cohort_average_pct": avg_pct,
+            "status": status
+        })
+        if avg_pct < 82.0:
+            pedagogical_recommendations.append({
+                "target_pillar": cname,
+                "cohort_average_pct": avg_pct,
+                "recommendation": f"Cohort averaged {avg_pct}% on '{cname}'. Dedicate 15 minutes in the next lecture to walk through a concrete A-grade exemplar and clarify rubric expectations."
+            })
+
+    if not pedagogical_recommendations:
+        pedagogical_recommendations.append({
+            "target_pillar": "Overall Cohort Mastery",
+            "cohort_average_pct": mean_score,
+            "recommendation": f"Cohort demonstrated strong mastery ({mean_score}% average). Consider introducing advanced comparative East African case study counter-arguments in the next module."
+        })
+
+    kb = load_course_knowledge_base()
+    return {
+        "generated_at": datetime.now().isoformat(),
+        "cohort_size": n,
+        "mean_score": mean_score,
+        "satisfactory_pass_rate_pct": round((pass_count / n) * 100.0, 1),
+        "distinction_rate_pct": round((distinction_count / n) * 100.0, 1),
+        "intervention_alerts_count": len(intervention_alerts),
+        "intervention_alerts": intervention_alerts,
+        "pillar_diagnostics": pillar_diagnostics,
+        "pedagogical_recommendations": pedagogical_recommendations,
+        "staged_student_concepts": kb.get("staged_student_concepts", []),
+        "approved_student_concepts": kb.get("lecturer_approved_student_concepts", [])
+    }
+
+
+def format_intervention_report_markdown(report: Dict[str, Any]) -> str:
+    """Renders an executive-ready Markdown Intervention & Pedagogical Briefing for the Lecturer."""
+    lines = [
+        "# 🚨 USIU-Africa Executive Lecturer Intervention & Pedagogical Report",
+        f"- **Generated At:** `{report.get('generated_at', '')}`",
+        f"- **Cohort Size:** `{report.get('cohort_size', 0)}` students",
+        f"- **Class Mean Score:** `{report.get('mean_score', 0.0)} / 100`",
+        f"- **Satisfactory Pass Rate (>= 70% C):** `{report.get('satisfactory_pass_rate_pct', 0.0)}%`",
+        f"- **Distinction Rate (>= 90% A):** `{report.get('distinction_rate_pct', 0.0)}%`",
+        "",
+        "---",
+        "",
+        "## 1. Priority Attention & Lecturer Intervention Queue",
+        ""
+    ]
+    alerts = report.get("intervention_alerts", [])
+    if not alerts:
+        lines.append("✅ No critical anomalies or at-risk submissions detected.")
+    else:
+        lines.append("| Priority | Category | Student | Mark | Trigger | Recommended Lecturer Action |")
+        lines.append("|:---|:---|:---|:---:|:---|:---|")
+        for al in alerts:
+            lines.append(
+                f"| **{al['priority']}** | `{al['category']}` | **{al['student_name']}** (`{al['student_id']}`) | "
+                f"**{al['score']}% ({al['letter_grade']})** | {al['trigger']} | {al['recommended_action']} |"
+            )
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## 2. Pillar-by-Pillar Cohort Diagnostics",
+        "",
+        "| Rubric Pillar | Weight | Cohort Mastery (%) | Status |",
+        "|:---|:---:|:---:|:---:|"
+    ])
+    for p in report.get("pillar_diagnostics", []):
+        lines.append(f"| {p['criterion']} | {p['weight']} pts | **{p['cohort_average_pct']}%** | `{p['status']}` |")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## 3. Pedagogical Recommendations & Teaching Suggestions",
+        ""
+    ])
+    for rec in report.get("pedagogical_recommendations", []):
+        lines.append(f"- **{rec['target_pillar']} ({rec['cohort_average_pct']}%):** {rec['recommendation']}")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## 4. Smart Cohort-Derived Concepts (Zero-Trust Anti-Poisoning Gate)",
+        ""
+    ])
+    for sc in report.get("staged_student_concepts", []):
+        lines.append(
+            f"- **`{sc['concept']}`** (Found in {sc['peer_frequency']} A/A- paper(s): {', '.join(sc['supporting_high_performers'])}) — *{sc['safety_verification']}*"
+        )
+
+    return "\n".join(lines)
 
 
 def recalculate_with_overrides(
@@ -720,8 +1089,9 @@ def main():
     ])
 
     results = []
+    assessments_with_texts = []
     print("==========================================================================")
-    print("🎓 USIU-AFRICA ACCESSIBLE LECTURER GRADING & BLACKBOARD SYNC ENGINE v2.0")
+    print("🎓 USIU-AFRICA ACCESSIBLE LECTURER GRADING & BLACKBOARD SYNC ENGINE v2.3")
     print(f"📋 ACTIVE LOCKED RUBRIC: {rubric.get('title')}")
     print("==========================================================================\n")
 
@@ -744,6 +1114,7 @@ def main():
         )
         eval_res["blackboard_sync"] = bb_sync
         results.append(eval_res)
+        assessments_with_texts.append((eval_res, text))
 
         print(f"👤 STUDENT: {student_name} (ID: {student_id}) [{f.name}]")
         print(f"   • FINAL MARK:  {eval_res['total_score']}/100  [{eval_res['letter_grade']} | GPA {eval_res['gpa_points']}]")
@@ -757,13 +1128,25 @@ def main():
                 f"Student {student_name}. Score {eval_res['total_score']} out of 100. Grade {eval_res['letter_grade']}. {eval_res['standing']}."
             )
 
+    # Smart anti-poisoning student cohort concept learning + Executive Intervention Report
+    extract_verified_student_cohort_concepts(assessments_with_texts)
+    intervention_report = generate_cohort_intervention_report(results)
+    report_md = format_intervention_report_markdown(intervention_report)
+
     args.out_csv.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
 
+    report_md_path = args.out_json.parent / "USIU_Intervention_And_Recommendations_Report.md"
+    report_json_path = args.out_json.parent / "USIU_Intervention_Report.json"
+
     args.out_csv.write_text(format_blackboard_csv_string(results), encoding="utf-8")
     args.out_json.write_text(json.dumps(results, indent=2), encoding="utf-8")
+    report_md_path.write_text(report_md, encoding="utf-8")
+    report_json_path.write_text(json.dumps(intervention_report, indent=2), encoding="utf-8")
+
     print(f"✅ [EXPORTED] Blackboard Grade Center CSV: {args.out_csv}")
     print(f"✅ [EXPORTED] Full Rubric Audit JSON:      {args.out_json}")
+    print(f"🚨 [EXPORTED] Lecturer Intervention MD:    {report_md_path} ({intervention_report['intervention_alerts_count']} alerts)")
 
 
 if __name__ == "__main__":

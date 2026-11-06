@@ -6,7 +6,31 @@
     "rubric_id": "standard_research_paper",
     "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
     "word_count": 153,
-    "citations_detected": 1,
+    "citations_detected": 4,
+    "course_material_alignment_pct": 100,
+    "matched_course_concepts": [
+      "cybersecurity",
+      "empirical",
+      "balanced",
+      "latency",
+      "distributors",
+      "stockout",
+      "governance",
+      "nairobi",
+      "ochieng",
+      "reductions"
+    ],
+    "fairness_guard_triggered": false,
+    "security_scan": {
+      "prompt_injection_detected": false,
+      "injection_matches": [],
+      "keyword_stuffing_detected": false,
+      "lexical_diversity": 0.804,
+      "keyword_density": 0.203,
+      "quarantined_from_learning": false,
+      "security_alerts": []
+    },
+    "needs_lecturer_intervention": false,
     "total_score": 97.8,
     "letter_grade": "A",
     "gpa_points": 4.0,
@@ -17,6 +41,8 @@
         "criterion": "1. Thesis, Problem Formulation & Core Argument",
         "weight": 30,
         "earned": 29.1,
+        "exact_hits": 6,
+        "synonym_or_stem_hits": 7,
         "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       },
       {
@@ -24,13 +50,17 @@
         "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
         "weight": 30,
         "earned": 30.0,
-        "evidence_quote": "Literature & Empirical Evidence\nAccording to Kamau et al"
+        "exact_hits": 10,
+        "synonym_or_stem_hits": 10,
+        "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       },
       {
         "id": "critical_analysis",
         "criterion": "3. Critical Evaluation, Methodology & Depth",
         "weight": 25,
         "earned": 24.2,
+        "exact_hits": 10,
+        "synonym_or_stem_hits": 10,
         "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       },
       {
@@ -38,18 +68,20 @@
         "criterion": "4. Academic Structure, Coherence & APA 7th Style",
         "weight": 15,
         "earned": 14.5,
+        "exact_hits": 6,
+        "synonym_or_stem_hits": 6,
         "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-06T11:52:50.790487",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (16 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-06T12:45:44.132819",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/665421",
       "payload": {
         "score": 97.8,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
+        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (16 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (16 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   },
@@ -60,31 +92,57 @@
     "rubric_id": "standard_research_paper",
     "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
     "word_count": 110,
-    "citations_detected": 0,
-    "total_score": 89.8,
-    "letter_grade": "A-",
-    "gpa_points": 3.7,
-    "standing": "Excellent \u2014 Strong analytical depth and evidence",
+    "citations_detected": 3,
+    "course_material_alignment_pct": 91,
+    "matched_course_concepts": [
+      "cybersecurity",
+      "balanced",
+      "multi-factor",
+      "otieno",
+      "governance",
+      "zero-trust"
+    ],
+    "fairness_guard_triggered": false,
+    "security_scan": {
+      "prompt_injection_detected": false,
+      "injection_matches": [],
+      "keyword_stuffing_detected": false,
+      "lexical_diversity": 0.8,
+      "keyword_density": 0.173,
+      "quarantined_from_learning": false,
+      "security_alerts": []
+    },
+    "needs_lecturer_intervention": false,
+    "total_score": 96.6,
+    "letter_grade": "A",
+    "gpa_points": 4.0,
+    "standing": "Distinction \u2014 Exceptional mastery of course concepts",
     "criteria_breakdown": [
       {
         "id": "thesis_clarity",
         "criterion": "1. Thesis, Problem Formulation & Core Argument",
         "weight": 30,
-        "earned": 23.2,
+        "earned": 28.5,
+        "exact_hits": 3,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Introduction\nThis research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals"
       },
       {
         "id": "evidence_citations",
         "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
         "weight": 30,
-        "earned": 28.5,
-        "evidence_quote": "Literature & Data Evidence\nRecent findings by Otieno (2024) indicate that multi-factor authentication reduces unauthorized portal access by 78%"
+        "earned": 30.0,
+        "exact_hits": 7,
+        "synonym_or_stem_hits": 8,
+        "evidence_quote": "Introduction\nThis research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals"
       },
       {
         "id": "critical_analysis",
         "criterion": "3. Critical Evaluation, Methodology & Depth",
         "weight": 25,
         "earned": 23.8,
+        "exact_hits": 5,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Analysis\nWhen compared to static passwords, zero-trust session tokens evaluate device posture continuously"
       },
       {
@@ -92,18 +150,20 @@
         "criterion": "4. Academic Structure, Coherence & APA 7th Style",
         "weight": 15,
         "earned": 14.3,
+        "exact_hits": 5,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Introduction\nThis research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals"
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 89.8/100 (A- | GPA 3.7) Overall Standing: Excellent \u2014 Strong analytical depth and evidence. Strengths: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument.",
-    "graded_at": "2026-11-06T11:52:50.791705",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 91% (6 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-06T12:45:44.146479",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/666104",
       "payload": {
-        "score": 89.8,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 89.8/100 (A- | GPA 3.7) Overall Standing: Excellent \u2014 Strong analytical depth and evidence. Strengths: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 89.8/100 (A- | GPA 3.7) Overall Standing: Excellent \u2014 Strong analytical depth and evidence. Strengths: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument."
+        "score": 96.6,
+        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 91% (6 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 91% (6 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   },
@@ -115,16 +175,34 @@
     "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
     "word_count": 73,
     "citations_detected": 0,
-    "total_score": 62.6,
-    "letter_grade": "D",
-    "gpa_points": 1.0,
-    "standing": "Minimum Pass \u2014 Significant conceptual gaps",
+    "course_material_alignment_pct": 19,
+    "matched_course_concepts": [
+      "nairobi",
+      "supply chain"
+    ],
+    "fairness_guard_triggered": false,
+    "security_scan": {
+      "prompt_injection_detected": false,
+      "injection_matches": [],
+      "keyword_stuffing_detected": false,
+      "lexical_diversity": 0.836,
+      "keyword_density": 0.082,
+      "quarantined_from_learning": false,
+      "security_alerts": []
+    },
+    "needs_lecturer_intervention": true,
+    "total_score": 65.3,
+    "letter_grade": "D+",
+    "gpa_points": 1.3,
+    "standing": "Below Average \u2014 Incomplete analysis",
     "criteria_breakdown": [
       {
         "id": "thesis_clarity",
         "criterion": "1. Thesis, Problem Formulation & Core Argument",
         "weight": 30,
-        "earned": 20.0,
+        "earned": 22.7,
+        "exact_hits": 2,
+        "synonym_or_stem_hits": 3,
         "evidence_quote": "The purpose is to show that computers help stores keep track of items"
       },
       {
@@ -132,6 +210,8 @@
         "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
         "weight": 30,
         "earned": 14.5,
+        "exact_hits": 0,
+        "synonym_or_stem_hits": 0,
         "evidence_quote": "Introduction\nThis assignment looks at supply chains and why companies need better software"
       },
       {
@@ -139,6 +219,8 @@
         "criterion": "3. Critical Evaluation, Methodology & Depth",
         "weight": 25,
         "earned": 14.4,
+        "exact_hits": 1,
+        "synonym_or_stem_hits": 1,
         "evidence_quote": "However, software can be expensive for small businesses"
       },
       {
@@ -146,18 +228,20 @@
         "criterion": "4. Academic Structure, Coherence & APA 7th Style",
         "weight": 15,
         "earned": 13.7,
+        "exact_hits": 3,
+        "synonym_or_stem_hits": 3,
         "evidence_quote": "Introduction\nThis assignment looks at supply chains and why companies need better software"
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 62.6/100 (D | GPA 1.0) Overall Standing: Minimum Pass \u2014 Significant conceptual gaps. Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth.",
-    "graded_at": "2026-11-06T11:52:50.792747",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 65.3/100 (D+ | GPA 1.3) Overall Standing: Below Average \u2014 Incomplete analysis. Course Material Alignment: 19% (2 lecture concepts matched). Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth.",
+    "graded_at": "2026-11-06T12:45:44.155456",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/667890",
       "payload": {
-        "score": 62.6,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 62.6/100 (D | GPA 1.0) Overall Standing: Minimum Pass \u2014 Significant conceptual gaps. Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 62.6/100 (D | GPA 1.0) Overall Standing: Minimum Pass \u2014 Significant conceptual gaps. Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth."
+        "score": 65.3,
+        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 65.3/100 (D+ | GPA 1.3) Overall Standing: Below Average \u2014 Incomplete analysis. Course Material Alignment: 19% (2 lecture concepts matched). Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 65.3/100 (D+ | GPA 1.3) Overall Standing: Below Average \u2014 Incomplete analysis. Course Material Alignment: 19% (2 lecture concepts matched). Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth."
       }
     }
   },
@@ -168,8 +252,31 @@
     "rubric_id": "standard_research_paper",
     "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
     "word_count": 165,
-    "citations_detected": 0,
-    "total_score": 95.0,
+    "citations_detected": 4,
+    "course_material_alignment_pct": 84,
+    "matched_course_concepts": [
+      "mobile money",
+      "empirical",
+      "latency",
+      "governance",
+      "nairobi",
+      "demonstrate",
+      "architectures",
+      "mutua",
+      "across"
+    ],
+    "fairness_guard_triggered": false,
+    "security_scan": {
+      "prompt_injection_detected": false,
+      "injection_matches": [],
+      "keyword_stuffing_detected": false,
+      "lexical_diversity": 0.812,
+      "keyword_density": 0.145,
+      "quarantined_from_learning": false,
+      "security_alerts": []
+    },
+    "needs_lecturer_intervention": false,
+    "total_score": 98.3,
     "letter_grade": "A",
     "gpa_points": 4.0,
     "standing": "Distinction \u2014 Exceptional mastery of course concepts",
@@ -178,14 +285,18 @@
         "id": "thesis_clarity",
         "criterion": "1. Thesis, Problem Formulation & Core Argument",
         "weight": 30,
-        "earned": 26.7,
+        "earned": 29.3,
+        "exact_hits": 4,
+        "synonym_or_stem_hits": 7,
         "evidence_quote": "Introduction and Problem Statement\nThe primary objective of this study is to examine mobile money interoperability and enterprise resource planning (ERP) adopti..."
       },
       {
         "id": "evidence_citations",
         "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
         "weight": 30,
-        "earned": 29.3,
+        "earned": 30.0,
+        "exact_hits": 10,
+        "synonym_or_stem_hits": 10,
         "evidence_quote": "Introduction and Problem Statement\nThe primary objective of this study is to examine mobile money interoperability and enterprise resource planning (ERP) adopti..."
       },
       {
@@ -193,25 +304,29 @@
         "criterion": "3. Critical Evaluation, Methodology & Depth",
         "weight": 25,
         "earned": 24.4,
-        "evidence_quote": "Methodology and Critical Analysis\nHowever, our analysis reveals significant implementation limitations when legacy point-of-sale terminals lack stable API gatew..."
+        "exact_hits": 8,
+        "synonym_or_stem_hits": 8,
+        "evidence_quote": "A comparative study by Mwangi and Mutua (2022) further demonstrates that real-time ledger synchronization improves working capital liquidity"
       },
       {
         "id": "academic_structure",
         "criterion": "4. Academic Structure, Coherence & APA 7th Style",
         "weight": 15,
         "earned": 14.6,
+        "exact_hits": 5,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Introduction and Problem Statement\nThe primary objective of this study is to examine mobile money interoperability and enterprise resource planning (ERP) adopti..."
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 95.0/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-06T11:52:50.794105",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 98.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 83% (9 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-06T12:45:44.166558",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/668312",
       "payload": {
-        "score": 95.0,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 95.0/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 95.0/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
+        "score": 98.3,
+        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 98.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 83% (9 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 98.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 83% (9 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   },
@@ -222,7 +337,31 @@
     "rubric_id": "standard_research_paper",
     "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
     "word_count": 153,
-    "citations_detected": 1,
+    "citations_detected": 4,
+    "course_material_alignment_pct": 100,
+    "matched_course_concepts": [
+      "cybersecurity",
+      "empirical",
+      "balanced",
+      "latency",
+      "distributors",
+      "stockout",
+      "governance",
+      "nairobi",
+      "ochieng",
+      "reductions"
+    ],
+    "fairness_guard_triggered": false,
+    "security_scan": {
+      "prompt_injection_detected": false,
+      "injection_matches": [],
+      "keyword_stuffing_detected": false,
+      "lexical_diversity": 0.804,
+      "keyword_density": 0.203,
+      "quarantined_from_learning": false,
+      "security_alerts": []
+    },
+    "needs_lecturer_intervention": false,
     "total_score": 97.8,
     "letter_grade": "A",
     "gpa_points": 4.0,
@@ -233,6 +372,8 @@
         "criterion": "1. Thesis, Problem Formulation & Core Argument",
         "weight": 30,
         "earned": 29.1,
+        "exact_hits": 6,
+        "synonym_or_stem_hits": 7,
         "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       },
       {
@@ -240,13 +381,17 @@
         "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
         "weight": 30,
         "earned": 30.0,
-        "evidence_quote": "Literature & Empirical Evidence\nAccording to Kamau et al"
+        "exact_hits": 10,
+        "synonym_or_stem_hits": 10,
+        "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       },
       {
         "id": "critical_analysis",
         "criterion": "3. Critical Evaluation, Methodology & Depth",
         "weight": 25,
         "earned": 24.2,
+        "exact_hits": 10,
+        "synonym_or_stem_hits": 10,
         "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       },
       {
@@ -254,18 +399,20 @@
         "criterion": "4. Academic Structure, Coherence & APA 7th Style",
         "weight": 15,
         "earned": 14.5,
+        "exact_hits": 6,
+        "synonym_or_stem_hits": 6,
         "evidence_quote": "Introduction\nThe primary objective of this research paper is to evaluate the impact of automated supply chain telemetry on inventory resilience across East Afri..."
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-06T11:52:50.798817",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (16 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-06T12:45:44.186984",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/669102",
       "payload": {
         "score": 97.8,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
+        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (16 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (16 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   },
@@ -276,31 +423,57 @@
     "rubric_id": "standard_research_paper",
     "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
     "word_count": 110,
-    "citations_detected": 0,
-    "total_score": 89.8,
-    "letter_grade": "A-",
-    "gpa_points": 3.7,
-    "standing": "Excellent \u2014 Strong analytical depth and evidence",
+    "citations_detected": 3,
+    "course_material_alignment_pct": 91,
+    "matched_course_concepts": [
+      "cybersecurity",
+      "balanced",
+      "multi-factor",
+      "otieno",
+      "governance",
+      "zero-trust"
+    ],
+    "fairness_guard_triggered": false,
+    "security_scan": {
+      "prompt_injection_detected": false,
+      "injection_matches": [],
+      "keyword_stuffing_detected": false,
+      "lexical_diversity": 0.8,
+      "keyword_density": 0.173,
+      "quarantined_from_learning": false,
+      "security_alerts": []
+    },
+    "needs_lecturer_intervention": false,
+    "total_score": 96.6,
+    "letter_grade": "A",
+    "gpa_points": 4.0,
+    "standing": "Distinction \u2014 Exceptional mastery of course concepts",
     "criteria_breakdown": [
       {
         "id": "thesis_clarity",
         "criterion": "1. Thesis, Problem Formulation & Core Argument",
         "weight": 30,
-        "earned": 23.2,
+        "earned": 28.5,
+        "exact_hits": 3,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Introduction This research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals"
       },
       {
         "id": "evidence_citations",
         "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
         "weight": 30,
-        "earned": 28.5,
-        "evidence_quote": "Literature & Data Evidence Recent findings by Otieno [2024] indicate that multi-factor authentication reduces unauthorized portal access by 78%"
+        "earned": 30.0,
+        "exact_hits": 7,
+        "synonym_or_stem_hits": 8,
+        "evidence_quote": "Introduction This research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals"
       },
       {
         "id": "critical_analysis",
         "criterion": "3. Critical Evaluation, Methodology & Depth",
         "weight": 25,
         "earned": 23.8,
+        "exact_hits": 5,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Analysis When compared to static passwords, zero-trust session tokens evaluate device posture continuously"
       },
       {
@@ -308,18 +481,20 @@
         "criterion": "4. Academic Structure, Coherence & APA 7th Style",
         "weight": 15,
         "earned": 14.3,
+        "exact_hits": 5,
+        "synonym_or_stem_hits": 5,
         "evidence_quote": "Introduction This research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals"
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 89.8/100 (A- | GPA 3.7) Overall Standing: Excellent \u2014 Strong analytical depth and evidence. Strengths: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument.",
-    "graded_at": "2026-11-06T11:52:51.237919",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 91% (6 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-06T12:45:45.405515",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/669205",
       "payload": {
-        "score": 89.8,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 89.8/100 (A- | GPA 3.7) Overall Standing: Excellent \u2014 Strong analytical depth and evidence. Strengths: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 89.8/100 (A- | GPA 3.7) Overall Standing: Excellent \u2014 Strong analytical depth and evidence. Strengths: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument."
+        "score": 96.6,
+        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 91% (6 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 91% (6 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   }

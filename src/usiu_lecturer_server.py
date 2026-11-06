@@ -41,10 +41,14 @@ if str(SRC_DIR) not in sys.path:
 from usiu_blackboard_grader import (
     USIU_GRADE_SCALE,
     USIUBlackboardClient,
+    approve_staged_student_concept,
     evaluate_submission_deterministic,
     extract_submission_bytes,
     extract_submission_text,
+    extract_verified_student_cohort_concepts,
     format_blackboard_csv_string,
+    format_intervention_report_markdown,
+    generate_cohort_intervention_report,
     get_rubric_by_id,
     ingest_course_material_document,
     ingest_zip_bytes,
@@ -96,6 +100,9 @@ class USIUGradingDatabase:
                     standing TEXT,
                     feedback_for_blackboard TEXT,
                     overridden_by_lecturer INTEGER DEFAULT 0,
+                    course_material_alignment_pct REAL DEFAULT 0.0,
+                    fairness_guard_triggered INTEGER DEFAULT 0,
+                    security_scan_json TEXT,
                     blackboard_sync_json TEXT,
                     graded_at TEXT NOT NULL
                 );
@@ -112,6 +119,14 @@ class USIUGradingDatabase:
                 );
                 """
             )
+            # Safe forward migration if DB existed before v2.3
+            existing_cols = {row[1] for row in conn.execute("PRAGMA table_info(assessments)").fetchall()}
+            if "course_material_alignment_pct" not in existing_cols:
+                conn.execute("ALTER TABLE assessments ADD COLUMN course_material_alignment_pct REAL DEFAULT 0.0")
+            if "fairness_guard_triggered" not in existing_cols:
+                conn.execute("ALTER TABLE assessments ADD COLUMN fairness_guard_triggered INTEGER DEFAULT 0")
+            if "security_scan_json" not in existing_cols:
+                conn.execute("ALTER TABLE assessments ADD COLUMN security_scan_json TEXT")
 
     def upsert_assessment(self, item: Dict[str, Any]):
         with self._connect() as conn:
@@ -121,8 +136,9 @@ class USIUGradingDatabase:
                     student_id, student_name, source_filename, rubric_id, rubric_title,
                     word_count, citations_detected, total_score, letter_grade, gpa_points,
                     standing, feedback_for_blackboard, overridden_by_lecturer,
-                    blackboard_sync_json, graded_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    course_material_alignment_pct, fairness_guard_triggered,
+                    security_scan_json, blackboard_sync_json, graded_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(student_id) DO UPDATE SET
                     student_name=excluded.student_name,
                     source_filename=excluded.source_filename,
@@ -136,6 +152,9 @@ class USIUGradingDatabase:
                     standing=excluded.standing,
                     feedback_for_blackboard=excluded.feedback_for_blackboard,
                     overridden_by_lecturer=excluded.overridden_by_lecturer,
+                    course_material_alignment_pct=excluded.course_material_alignment_pct,
+                    fairness_guard_triggered=excluded.fairness_guard_triggered,
+                    security_scan_json=excluded.security_scan_json,
                     blackboard_sync_json=excluded.blackboard_sync_json,
                     graded_at=excluded.graded_at
                 """,
@@ -153,6 +172,9 @@ class USIUGradingDatabase:
                     item.get("standing", ""),
                     item.get("feedback_for_blackboard", ""),
                     1 if item.get("overridden_by_lecturer") else 0,
+                    float(item.get("course_material_alignment_pct", 0.0)),
+                    1 if item.get("fairness_guard_triggered") else 0,
+                    json.dumps(item.get("security_scan", {})),
                     json.dumps(item.get("blackboard_sync", {})),
                     item.get("graded_at", ""),
                 ),
@@ -195,6 +217,7 @@ class USIUGradingDatabase:
                     }
                     for cr in c_rows
                 ]
+                sec_scan = json.loads(r["security_scan_json"] or "{}") if r["security_scan_json"] else {}
                 results.append(
                     {
                         "student_id": r["student_id"],
@@ -208,6 +231,14 @@ class USIUGradingDatabase:
                         "letter_grade": r["letter_grade"],
                         "gpa_points": r["gpa_points"],
                         "standing": r["standing"],
+                        "course_material_alignment_pct": float(r["course_material_alignment_pct"] or 0.0),
+                        "fairness_guard_triggered": bool(r["fairness_guard_triggered"]),
+                        "security_scan": sec_scan,
+                        "needs_lecturer_intervention": bool(
+                            sec_scan.get("quarantined_from_learning")
+                            or float(r["total_score"]) < 70.0
+                            or int(r["citations_detected"]) == 0
+                        ),
                         "criteria_breakdown": criteria,
                         "feedback_for_blackboard": r["feedback_for_blackboard"],
                         "overridden_by_lecturer": bool(r["overridden_by_lecturer"]),
@@ -233,6 +264,7 @@ def seed_initial_submissions(db: USIUGradingDatabase):
         return
     rubric = get_rubric_by_id("standard_research_paper")
     bb_client = USIUBlackboardClient("https://blackboard.usiu.ac.ke")
+    assessments_with_texts = []
     for f in sorted(sample_dir.glob("*")):
         if f.suffix.lower() in {".txt", ".md", ".docx", ".pdf"}:
             sid, sname = parse_student_identity_from_filename(f.name)
@@ -242,6 +274,8 @@ def seed_initial_submissions(db: USIUGradingDatabase):
                 "_10482_1", "_58291_1", sid, res["total_score"], res["feedback_for_blackboard"]
             )
             db.upsert_assessment(res)
+            assessments_with_texts.append((res, text))
+    extract_verified_student_cohort_concepts(assessments_with_texts)
 
 
 def parse_multipart_files(content_type: str, body: bytes) -> Tuple[Dict[str, str], List[Tuple[str, bytes]]]:
@@ -357,6 +391,27 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
 
         if path == "/api/submissions":
             self._send_json({"submissions": self.db.list_assessments()})
+            return
+
+        if path == "/api/reports/intervention":
+            all_rows = self.db.list_assessments()
+            report = generate_cohort_intervention_report(all_rows)
+            md = format_intervention_report_markdown(report)
+            self._send_json({"report": report, "markdown": md})
+            return
+
+        if path == "/api/export/report-md":
+            all_rows = self.db.list_assessments()
+            report = generate_cohort_intervention_report(all_rows)
+            md = format_intervention_report_markdown(report)
+            raw = md.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/markdown; charset=utf-8")
+            self.send_header("Content-Disposition", 'attachment; filename="USIU_Intervention_And_Recommendations_Report.md"')
+            self.send_header("Content-Length", str(len(raw)))
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(raw)
             return
 
         if path == "/api/export/csv":
@@ -541,6 +596,21 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
                 "ingested_materials": ingested_materials,
                 "knowledge_base": load_course_knowledge_base(),
                 "submissions": self.db.list_assessments()
+            })
+            return
+
+        if path == "/api/knowledge/approve-concept":
+            payload = json.loads(body.decode("utf-8") or "{}")
+            concept = payload.get("concept", "")
+            kb = approve_staged_student_concept(concept)
+            all_rows = self.db.list_assessments()
+            report = generate_cohort_intervention_report(all_rows)
+            self._send_json({
+                "status": "CONCEPT_APPROVED",
+                "approved_concept": concept,
+                "knowledge_base": kb,
+                "report": report,
+                "markdown": format_intervention_report_markdown(report)
             })
             return
 

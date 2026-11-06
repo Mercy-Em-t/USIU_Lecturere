@@ -1,0 +1,195 @@
+{
+  "generated_at": "2026-11-06T12:45:45.422881",
+  "cohort_size": 6,
+  "mean_score": 92.1,
+  "satisfactory_pass_rate_pct": 83.3,
+  "distinction_rate_pct": 83.3,
+  "intervention_alerts_count": 1,
+  "intervention_alerts": [
+    {
+      "priority": "HIGH",
+      "category": "AT_RISK_ACADEMIC_PERFORMANCE",
+      "student_id": "667890",
+      "student_name": "Brian Otieno",
+      "score": 65.3,
+      "letter_grade": "D+",
+      "trigger": "Scored 65.3/100 (D+), below USIU 70% Satisfactory C benchmark. Weakest pillars: 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth.",
+      "recommended_action": "Schedule 10-minute office hours consultation and share USIU Writing Center APA 7th guide."
+    }
+  ],
+  "pillar_diagnostics": [
+    {
+      "criterion": "1. Thesis, Problem Formulation & Core Argument",
+      "weight": 30.0,
+      "cohort_average_pct": 92.9,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
+      "weight": 30.0,
+      "cohort_average_pct": 91.4,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "3. Critical Evaluation, Methodology & Depth",
+      "weight": 25.0,
+      "cohort_average_pct": 89.9,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "4. Academic Structure, Coherence & APA 7th Style",
+      "weight": 15.0,
+      "cohort_average_pct": 95.4,
+      "status": "STRONG"
+    }
+  ],
+  "pedagogical_recommendations": [
+    {
+      "target_pillar": "Overall Cohort Mastery",
+      "cohort_average_pct": 92.1,
+      "recommendation": "Cohort demonstrated strong mastery (92.1% average). Consider introducing advanced comparative East African case study counter-arguments in the next module."
+    }
+  ],
+  "staged_student_concepts": [
+    {
+      "concept": "limitations",
+      "peer_frequency": 5,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "reduces",
+      "peer_frequency": 5,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "compared",
+      "peer_frequency": 4,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Zainab Hassan (669102)",
+        "David Kimani (669205)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "strong",
+      "peer_frequency": 4,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Zainab Hassan (669102)",
+        "David Kimani (669205)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "throughput",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "section",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "primary",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "table",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "because",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "methodologies",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "legacy",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "ledger",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    }
+  ],
+  "approved_student_concepts": [
+    "distributors",
+    "balanced"
+  ]
+}
