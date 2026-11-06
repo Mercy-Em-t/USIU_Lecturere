@@ -47,7 +47,9 @@ USIU_Lecturere/
 ├── docs/                                                      # Full System Engineering & Formal Documentation
 │   ├── 01_REQUIREMENTS_ENGINEERING_ISO_29148_SRS.md           # 10-Phase ISO/IEC/IEEE 29148 SRS (Kano, Risk, Jackson-Zave)
 │   ├── 02_SYSTEMS_ANALYSIS_AND_DESIGN_SAD.md                  # Dennis, Wixom & Roth SAD (Feasibility NPV/ROI, DFD, 3NF ERD)
-│   └── 03_PSEUDOCODE_AND_PROGRAM_SPECIFICATIONS.md            # Formal Algorithmic Pseudocode for Every Program File
+│   ├── 03_PSEUDOCODE_AND_PROGRAM_SPECIFICATIONS.md            # Formal Algorithmic Pseudocode for Every Program File
+│   ├── 04_USER_MANUAL_LECTURER_GUIDE.md                       # Step-by-Step Giant-Print Lecturer User Manual
+│   └── 05_TECHNICAL_ARCHITECTURE_AND_MAINTENANCE_MANUAL.md    # Technical Architecture, REST API, SQLite 3NF & Security Manual
 ├── tests/
 │   └── test_usiu_suite.py                                     # Automated Unit & Integration Test Suite (100% Pass)
 └── data/
