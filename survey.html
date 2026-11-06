@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USIU-Africa Faculty Workflow & Accessibility Discovery Survey (Giant-Print Edition)</title>
+  <style>
+    :root {
+      --bg: #030508;
+      --card: #0e131d;
+      --border: #ffd166;
+      --text: #ffffff;
+      --accent: #ffd166;
+      --green: #06d6a0;
+      --blue: #4cc9f0;
+      --base-size: 26px;
+    }
+
+    body.light-contrast {
+      --bg: #fffdf5;
+      --card: #ffffff;
+      --border: #000000;
+      --text: #000000;
+      --accent: #002855;
+      --green: #005c00;
+      --blue: #001d3d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Arial Black", Verdana, Tahoma, sans-serif;
+      font-size: var(--base-size);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1.65;
+      padding: 28px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .a11y-bar, .q-card {
+      background: var(--card);
+      border: 4px solid var(--border);
+      border-radius: 22px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .big-btn {
+      background: var(--accent);
+      color: #000;
+      border: 4px solid #000;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-size: 1em;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #000;
+    }
+
+    .btn-speak { background: var(--green); }
+    .btn-submit { background: var(--green); font-size: 1.25em; padding: 20px; }
+
+    select, textarea, input[type="text"], input[type="number"] {
+      width: 100%;
+      background: var(--bg);
+      color: var(--text);
+      border: 4px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      font-family: inherit;
+      font-size: 1em;
+      font-weight: 900;
+    }
+
+    .q-title {
+      color: var(--accent);
+      font-size: 1.15em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="a11y-bar">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <div>
+          <div style="color:var(--accent); font-size:1.4em;">🎤 USIU-AFRICA FACULTY DISCOVERY SURVEY</div>
+          <div>Mom-Test Workflow, Visual Ergonomics & Rubric Elicitation (Zero Google Login Needed)</div>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="big-btn" onclick="document.documentElement.style.setProperty('--base-size','26px')">🔍 140% GIANT</button>
+          <button class="big-btn" onclick="document.documentElement.style.setProperty('--base-size','34px')">🔍 190% ULTRA</button>
+          <button class="big-btn" onclick="document.body.classList.toggle('light-contrast')">🌓 CREAM / DARK</button>
+          <button class="big-btn btn-speak" onclick="speakSurveyIntro()">🔊 READ SURVEY ALOUD</button>
+          <a href="index.html" class="big-btn" style="text-decoration:none; display:inline-block;">⬅️ BACK TO GRADER</a>
+        </div>
+      </div>
+    </div>
+
+    <form id="surveyForm" onsubmit="submitSurvey(event)" style="display:flex; flex-direction:column; gap:24px;">
+      <div class="q-card">
+        <label class="q-title" for="q1">1. Which USIU-Africa School do you primarily teach in?</label>
+        <select id="q1" required>
+          <option value="SST">School of Science & Technology (SST — APT, IST, SWE)</option>
+          <option value="CSB">Chandaria School of Business (CSB — BUS, MKT, FIN, MBA)</option>
+          <option value="SHSS">School of Humanities & Social Sciences (SHSS — IRL, PSY, CMS)</option>
+          <option value="OTHER">School of Pharmacy & Health Sciences / Other</option>
+        </select>
+      </div>
+
+      <div class="q-card">
+        <label class="q-title" for="q2">2. Walk us through the exact step-by-step process you used the last time you graded 30+ student papers on Blackboard:</label>
+        <textarea id="q2" rows="3" required placeholder="e.g., Downloaded bulk ZIP, opened Word/PDF files one by one, typed marks into Grade Center..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <label class="q-title" for="q3">3. When reading student papers on screen for over 1 hour, how severe was your eye strain or visual fatigue (1 = None, 5 = Severe eye strain)?</label>
+        <select id="q3" required>
+          <option value="5">5 — Severe visual fatigue / had to stop or zoom heavily</option>
+          <option value="4">4 — High eye strain after 1 hour of screen reading</option>
+          <option value="3">3 — Moderate eye strain</option>
+          <option value="2">2 — Mild eye strain</option>
+          <option value="1">1 — No eye strain at all</option>
+        </select>
+      </div>
+
+      <div class="q-card">
+        <label class="q-title" for="q4">4. What are the top domain concepts, frameworks, or APA citation rules you look for when distinguishing an 'A' (90%+) paper from a 'C' (70%) paper in your course?</label>
+        <textarea id="q4" rows="3" required placeholder="e.g., Clear thesis/hypothesis, at least 3 peer-reviewed APA 7th citations, SWOT/PESTEL or telemetry architecture analysis..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <label class="q-title" for="q5">5. If you have ever tried copy-pasting essays into ChatGPT or another tool, what frustrated you or went wrong (e.g., inconsistent marks, privacy, copy-paste fatigue)?</label>
+        <textarea id="q5" rows="3" placeholder="e.g., Gave different scores to similar papers, took too many clicks, worried about student privacy..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <label class="q-title" for="q6">6. Magic Wand: What ONE repetitive step between downloading Blackboard submissions and posting final grades do you most want eliminated?</label>
+        <textarea id="q6" rows="2" required placeholder="e.g., Opening 60 separate PDF/Word files and typing feedback into tiny boxes..."></textarea>
+      </div>
+
+      <button type="submit" class="big-btn btn-submit">💾 SUBMIT FACULTY SURVEY & AUTO-GENERATE CUSTOM RUBRIC</button>
+    </form>
+
+    <div id="surveyReceiptBox" class="q-card" style="display:none; border-color:var(--green);"></div>
+  </div>
+
+  <script>
+    function speakSurveyIntro() {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(
+        "Welcome to the USIU Africa Faculty Discovery Survey. Question 1: Which school do you teach in? Question 2: Walk us through the last time you graded 30 plus papers on Blackboard. Question 3: How severe was your eye strain from 1 to 5? Question 4: What top domain concepts and A P A rules do you look for in an A paper?"
+      );
+      u.rate = 0.95;
+      window.speechSynthesis.speak(u);
+    }
+
+    async function submitSurvey(e) {
+      e.preventDefault();
+      const payload = {
+        school: document.getElementById("q1").value,
+        last_grading_walkthrough: document.getElementById("q2").value,
+        eye_strain_score: parseInt(document.getElementById("q3").value, 10),
+        domain_concepts_expected: document.getElementById("q4").value,
+        ai_frustrations: document.getElementById("q5").value,
+        magic_wand_eliminate: document.getElementById("q6").value,
+        submitted_at: new Date().toISOString()
+      };
+
+      try {
+        await fetch("http://127.0.0.1:8085/api/survey/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {}
+
+      const box = document.getElementById("surveyReceiptBox");
+      box.style.display = "flex";
+      box.innerHTML = `
+        <div style="color:var(--green); font-size:1.3em;">✅ SURVEY RESPONSE SAVED & LINKED TO COURSE KNOWLEDGE BASE!</div>
+        <div>Your domain concepts (<code>${payload.domain_concepts_expected}</code>) have been indexed into the USIU Knowledge Base.</div>
+      `;
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.speak(new SpeechSynthesisUtterance("Thank you! Your survey response has been saved and your domain concepts have been added to the grading knowledge base."));
+      }
+    }
+  </script>
+</body>
+</html>

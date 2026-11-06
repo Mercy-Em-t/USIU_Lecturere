@@ -318,6 +318,17 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(raw)
             return
 
+        if path in {"/survey", "/survey.html"}:
+            survey_file = ROOT_DIR / "survey.html"
+            raw = survey_file.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(raw)))
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(raw)
+            return
+
         if path == "/api/health":
             self._send_json({
                 "status": "ONLINE",
@@ -466,6 +477,30 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
                 json.dumps(all_rows, indent=2), encoding="utf-8"
             )
             self._send_json({"status": "UPDATED", "assessment": updated, "submissions": all_rows})
+            return
+
+        if path == "/api/survey/submit":
+            payload = json.loads(body.decode("utf-8") or "{}")
+            survey_out = DATA_DIR / "outputs" / "USIU_Faculty_Discovery_Survey_Responses.json"
+            existing_responses = []
+            if survey_out.exists():
+                try:
+                    existing_responses = json.loads(survey_out.read_text(encoding="utf-8"))
+                except Exception:
+                    existing_responses = []
+            existing_responses.append(payload)
+            survey_out.write_text(json.dumps(existing_responses, indent=2), encoding="utf-8")
+
+            # Also feed the lecturer's expected domain concepts directly into the Course Knowledge Base!
+            concepts_text = payload.get("domain_concepts_expected", "")
+            school_code = payload.get("school", "USIU")
+            if concepts_text and len(concepts_text.strip()) > 5:
+                ingest_course_material_document(
+                    title=f"Faculty Survey Elicited Concepts ({school_code})",
+                    course_code=school_code,
+                    text=concepts_text,
+                )
+            self._send_json({"status": "SURVEY_SAVED", "total_responses": len(existing_responses)})
             return
 
         if path == "/api/knowledge/ingest":

@@ -1,0 +1,41 @@
+name: USIU Accessible Grader CI (Python 3 & Java 21)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  verify-suite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up OpenJDK 21 LTS
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Run Python Unit & Integration Test Suite (8 Tests)
+        run: python tests/test_usiu_suite.py
+
+      - name: Run CLI Batch Grader Across TXT, DOCX, and PDF Submissions
+        run: |
+          python src/usiu_blackboard_grader.py \
+            --submissions-dir data/sample_submissions \
+            --out-csv data/outputs/USIU_Blackboard_GradeCenter_Upload.csv \
+            --out-json data/outputs/USIU_Grading_Audit_Report.json
+
+      - name: Compile and Verify Enterprise Java 21 Grading Engine
+        run: |
+          javac src/USIULecturerServer.java
+          java -cp src USIULecturerServer --cli-test
