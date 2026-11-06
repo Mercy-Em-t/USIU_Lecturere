@@ -1,0 +1,8 @@
+Introduction
+This assignment looks at supply chains and why companies need better software. The purpose is to show that computers help stores keep track of items.
+
+Main Discussion
+Many shops in Nairobi lose money when they run out of stock. If they use better strategy and technology, they can order items faster. However, software can be expensive for small businesses.
+
+Conclusion
+In summary, companies should adopt modern software to improve their daily operations.

@@ -1,0 +1,11 @@
+Introduction and Problem Statement
+The primary objective of this study is to examine mobile money interoperability and enterprise resource planning (ERP) adoption among medium-sized retail enterprises in Nairobi, Kenya. Our thesis argues that integrating M-Pesa API webhooks with cloud inventory databases reduces reconciliation errors by 35%.
+
+Empirical Literature Review
+According to Ndung'u et al. (2023), digital payment trails provide verifiable audit data for East African SMEs. A comparative study by Mwangi and Mutua (2022) further demonstrates that real-time ledger synchronization improves working capital liquidity. Table 2 illustrates these empirical findings across 45 surveyed firms in Roysambu and Westlands.
+
+Methodology and Critical Analysis
+However, our analysis reveals significant implementation limitations when legacy point-of-sale terminals lack stable API gateways. Therefore, we evaluate both hybrid edge-caching methodologies and cloud-native architectures because network latency impacts checkout throughput.
+
+Conclusion and Recommendations
+In conclusion, section findings confirm that automated API reconciliation strengthens financial governance. References: Mwangi & Mutua (2022), Ndung'u et al. (2023).

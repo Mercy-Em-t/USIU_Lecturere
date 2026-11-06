@@ -1,0 +1,64 @@
+{
+  "rubrics": {
+    "standard_research_paper": {
+      "title": "USIU-Africa Standardized Research & Term Paper Rubric",
+      "total_points": 100,
+      "criteria": [
+        {
+          "id": "thesis_clarity",
+          "name": "1. Thesis, Problem Formulation & Core Argument",
+          "weight": 30,
+          "keywords": ["objective", "hypothesis", "problem", "thesis", "purpose", "framework", "strategy", "research", "aim"]
+        },
+        {
+          "id": "evidence_citations",
+          "name": "2. Empirical Evidence, Literature & APA 7th Citations",
+          "weight": 30,
+          "keywords": ["study", "data", "evidence", "according", "et al", "202", "199", "table", "findings", "source", "reference"]
+        },
+        {
+          "id": "critical_analysis",
+          "name": "3. Critical Evaluation, Methodology & Depth",
+          "weight": 25,
+          "keywords": ["however", "analysis", "methodology", "compared", "implication", "limitation", "evaluate", "impact", "because", "therefore"]
+        },
+        {
+          "id": "academic_structure",
+          "name": "4. Academic Structure, Coherence & APA 7th Style",
+          "weight": 15,
+          "keywords": ["introduction", "conclusion", "references", "section", "summary", "recommendations"]
+        }
+      ]
+    },
+    "csb_business_case_study": {
+      "title": "Chandaria School of Business (CSB) Case Study Rubric",
+      "total_points": 100,
+      "criteria": [
+        {
+          "id": "strategic_diagnosis",
+          "name": "1. Strategic Problem Diagnosis & Context",
+          "weight": 25,
+          "keywords": ["market", "competitive", "problem", "challenge", "stakeholder", "industry", "kenya", "africa"]
+        },
+        {
+          "id": "analytical_frameworks",
+          "name": "2. Application of SWOT / PESTEL / Porter's 5 Forces",
+          "weight": 30,
+          "keywords": ["swot", "pestel", "porter", "strength", "weakness", "opportunity", "threat", "value chain", "strategy"]
+        },
+        {
+          "id": "financial_operational_evidence",
+          "name": "3. Financial & Operational Data Justification",
+          "weight": 25,
+          "keywords": ["revenue", "cost", "margin", "roi", "growth", "percent", "kes", "usd", "table", "data"]
+        },
+        {
+          "id": "action_plan",
+          "name": "4. Actionable Recommendations & Implementation Roadmap",
+          "weight": 20,
+          "keywords": ["recommend", "implementation", "timeline", "risk", "mitigation", "conclusion"]
+        }
+      ]
+    }
+  }
+}

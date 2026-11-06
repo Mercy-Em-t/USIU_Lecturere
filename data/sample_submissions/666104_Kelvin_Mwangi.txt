@@ -1,0 +1,11 @@
+Introduction
+This research paper investigates cybersecurity governance and zero-trust authentication in Kenyan higher education portals. The purpose and framework of this paper focus on preventing unauthorized credential sharing.
+
+Literature & Data Evidence
+Recent findings by Otieno (2024) indicate that multi-factor authentication reduces unauthorized portal access by 78%. Source data from the Kenya Cyber Security Report (2023) highlights the importance of role-based access control.
+
+Analysis
+When compared to static passwords, zero-trust session tokens evaluate device posture continuously. However, usability limitations must be balanced for visually impaired faculty and students.
+
+Conclusion & Summary
+In summary, zero-trust recommendations should pair strong security with accessible single-tap authentication. References: Otieno (2024).

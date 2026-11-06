@@ -1,0 +1,40 @@
+{
+  "institution": "United States International University - Africa (USIU-Africa)",
+  "location": "Nairobi, Kenya",
+  "lms_platform": {
+    "name": "USIU-Africa Blackboard Learn",
+    "base_url": "https://blackboard.usiu.ac.ke",
+    "verified_version": "4001.4.0 (rel.58+b22e012)"
+  },
+  "schools": [
+    {
+      "code": "CSB",
+      "name": "Chandaria School of Business",
+      "sample_courses": ["BUS4010 - Strategic Management", "MKT3010 - Consumer Behavior", "FIN2010 - Corporate Finance"]
+    },
+    {
+      "code": "SST",
+      "name": "School of Science and Technology",
+      "sample_courses": ["APT3040 - Enterprise Systems & Telemetry", "IST4035 - Advanced Database Systems", "SWE3020 - Software Engineering"]
+    },
+    {
+      "code": "SHSS",
+      "name": "School of Humanities and Social Sciences",
+      "sample_courses": ["IRL3020 - International Relations Research", "PSY3010 - Cognitive Psychology"]
+    }
+  ],
+  "undergraduate_grading_scale": [
+    { "min": 90, "max": 100, "letter": "A",  "gpa": 4.0, "standing": "Distinction — Exceptional mastery of course concepts" },
+    { "min": 87, "max": 89,  "letter": "A-", "gpa": 3.7, "standing": "Excellent — Strong analytical depth and empirical evidence" },
+    { "min": 84, "max": 86,  "letter": "B+", "gpa": 3.3, "standing": "Very Good — Well-structured argument with minor gaps" },
+    { "min": 80, "max": 83,  "letter": "B",  "gpa": 3.0, "standing": "Good — Solid understanding and competent execution" },
+    { "min": 77, "max": 79,  "letter": "B-", "gpa": 2.7, "standing": "Above Average — Clear effort but needs deeper synthesis" },
+    { "min": 74, "max": 76,  "letter": "C+", "gpa": 2.3, "standing": "Satisfactory Plus — Meets core academic criteria" },
+    { "min": 70, "max": 73,  "letter": "C",  "gpa": 2.0, "standing": "Satisfactory — Acceptable baseline work" },
+    { "min": 67, "max": 69,  "letter": "C-", "gpa": 1.7, "standing": "Marginal Pass — Weak citation or structural issues" },
+    { "min": 64, "max": 66,  "letter": "D+", "gpa": 1.3, "standing": "Below Average — Incomplete analysis" },
+    { "min": 62, "max": 63,  "letter": "D",  "gpa": 1.0, "standing": "Minimum Pass — Significant conceptual gaps" },
+    { "min": 60, "max": 61,  "letter": "D-", "gpa": 0.7, "standing": "Low Pass — Barely meets minimum submission threshold" },
+    { "min": 0,  "max": 59,  "letter": "F",  "gpa": 0.0, "standing": "Fail — Does not meet USIU-Africa academic standards" }
+  ]
+}

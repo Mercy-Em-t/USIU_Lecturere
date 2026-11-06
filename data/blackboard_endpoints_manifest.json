@@ -1,0 +1,48 @@
+{
+  "target_host": "https://blackboard.usiu.ac.ke",
+  "verified_live_response": {
+    "http_status": 200,
+    "learn": {
+      "major": 4001,
+      "minor": 4,
+      "patch": 0,
+      "build": "rel.58+b22e012"
+    }
+  },
+  "endpoints": {
+    "system_version": {
+      "method": "GET",
+      "path": "/learn/api/public/v1/system/version",
+      "auth": "Public"
+    },
+    "instructor_courses": {
+      "method": "GET",
+      "path": "/learn/api/public/v1/users/me/courses?expand=course",
+      "auth": "Browser Session Cookie or Bearer Token"
+    },
+    "gradebook_columns": {
+      "method": "GET",
+      "path": "/learn/api/public/v2/courses/{courseId}/gradebook/columns",
+      "auth": "Browser Session Cookie or Bearer Token"
+    },
+    "assignment_attempts": {
+      "method": "GET",
+      "path": "/learn/api/public/v2/courses/{courseId}/gradebook/columns/{columnId}/attempts",
+      "auth": "Browser Session Cookie or Bearer Token"
+    },
+    "download_submission_file": {
+      "method": "GET",
+      "path": "/learn/api/public/v1/courses/{courseId}/gradebook/columns/{columnId}/attempts/{attemptId}/files/{fileId}/download",
+      "auth": "Browser Session Cookie or Bearer Token"
+    },
+    "post_student_grade": {
+      "method": "PATCH",
+      "path": "/learn/api/public/v2/courses/{courseId}/gradebook/columns/{columnId}/users/{userId}",
+      "payload_schema": {
+        "score": "number (0-100)",
+        "text": "string (Rubric feedback visible to student)",
+        "feedback": "string (Instructor grading notes)"
+      }
+    }
+  }
+}
