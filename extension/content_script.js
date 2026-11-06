@@ -37,19 +37,22 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 460px;
-    max-height: 88vh;
+    width: 540px;
+    max-width: 95vw;
+    max-height: 90vh;
     overflow-y: auto;
-    background: #05070b;
+    background: #030508;
     color: #ffffff;
-    border: 4px solid #ffd166;
-    border-radius: 18px;
-    padding: 18px;
+    border: 5px solid #ffd166;
+    border-radius: 22px;
+    padding: 22px;
     z-index: 2147483647;
-    font-family: Verdana, Tahoma, sans-serif;
-    font-size: 17px;
-    line-height: 1.5;
-    box-shadow: 0 12px 36px rgba(0,0,0,0.9);
+    font-family: "Arial Black", Verdana, Tahoma, sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.95);
   `;
 
   drawer.innerHTML = `

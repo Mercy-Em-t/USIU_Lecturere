@@ -6,15 +6,16 @@
   <title>USIU-Africa Accessible Lecturer Assessment & Blackboard Grader v2.0</title>
   <style>
     :root {
-      --bg: #05070b;
-      --card: #101520;
+      --bg: #030508;
+      --card: #0e131d;
       --border: #ffd166;
       --text: #ffffff;
       --accent: #ffd166;
       --green: #06d6a0;
       --blue: #4cc9f0;
       --danger: #ff6b6b;
-      --base-size: 20px;
+      /* Default straight into Giant Bold Low-Vision Typography (26px) */
+      --base-size: 26px;
     }
 
     body.light-contrast {
@@ -22,8 +23,8 @@
       --card: #ffffff;
       --border: #000000;
       --text: #000000;
-      --accent: #003566;
-      --green: #006400;
+      --accent: #002855;
+      --green: #005c00;
       --blue: #001d3d;
       --danger: #9b0000;
     }
@@ -33,60 +34,65 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: Verdana, Tahoma, "Segoe UI", sans-serif;
+      font-family: "Arial Black", Verdana, Tahoma, "Segoe UI", sans-serif;
       font-size: var(--base-size);
-      line-height: 1.6;
-      padding: 24px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      line-height: 1.65;
+      padding: 28px;
     }
 
     .container {
-      max-width: 1240px;
+      max-width: 1380px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
     }
 
     /* LOW-VISION ACCESSIBILITY BAR */
     .a11y-bar {
       background: var(--card);
-      border: 3px solid var(--border);
-      border-radius: 18px;
-      padding: 18px 24px;
+      border: 4px solid var(--border);
+      border-radius: 22px;
+      padding: 22px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 20px;
     }
 
     .a11y-title {
-      font-size: 1.35em;
+      font-size: 1.5em;
       font-weight: 900;
       color: var(--accent);
+      letter-spacing: 0.03em;
     }
 
     .a11y-controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
     }
 
     .big-btn {
       background: var(--accent);
       color: #000;
-      border: 3px solid #000;
-      padding: 12px 20px;
-      border-radius: 14px;
-      font-size: 0.95em;
+      border: 4px solid #000;
+      padding: 16px 26px;
+      border-radius: 16px;
+      font-size: 1.05em;
       font-weight: 900;
+      letter-spacing: 0.02em;
       cursor: pointer;
       transition: transform 0.12s ease;
+      box-shadow: 0 4px 0 #000;
     }
 
     .big-btn:hover { transform: scale(1.03); }
     .big-btn:active { transform: scale(0.98); }
-    .big-btn:focus-visible { outline: 4px dashed var(--green); outline-offset: 4px; }
+    .big-btn:focus-visible { outline: 5px dashed var(--green); outline-offset: 5px; }
 
     .btn-speak { background: var(--green); color: #000; }
     .btn-post { background: var(--blue); color: #000; }
@@ -94,83 +100,87 @@
     /* SHORTCUTS PILL BAR */
     .shortcuts-bar {
       background: var(--card);
-      border: 2px dashed var(--border);
-      border-radius: 14px;
-      padding: 10px 18px;
-      font-size: 0.85em;
+      border: 3px dashed var(--border);
+      border-radius: 16px;
+      padding: 14px 22px;
+      font-size: 0.95em;
+      font-weight: 900;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
 
     .kbd {
       background: var(--accent);
       color: #000;
-      padding: 2px 8px;
-      border-radius: 6px;
+      border: 2px solid #000;
+      padding: 4px 12px;
+      border-radius: 8px;
       font-weight: 900;
     }
 
     /* DRAG AND DROP ZONE */
     .drop-zone {
       background: var(--card);
-      border: 4px dashed var(--green);
-      border-radius: 20px;
-      padding: 28px;
+      border: 5px dashed var(--green);
+      border-radius: 24px;
+      padding: 34px;
       text-align: center;
       cursor: pointer;
       transition: background 0.15s ease, transform 0.12s ease;
     }
 
     .drop-zone.dragover {
-      background: rgba(6, 214, 160, 0.18);
+      background: rgba(6, 214, 160, 0.22);
       transform: scale(1.01);
     }
 
     .drop-zone-title {
-      font-size: 1.3em;
+      font-size: 1.45em;
       font-weight: 900;
       color: var(--green);
-      margin-bottom: 6px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
     }
 
     /* 3-STEP WORKFLOW GRID */
     .workflow-steps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: 22px;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1100px) {
       .workflow-steps { grid-template-columns: 1fr; }
     }
 
     .step-card {
       background: var(--card);
-      border: 3px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
+      border: 4px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .step-num {
-      font-size: 1.15em;
+      font-size: 1.25em;
       font-weight: 900;
       color: var(--accent);
+      text-transform: uppercase;
     }
 
     /* STUDENT ASSESSMENT DISPLAY */
     .student-card {
       background: var(--card);
-      border: 4px solid var(--green);
-      border-radius: 20px;
-      padding: 26px;
+      border: 5px solid var(--green);
+      border-radius: 24px;
+      padding: 32px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 22px;
     }
 
     .grade-banner {
@@ -178,68 +188,79 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
-      border-bottom: 3px solid var(--border);
-      padding-bottom: 16px;
+      gap: 20px;
+      border-bottom: 4px solid var(--border);
+      padding-bottom: 20px;
     }
 
     .grade-pill {
       background: var(--green);
       color: #000;
-      font-size: 1.55em;
+      font-size: 1.75em;
       font-weight: 900;
-      padding: 10px 24px;
-      border-radius: 16px;
-      border: 3px solid #000;
+      padding: 14px 30px;
+      border-radius: 20px;
+      border: 4px solid #000;
     }
 
     .criterion-row {
-      background: rgba(255, 255, 255, 0.05);
-      border-left: 6px solid var(--accent);
-      padding: 16px 20px;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 2px solid rgba(255, 209, 102, 0.4);
+      border-left: 10px solid var(--accent);
+      padding: 20px 24px;
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
+      font-weight: 800;
     }
 
     body.light-contrast .criterion-row {
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(0, 0, 0, 0.06);
+      border: 2px solid #000;
+      border-left: 10px solid var(--accent);
     }
 
     .slider-wrap {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-top: 4px;
+      gap: 16px;
+      margin-top: 6px;
+      flex-wrap: wrap;
     }
 
     input[type="range"] {
       flex: 1;
-      height: 24px;
+      min-width: 220px;
+      height: 34px;
       accent-color: var(--green);
       cursor: pointer;
     }
 
-    input, select, textarea {
+    input, select, textarea, label {
       width: 100%;
+      font-family: inherit;
+      font-size: 1.05em;
+      font-weight: 900;
+    }
+
+    input, select, textarea {
       background: var(--bg);
       color: var(--text);
-      border: 3px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 1em;
-      font-weight: 700;
+      border: 4px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
     }
 
     .status-badge {
       display: inline-block;
-      padding: 4px 12px;
-      border-radius: 8px;
+      padding: 6px 14px;
+      border-radius: 10px;
       font-weight: 900;
-      font-size: 0.8em;
+      font-size: 0.9em;
       background: var(--accent);
       color: #000;
+      border: 2px solid #000;
     }
   </style>
 </head>
@@ -255,12 +276,13 @@
         </div>
       </div>
       <div class="a11y-controls">
-        <button class="big-btn" onclick="setZoom(20)" title="Standard 100% Text">🔍 100%</button>
-        <button class="big-btn" onclick="setZoom(25)" title="Large 135% Text">🔍 135% Large</button>
-        <button class="big-btn" onclick="setZoom(30)" title="Giant 175% Text">🔍 175% Giant</button>
-        <button class="big-btn" onclick="toggleContrast()">🌓 High-Contrast Cream/Dark</button>
+        <button class="big-btn" onclick="setZoom(22)" title="Large 110% Text">🔍 110% BOLD</button>
+        <button class="big-btn" onclick="setZoom(26)" title="Default Giant 140% Text">🔍 140% GIANT</button>
+        <button class="big-btn" onclick="setZoom(32)" title="Extra Giant 175% Text">🔍 175% EXTRA</button>
+        <button class="big-btn" onclick="setZoom(38)" title="Ultra Giant 220% Poster Text">🔍 220% ULTRA</button>
+        <button class="big-btn" onclick="toggleContrast()">🌓 CREAM / DARK</button>
         <button class="big-btn btn-speak" onclick="speakCurrentStudent()">🔊 READ GRADE ALOUD</button>
-        <button class="big-btn" onclick="stopSpeech()">⏹️ Stop Audio</button>
+        <button class="big-btn" onclick="stopSpeech()">⏹️ STOP AUDIO</button>
       </div>
     </div>
 
@@ -422,8 +444,8 @@
   <script>
     const API_BASE = "http://127.0.0.1:8085";
     let backendOnline = false;
-    let zoomIndex = 0;
-    const zoomLevels = [20, 25, 30];
+    let zoomIndex = 1;
+    const zoomLevels = [22, 26, 32, 38];
 
     const USIU_SCALE = [
       { min: 90, letter: "A",  gpa: "4.0", standing: "Distinction — Exceptional mastery of course concepts" },
@@ -663,32 +685,33 @@
       card.innerHTML = `
         <div class="grade-banner">
           <div>
-            <div style="font-size:1.4em; font-weight:900;">👤 ${s.student_name} (USIU ID: ${s.student_id})</div>
-            <div style="color:var(--accent); font-weight:700;">${s.standing}</div>
-            <div style="font-size:0.85em; opacity:0.85; margin-top:4px;">
+            <div style="font-size:1.5em; font-weight:900;">👤 ${s.student_name} (USIU ID: ${s.student_id})</div>
+            <div style="color:var(--accent); font-weight:900; font-size:1.15em; margin-top:4px;">${s.standing}</div>
+            <div style="font-size:1em; font-weight:900; margin-top:8px;">
               📄 File: <code>${s.source_filename || "Direct Input"}</code> •
               📝 Words: <strong>${s.word_count || "N/A"}</strong> •
               📚 APA Citations: <strong>${s.citations_detected ?? "N/A"}</strong>
-              ${s.overridden_by_lecturer ? " • ✍️ <strong>Lecturer Adjusted</strong>" : ""}
+              ${s.overridden_by_lecturer ? " • ✍️ <strong>LECTURER ADJUSTED</strong>" : ""}
             </div>
           </div>
           <div class="grade-pill" id="liveGradePill">${s.total_score} / 100 (${s.letter_grade} • GPA ${s.gpa_points})</div>
         </div>
 
-        <div style="font-weight:900; color:var(--accent); font-size:1.15em;">
-          Locked Rubric Breakdown (Interactive Low-Vision Sliders — Adjust Any Criterion):
+        <div style="font-weight:900; color:var(--accent); font-size:1.25em;">
+          LOCKED RUBRIC BREAKDOWN — SLIDE OR CLICK +/- TO ADJUST POINTS:
         </div>
 
         ${s.criteria_breakdown.map((c, cIdx) => `
           <div class="criterion-row">
-            <div style="display:flex; justify-content:space-between; font-weight:900; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; justify-content:space-between; font-weight:900; font-size:1.15em; flex-wrap:wrap; gap:10px;">
               <span>${c.criterion}</span>
-              <span style="color:var(--green);" id="critLabel_${cIdx}">${c.earned} / ${c.weight} pts</span>
+              <span style="color:var(--green); font-size:1.2em;" id="critLabel_${cIdx}">${c.earned} / ${c.weight} PTS</span>
             </div>
             <div class="slider-wrap">
-              <span style="font-size:0.85em;">0</span>
+              <button class="big-btn" style="padding:10px 18px;" onclick="stepCriterionScore(${idx}, ${cIdx}, -1)" title="Subtract 1 Point">➖ 1 PT</button>
               <input
                 type="range"
+                id="critSlider_${cIdx}"
                 min="0"
                 max="${c.weight}"
                 step="0.5"
@@ -696,18 +719,33 @@
                 aria-label="Score for ${c.criterion}"
                 oninput="onCriterionSliderChange(${idx}, ${cIdx}, this.value)"
               />
-              <span style="font-size:0.85em;">${c.weight} pts</span>
-              <button class="big-btn" style="padding:6px 12px; font-size:0.8em;" onclick="speakSingleCriterion(${cIdx})">🔊 Hear #${cIdx + 1}</button>
+              <button class="big-btn" style="padding:10px 18px;" onclick="stepCriterionScore(${idx}, ${cIdx}, 1)" title="Add 1 Point">➕ 1 PT</button>
+              <button class="big-btn btn-speak" style="padding:10px 18px;" onclick="speakSingleCriterion(${cIdx})">🔊 HEAR #${cIdx + 1}</button>
             </div>
-            <div style="margin-top:4px; opacity:0.92;"><em>Verbatim Student Quote:</em> "${c.evidence_quote}"</div>
+            <div style="margin-top:6px; font-size:1.05em; font-weight:900; color:var(--text);">
+              <span style="color:var(--accent);">STUDENT EVIDENCE QUOTE:</span> "${c.evidence_quote}"
+            </div>
           </div>
         `).join("")}
 
-        <div style="margin-top:8px;">
-          <label for="feedbackBox" style="font-weight:900; color:var(--accent);">Constructive Feedback to Post on USIU Blackboard (Editable):</label>
-          <textarea id="feedbackBox" rows="3" onchange="onFeedbackEdited(${idx}, this.value)">${s.feedback_for_blackboard}</textarea>
+        <div style="margin-top:12px;">
+          <label for="feedbackBox" style="font-weight:900; color:var(--accent); font-size:1.2em; display:block; margin-bottom:8px;">
+            ✍️ CONSTRUCTIVE FEEDBACK TO POST ON USIU BLACKBOARD (EDITABLE):
+          </label>
+          <textarea id="feedbackBox" rows="4" style="font-size:1.1em; font-weight:900; line-height:1.6;" onchange="onFeedbackEdited(${idx}, this.value)">${s.feedback_for_blackboard}</textarea>
         </div>
       `;
+    }
+
+    function stepCriterionScore(studentIdx, critIdx, delta) {
+      const s = submissions[studentIdx];
+      if (!s || !s.criteria_breakdown[critIdx]) return;
+      const c = s.criteria_breakdown[critIdx];
+      const nextVal = Math.max(0, Math.min(c.weight, Math.round((Number(c.earned) + delta) * 2) / 2));
+      const slider = document.getElementById(`critSlider_${critIdx}`);
+      if (slider) slider.value = String(nextVal);
+      onCriterionSliderChange(studentIdx, critIdx, nextVal);
+      speakText(`${c.criterion}: ${nextVal} out of ${c.weight} points. Total score now ${s.total_score}, Grade ${s.letter_grade}.`);
     }
 
     async function onCriterionSliderChange(studentIdx, critIdx, newValue) {
