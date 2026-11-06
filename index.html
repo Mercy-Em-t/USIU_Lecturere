@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>USIU-Africa Accessible Lecturer Assessment & Blackboard Grader v2.0</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     :root {
       --bg: #05070b;
@@ -683,23 +682,60 @@
       }
     }
 
-    async function extractBrowserFileText(file) {
-      const name = file.name.toLowerCase();
-      if (name.endsWith(".docx") && window.JSZip) {
-        const zip = await JSZip.loadAsync(file);
-        if (zip.file("word/document.xml")) {
-          const xml = await zip.file("word/document.xml").async("string");
+    // Zero-External-CDN Native Browser ZIP & DOCX Reader (Uses built-in Web DecompressionStream)
+    async function unpackNativeZipEntries(arrayBuffer) {
+      const view = new DataView(arrayBuffer);
+      const bytes = new Uint8Array(arrayBuffer);
+      const entries = [];
+      let offset = 0;
+      while (offset + 30 <= bytes.length) {
+        const sig = view.getUint32(offset, true);
+        if (sig !== 0x04034b50) break; // Local file header signature
+        const compression = view.getUint16(offset + 8, true);
+        const compSize = view.getUint32(offset + 18, true);
+        const nameLen = view.getUint16(offset + 26, true);
+        const extraLen = view.getUint16(offset + 28, true);
+        const nameBytes = bytes.slice(offset + 30, offset + 30 + nameLen);
+        const filename = new TextDecoder("utf-8").decode(nameBytes);
+        const dataStart = offset + 30 + nameLen + extraLen;
+        const rawSlice = bytes.slice(dataStart, dataStart + compSize);
+        offset = dataStart + compSize;
+
+        if (!filename.endsWith("/")) {
+          let contentBytes = rawSlice;
+          if (compression === 8 && "DecompressionStream" in window) {
+            try {
+              const ds = new DecompressionStream("deflate-raw");
+              const writer = ds.writable.getWriter();
+              writer.write(rawSlice);
+              writer.close();
+              const resp = new Response(ds.readable);
+              contentBytes = new Uint8Array(await resp.arrayBuffer());
+            } catch (_) {}
+          }
+          entries.push({ filename, contentBytes });
+        }
+      }
+      return entries;
+    }
+
+    async function extractBrowserBytesText(filename, uint8Bytes) {
+      const name = filename.toLowerCase();
+      if (name.endsWith(".docx")) {
+        const inner = await unpackNativeZipEntries(uint8Bytes.buffer.slice(uint8Bytes.byteOffset, uint8Bytes.byteOffset + uint8Bytes.byteLength));
+        const docXml = inner.find(e => e.filename === "word/document.xml");
+        if (docXml) {
+          const xml = new TextDecoder("utf-8").decode(docXml.contentBytes);
           return xml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
         }
       }
       if (name.endsWith(".pdf")) {
-        const buf = await file.arrayBuffer();
-        const latin = new TextDecoder("iso-8859-1").decode(buf);
+        const latin = new TextDecoder("iso-8859-1").decode(uint8Bytes);
         const matches = latin.match(/\(([^()\\]{3,})\)/g) || [];
         const cleaned = matches.map(m => m.slice(1, -1)).filter(t => /[A-Za-z]{2,}/.test(t)).join(" ");
         if (cleaned.length > 20) return cleaned;
       }
-      return await file.text();
+      return new TextDecoder("utf-8").decode(uint8Bytes);
     }
 
     async function handleSelectedFiles(fileList) {
@@ -726,18 +762,17 @@
         } catch (_) {}
       }
 
-      // Client-side fallback ingestion (.txt, .md, .docx, .pdf, .zip)
+      // 100% Zero-CDN Offline Client-Side Fallback Ingestion (.txt, .md, .docx, .pdf, .zip)
       for (const file of fileList) {
         const lower = file.name.toLowerCase();
-        if (lower.endsWith(".zip") && window.JSZip) {
-          const z = await JSZip.loadAsync(file);
-          for (const [relPath, entry] of Object.entries(z.files)) {
-            if (entry.dir || relPath.startsWith("__MACOSX") || relPath.includes("/.")) continue;
-            const baseName = relPath.split("/").pop();
+        const buf = await file.arrayBuffer();
+        if (lower.endsWith(".zip")) {
+          const entries = await unpackNativeZipEntries(buf);
+          for (const entry of entries) {
+            if (entry.filename.startsWith("__MACOSX") || entry.filename.includes("/.")) continue;
+            const baseName = entry.filename.split("/").pop();
             if (!/\.(txt|md|docx|pdf)$/i.test(baseName)) continue;
-            const blob = await entry.async("blob");
-            blob.name = baseName;
-            const text = await extractBrowserFileText(blob);
+            const text = await extractBrowserBytesText(baseName, entry.contentBytes);
             if (text && text.trim().length >= 10) {
               const idInfo = parseFilenameIdentity(baseName);
               const assessed = evaluateSubmissionClientSide(idInfo.id, idInfo.name, text, rubricId, baseName);
@@ -747,7 +782,7 @@
             }
           }
         } else {
-          const text = await extractBrowserFileText(file);
+          const text = await extractBrowserBytesText(file.name, new Uint8Array(buf));
           const idInfo = parseFilenameIdentity(file.name);
           const assessed = evaluateSubmissionClientSide(idInfo.id, idInfo.name, text, rubricId, file.name);
           const existingIdx = submissions.findIndex(x => x.student_id === assessed.student_id);

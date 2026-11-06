@@ -272,9 +272,19 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
     db: USIUGradingDatabase = None  # Set at server init
 
     def _send_cors_headers(self):
-        self.send_header("Access-Control-Allow-Origin", "*")
+        origin = self.headers.get("Origin", "")
+        allowed_origins = {
+            "https://blackboard.usiu.ac.ke",
+            "http://127.0.0.1:8085",
+            "http://localhost:8085",
+            "null",  # For local file:// index.html usage
+        }
+        if origin in allowed_origins or origin.startswith("chrome-extension://"):
+            self.send_header("Access-Control-Allow-Origin", origin)
+        else:
+            self.send_header("Access-Control-Allow-Origin", "http://127.0.0.1:8085")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
     def _send_json(self, payload: Any, status: int = 200):
         raw = json.dumps(payload, indent=2).encode("utf-8")
