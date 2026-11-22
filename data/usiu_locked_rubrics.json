@@ -306,6 +306,249 @@
           ]
         }
       ]
+    },
+    "apt2030_digital_electronics": {
+      "id": "apt2030_digital_electronics",
+      "title": "APT2030A_FS2026 \u2014 Digital Electronics Lab & Written Rubric (Prof. Gerald Chege)",
+      "school": "USIU-Africa Faculty Custom",
+      "course_code": "APT2030A_FS2026",
+      "assignment_prompt": "Boolean Algebra, 4-Variable Karnaugh Maps (K-Maps), CMOS Pull-Up/Pull-Down Transistor Networks, IEEE-754 Floating Point, Decoders & Multiplexers in Digital Works 3.04.",
+      "min_words": 150,
+      "expected_citations": 1,
+      "total_points": 100,
+      "criteria": [
+        {
+          "id": "boolean_kmap_derivation",
+          "name": "1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification",
+          "weight": 30.0,
+          "keywords": [
+            "boolean",
+            "minterm",
+            "truth table",
+            "k-map",
+            "karnaugh",
+            "simplified",
+            "expression",
+            "complement",
+            "sum of products",
+            "sop",
+            "nand",
+            "inverter",
+            "or gate"
+          ]
+        },
+        {
+          "id": "cmos_ieee754_architecture",
+          "name": "2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis",
+          "weight": 30.0,
+          "keywords": [
+            "decoder",
+            "multiplexer",
+            "enable",
+            "active-low",
+            "combinational",
+            "cmos",
+            "pmos",
+            "nmos",
+            "ieee-754",
+            "exponent",
+            "significand",
+            "select",
+            "output"
+          ]
+        },
+        {
+          "id": "digital_works_simulation",
+          "name": "3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification",
+          "weight": 25.0,
+          "keywords": [
+            "digital works",
+            "state",
+            "led",
+            "simulation",
+            "circuit",
+            "figure",
+            "input",
+            "verified",
+            "schematic",
+            "active",
+            "disabled"
+          ]
+        },
+        {
+          "id": "lab_integrity_documentation",
+          "name": "4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity",
+          "weight": 15.0,
+          "keywords": [
+            "674748",
+            "emurugat",
+            "apt2030",
+            "problem",
+            "conclusion",
+            "analysis",
+            "table",
+            "state 1",
+            "state 2"
+          ]
+        }
+      ]
+    },
+    "swe2030_requirements_srs": {
+      "id": "swe2030_requirements_srs",
+      "title": "SWE2030 \u2014 Software Requirements Engineering (Tasks 1\u201318 & IEEE SRS Rubric)",
+      "school": "USIU-Africa Faculty Custom",
+      "course_code": "SWE2030",
+      "assignment_prompt": "Complete Tasks 1-18 progression: 10 Candidate Use Cases, Lean Canvas, Problem-Fit Hypotheses & Interviews, 10+ Stakeholders, Personas, Domain Model, Crazy-8 Sketches, State-Machine Navigation Diagram, Solution-Fit Interviews, and Final SRS.",
+      "min_words": 250,
+      "expected_citations": 2,
+      "total_points": 100,
+      "criteria": [
+        {
+          "id": "use_cases_lean_canvas",
+          "name": "1. Problem Vision, 10 Candidate Use Cases & Lean Canvas Hypotheses (Tasks 1\u20134)",
+          "weight": 25.0,
+          "keywords": [
+            "use case",
+            "lean canvas",
+            "hypothesis",
+            "early adopter",
+            "customer segment",
+            "problem-fit",
+            "value proposition",
+            "candidate",
+            "scenario"
+          ]
+        },
+        {
+          "id": "stakeholders_personas_elicitation",
+          "name": "2. Stakeholder Analysis (10+ Types), Personas & Creativity Elicitation (Tasks 5\u20138)",
+          "weight": 25.0,
+          "keywords": [
+            "stakeholder",
+            "champion",
+            "persona",
+            "demographic",
+            "interview",
+            "elicitation",
+            "brainstorming",
+            "pain point",
+            "ethics",
+            "data protection"
+          ]
+        },
+        {
+          "id": "domain_model_navigation_ui",
+          "name": "3. Domain Modeling, Jackson-Zave Specifications, Crazy-8 UI & Navigation State Machine (Tasks 9\u201316)",
+          "weight": 30.0,
+          "keywords": [
+            "domain model",
+            "state-machine",
+            "navigation diagram",
+            "transition",
+            "sketch",
+            "crazy-8",
+            "interface",
+            "phenomena",
+            "requirement",
+            "functional"
+          ]
+        },
+        {
+          "id": "solution_fit_final_srs",
+          "name": "4. Solution-Fit Validation & Complete IEEE Software Requirements Specification (Tasks 17\u201318)",
+          "weight": 20.0,
+          "keywords": [
+            "solution-fit",
+            "srs",
+            "specification",
+            "non-functional",
+            "validation",
+            "prototype",
+            "traceability",
+            "conclusion"
+          ]
+        }
+      ]
+    },
+    "swe3020b_sqa_project": {
+      "id": "swe3020b_sqa_project",
+      "title": "SWE3020B \u2014 Software Quality Assurance, SOLID Design & DevOps Rubric (Official 45-Mark Scaled)",
+      "school": "USIU-Africa Faculty Custom",
+      "course_code": "SWE3020B",
+      "assignment_prompt": "Official USIU SWE3020B Project Evaluation: Project Context, Functional/Non-Functional Requirements, Use Case & Class Diagrams, SOLID & Modularity Principles, Unit/Integration Testing, CI/CD DevOps, Teamwork (Jira), and Quality Plan & Inspection Checklist.",
+      "min_words": 220,
+      "expected_citations": 2,
+      "total_points": 100,
+      "criteria": [
+        {
+          "id": "requirements_uml_diagrams",
+          "name": "1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams) [12/45 -> 27 pts]",
+          "weight": 27.0,
+          "keywords": [
+            "functional",
+            "non-functional",
+            "requirement",
+            "use case",
+            "class diagram",
+            "context",
+            "target user",
+            "architecture",
+            "uml",
+            "sacco"
+          ]
+        },
+        {
+          "id": "solid_design_ui_demo",
+          "name": "2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI [16/45 -> 35 pts]",
+          "weight": 35.0,
+          "keywords": [
+            "solid",
+            "modularity",
+            "reusability",
+            "maintainability",
+            "single responsibility",
+            "interface",
+            "accessibility",
+            "usability",
+            "design",
+            "implementation"
+          ]
+        },
+        {
+          "id": "testing_cicd_devops",
+          "name": "3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps [6/45 -> 14 pts]",
+          "weight": 14.0,
+          "keywords": [
+            "unit test",
+            "integration test",
+            "testing",
+            "version control",
+            "git",
+            "ci/cd",
+            "pipeline",
+            "devops",
+            "automated",
+            "verification"
+          ]
+        },
+        {
+          "id": "quality_plan_teamwork",
+          "name": "4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References [11/45 -> 24 pts]",
+          "weight": 24.0,
+          "keywords": [
+            "quality plan",
+            "inspection",
+            "checklist",
+            "teamwork",
+            "jira",
+            "agile",
+            "risk",
+            "audit",
+            "reference",
+            "security"
+          ]
+        }
+      ]
     }
   }
 }

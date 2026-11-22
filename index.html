@@ -327,6 +327,9 @@
         <label for="rubricSelect">Select USIU School Rubric:</label>
         <select id="rubricSelect" onchange="onRubricChanged()">
           <option value="standard_research_paper">SST / General — Standardized Research & Term Paper (APT3040 / SWE3020)</option>
+          <option value="apt2030_digital_electronics">APT2030A_FS2026 — Digital Electronics Lab & Written Rubric (Prof. Gerald Chege)</option>
+          <option value="swe2030_requirements_srs">SWE2030 — Software Requirements Engineering (Tasks 1–18 & IEEE SRS Rubric)</option>
+          <option value="swe3020b_sqa_project">SWE3020B — Software Quality Assurance, SOLID Design & DevOps (Official 45-Mark Rubric)</option>
           <option value="csb_business_case_study">CSB — Chandaria School of Business Case Study (BUS4010 / MBA6010)</option>
           <option value="shss_humanities_essay">SHSS — Humanities & International Relations Policy Essay (IRL3020 / PSY3010)</option>
         </select>
@@ -540,6 +543,42 @@
           { id: "historical_empirical_sources", name: "2. Primary/Secondary Sources & APA 7th Scholarship", weight: 30, keywords: ["treaty", "study", "according", "et al", "202", "199", "scholar", "historical", "evidence", "empirical", "archive", "united nations", "au"] },
           { id: "comparative_critique", name: "3. Comparative Analysis, Counter-Arguments & Nuance", weight: 25, keywords: ["however", "conversely", "critique", "limitation", "compared", "implication", "whereas", "ethics", "regional", "sovereignty", "diplomacy"] },
           { id: "rhetorical_coherence", name: "4. Rhetorical Coherence, Structure & APA 7th Formatting", weight: 15, keywords: ["introduction", "conclusion", "references", "section", "synthesis", "recommendations"] }
+        ]
+      },
+      apt2030_digital_electronics: {
+        id: "apt2030_digital_electronics",
+        title: "APT2030A_FS2026 — Digital Electronics Lab & Written Rubric (Prof. Gerald Chege)",
+        min_words: 150,
+        expected_citations: 1,
+        criteria: [
+          { id: "boolean_kmap_derivation", name: "1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification", weight: 30, keywords: ["boolean", "minterm", "truth table", "k-map", "karnaugh", "simplified", "expression", "complement", "sum of products", "sop", "nand", "inverter", "or gate"] },
+          { id: "cmos_ieee754_architecture", name: "2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis", weight: 30, keywords: ["decoder", "multiplexer", "enable", "active-low", "combinational", "cmos", "pmos", "nmos", "ieee-754", "exponent", "significand", "select", "output"] },
+          { id: "digital_works_simulation", name: "3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification", weight: 25, keywords: ["digital works", "state", "led", "simulation", "circuit", "figure", "input", "verified", "schematic", "active", "disabled"] },
+          { id: "lab_integrity_documentation", name: "4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity", weight: 15, keywords: ["674748", "emurugat", "apt2030", "problem", "conclusion", "analysis", "table", "state 1", "state 2"] }
+        ]
+      },
+      swe2030_requirements_srs: {
+        id: "swe2030_requirements_srs",
+        title: "SWE2030 — Software Requirements Engineering (Tasks 1–18 & IEEE SRS Rubric)",
+        min_words: 250,
+        expected_citations: 2,
+        criteria: [
+          { id: "use_cases_lean_canvas", name: "1. Problem Vision, 10 Candidate Use Cases & Lean Canvas Hypotheses (Tasks 1–4)", weight: 25, keywords: ["use case", "lean canvas", "hypothesis", "early adopter", "customer segment", "problem-fit", "value proposition", "candidate", "scenario"] },
+          { id: "stakeholders_personas_elicitation", name: "2. Stakeholder Analysis (10+ Types), Personas & Creativity Elicitation (Tasks 5–8)", weight: 25, keywords: ["stakeholder", "champion", "persona", "demographic", "interview", "elicitation", "brainstorming", "pain point", "ethics", "data protection"] },
+          { id: "domain_model_navigation_ui", name: "3. Domain Modeling, Jackson-Zave Specifications, Crazy-8 UI & Navigation State Machine (Tasks 9–16)", weight: 30, keywords: ["domain model", "state-machine", "navigation diagram", "transition", "sketch", "crazy-8", "interface", "phenomena", "requirement", "functional"] },
+          { id: "solution_fit_final_srs", name: "4. Solution-Fit Validation & Complete IEEE Software Requirements Specification (Tasks 17–18)", weight: 20, keywords: ["solution-fit", "srs", "specification", "non-functional", "validation", "prototype", "traceability", "conclusion"] }
+        ]
+      },
+      swe3020b_sqa_project: {
+        id: "swe3020b_sqa_project",
+        title: "SWE3020B — Software Quality Assurance, SOLID Design & DevOps Rubric (Official 45-Mark Scaled)",
+        min_words: 220,
+        expected_citations: 2,
+        criteria: [
+          { id: "requirements_uml_diagrams", name: "1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams)", weight: 27, keywords: ["functional", "non-functional", "requirement", "use case", "class diagram", "context", "target user", "architecture", "uml", "sacco"] },
+          { id: "solid_design_ui_demo", name: "2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI", weight: 35, keywords: ["solid", "modularity", "reusability", "maintainability", "single responsibility", "interface", "accessibility", "usability", "design", "implementation"] },
+          { id: "testing_cicd_devops", name: "3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps", weight: 14, keywords: ["unit test", "integration test", "testing", "version control", "git", "ci/cd", "pipeline", "devops", "automated", "verification"] },
+          { id: "quality_plan_teamwork", name: "4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References", weight: 24, keywords: ["quality plan", "inspection", "checklist", "teamwork", "jira", "agile", "risk", "audit", "reference", "security"] }
         ]
       }
     };

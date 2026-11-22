@@ -212,7 +212,8 @@
         "otieno",
         "distributors",
         "balanced",
-        "sustainable"
+        "sustainable",
+        "transforms"
       ]
     },
     {
@@ -235,6 +236,105 @@
         "risk mitigation",
         "stakeholder"
       ]
+    },
+    {
+      "id": "apt2030a_fs2026_apt2030a_fs2026_digital_logic___",
+      "course_code": "APT2030A_FS2026",
+      "title": "APT2030A_FS2026 Digital Logic & Combinational Circuits Notes (Prof. Gerald Chege)",
+      "content": "=== SLIDE 1 ===\r\nAPT2030A \u2013 DIGITAL LOGIC\r\nGerald Chege, PhD\r\nAssistant Professor, Information Systems & Technology, USIU-A.\r\nemail: gchege@usiu.ac.ke\r\nICT Building, 3rd Floor. Room#7\r\nFall 2026\r\n\r\n=== SLIDE 2 ===\r\nWhat We Shall Learn in this Course\r\n1. Computers and Digital Systems\r\n2. Number Systems and Digital Codes\r\n3. Logic Circuits and Boolean Algebra\r\n4. Combinational Logic Circuit Design and Analysis\r\n5. Introduction to Sequential Circuits\r\n6. Synchronous Sequential Logic Circuit Analysis and Design\r\n7. Introduction to Asynchronous Sequential Circuit Analysis and Design\r\n8. Memory and Programmable Digital Logic Devices\r\nAPT2030A - Gerald Chege\r\n2\r\n\r\n=== SLIDE 3 ===\r\nIntroduction: Computers and Digital Systems\r\nSecond Edition\r\nNotes#1:\r\nCopyright \u00a9 2021 by Pearson Education, Inc.\r\n\r\n=== SLIDE 4 ===\r\nFigure 0.1 Evolution of the Intel microprocessors. (a) Twentieth century machines\r\n4\r\n\r\n=== SLIDE 5 ===\r\nFigure 0.1 Evolution of the Intel microprocessors. (b) Twenty-first century machines\r\n5\r\n\r\n=== SLIDE 6 ===\r\nFigure 0.2 Evolution of Nvidia  G P U  s\r\n6\r\n\r\n=== SLIDE 7 ===\r\nFigure 0.3 Analog and digital forms of an electrical signal. (a) Analog form\r\n7\r\n\r\n=== SLIDE 8 ===\r\nFigure 0.3 Analog and digital forms of an electrical signal. (b) Sampled  analog  form\r\n8\r\n\r\n=== SLIDE 9 ===\r\nFigure 0.3 Analog and digital forms of an electrical signal. (c) Digital form\r\n9\r\n\r\n=== SLIDE 10 ===\r\nTable 0.1  Digital System Levels of Abstraction\r\n10\r\n\r\n=== SLIDE 11 ===\r\nFigure 0.4 Hierarchy diagram\r\n11\r\n\r\n=== SLIDE 12 ===\r\nFigure 0.5 Models of a digital system that adds lists of numbers. (a) System level. (b) Register level\r\n12\r\n\r\n=== SLIDE 13 ===\r\nFigure 0.6 A combinational logic circuit with six gates\r\n13\r\n\r\n=== SLIDE 14 ===\r\nFigure 0.7 Sequential logic circuit model\r\n14\r\n\r\n=== SLIDE 15 ===\r\nTable 0.2 Important Electronic Technologies\r\n15\r\n\r\n=== SLIDE 16 ===\r\nTable 0.3  Characteristics of Selected Electronic Technology Families\r\n16\r\n\r\n=== SLIDE 17 ===\r\nFigure 0.8  T  T L and  C M O  S  N A N  D circuits. (a)  T  T L two-input  N A N  D circuit. (b)  C M O  S two-input  N A N  D circuit\r\n17\r\n\r\n=== SLIDE 18 ===\r\nFigure 0.9 Integrated circuit growth trends\r\nOriginal data up to the year 2010 collected and plotted by  M.Horowitz , F.  Labonte , O.  Shacham , K.  Olukotun ,  L.Hammond , and C. Batten. New plot and data collected for 2010\u20132017 by K. Rupp.\r\n18\r\n\r\n=== SLIDE 19 ===\r\nTable 0.4 Evolution of Integrated Circuit Technology for Realizing Logic Circuits\r\n19\r\n\r\n=== SLIDE 20 ===\r\nFigure 0.10 High-level organization of a digital computer\r\n20\r\n\r\n=== SLIDE 21 ===\r\nFigure 0.11 Instruction cycle of a stored program computer\r\n21\r\n\r\n=== SLIDE 22 ===\r\nFigure 0.12 Translation of computer programs into machine language\r\n22\r\n\r\n=== SLIDE 23 ===\r\nFigure 0.13 Generic digital controller\r\n23\r\n\r\n=== SLIDE 24 ===\r\nFigure 0.14 Traffic light controller. (a) Intersection of two two-lane roads. (b) Controller block diagram\r\n24\r\n\r\n=== SLIDE 25 ===\r\nFigure 0.15 Traffic light controller state diagram\r\n25\r\n\r\n=== SLIDE 26 ===\r\nFigure 0.16 The Internet of Things (IoT)\r\n26\r\n\r\n=== SLIDE 27 ===\r\nTable 0.5 Typical IoT Sensors and Actuators\r\n27\r\n\r\n=== SLIDE 28 ===\r\nFigure 0.17 Interfacing scenarios for digital systems. (a) A/D and D/A conversion. (b) Voltage-level shifting. (c) Signal buffering\r\n28\r\n\r\n\n=== SLIDE 1 ===\r\nNotes#2 \r\nNumber Systems and Digital  Codes  \r\n\r\n=== SLIDE 2 ===\r\nLearning Outcomes \r\nDigital Systems  \r\nBinary Numbers  \r\nNumber Base Conversions          \r\nOctal and Hexadecimal Numbers          \r\nComplements of Numbers          \r\nSigned Binary Numbers  \r\nFixed and Floating Point Number Representation\r\nBinary Codes & Coding Systems \u00a0\u00a0\u00a0\u00a0\u00a0\u00a0 \r\nGrey Codes\r\n2-out-of-5 Codes \r\nHamming Codes for Error Detection and Correction\r\n\r\n=== SLIDE 3 ===\r\nFigure 1.1 An 8-bit register\r\n\r\n=== SLIDE 4 ===\r\nTable 1.1 Important Number Systems\r\n\r\n=== SLIDE 5 ===\r\nTable 1.2 Decimal Arithmetic Tables\r\n\r\n=== SLIDE 6 ===\r\nTable 1.3 Binary Arithmetic Tables\r\n\r\n=== SLIDE 7 ===\r\nTable 1.4 Hexadecimal Arithmetic Tables\r\n\r\n=== SLIDE 8 ===\r\nFigure 1.2 Signed number format\r\n\r\n=== SLIDE 9 ===\r\nTable 1.5 Signed Number Representation Examples*\r\n*Sign bits are delimited by commas.\r\n\r\n=== SLIDE 10 ===\r\nTable 1.5(b) Conversion Methods for Common Radices Using Decimal Arithmetic\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 11 ===\r\nExamples of Decimal and Corresponding Binary Additions\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 12 ===\r\nExamples of Decimal and Corresponding Binary Subtractions\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 13 ===\r\nSummary of Addition and Subtraction Rules for Binary Numbers\r\n\r\n=== SLIDE 14 ===\r\nTable 1.7 Excess-8 Code\r\n   -5 = 0101 => 1010 +1 =1011  + 1000 =  0011 \r\n\r\n=== SLIDE 15 ===\r\nFigure 1.3 Fixed-point number representations. (a) Fixed-point integer. (b) Fixed-point fraction\r\n\r\n=== SLIDE 16 ===\r\nFigure 1.4 Floating-point number formats. (a) Typical single-precision format. (b) Typical extended-precision format\r\n\r\n=== SLIDE 17 ===\r\nTable 1.8 IEEE 754-2008 Binary Floating-point Number Formats\r\n\r\n=== SLIDE 18 ===\r\nTable 1.9 Binary Coded Decimal        ( B C  D) Codes\r\n\r\n=== SLIDE 19 ===\r\nTable 1.10 7-Bit  A S C  II  Character  Code\r\n\r\n=== SLIDE 20 ===\r\nTable 1.11  Gray  Code  for Decimal Numbers 0 through 15\r\n\r\n=== SLIDE 21 ===\r\nFigure 1.5  Gray -coded disk\r\n\r\n=== SLIDE 22 ===\r\nFigure 1.7 Parity-coded information \r\n\r\n=== SLIDE 23 ===\r\nFigure 1.8 Even-parity coding on magnetic tape\r\n\r\n=== SLIDE 24 ===\r\nTwo-Out-of-Five Code for Decimal Digits\r\nA  two-out-of-five code is an  m of n code  that provides exactly ten possible combinations, and thus is popular for representing decimal digits using five bits. There are ways to assign weights to each bit such that the set bits sum to the desired value, with an exception for zero.\r\nCoding Scheme Weights:\r\nTelecommunication - 01236 \t\r\n       ( eg  digit 6 = 10001) = 0+6 \r\nPOSTNET - 74210 \t\r\n       ( eg  digit 6 = 01100) = 4+2 \r\nCode39 bar widths - 12470 \r\n       ( eg  digit 6 = 01100) = 4+2  - thick bars for 4 & 2\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 25 ===\r\nTwo-Out-of-Five Code for Decimal Digits  Example Coding schemes\r\nDigit \t Telecomms         POSTNET               PLANET    Code39 barcode widths\r\n01236  74210 74210 1 2 4 7 0\r\n1 \t11000 \t00011  \t\u2503\u2503\u2503\u257b\u257b \t\u25ae | | | \u25ae\r\n2 \t10100 \t00101  \t\u2503\u2503\u257b\u2503\u257b \t| \u25ae | | \u25ae\r\n3 \t10010 \t00110  \t\u2503\u2503\u257b\u257b\u2503 \t\u25ae \u25ae | | |\r\n4 \t01010 \t01001  \t\u2503\u257b\u2503\u2503\u257b \t| | \u25ae | \u25ae\r\n5 \t00110 \t01010  \t\u2503\u257b\u2503\u257b\u2503 \t\u25ae | \u25ae | |\r\n6 \t10001 \t01100  \t\u2503\u257b\u257b\u2503\u2503 \t| \u25ae \u25ae | |\r\n7 \t01001 \t10001  \t\u257b\u2503\u2503\u2503\u257b \t| | | \u25ae \u25ae\r\n8 \t00101 \t10010 \t\u257b\u2503\u2503\u257b\u2503 \t\u25ae | | \u25ae |\r\n9 \t00011 \t10100  \t\u257b\u2503\u257b\u2503\u2503 \t| \u25ae | \u25ae |\r\n0 \t01100 \t11000  \t\u257b\u257b\u2503\u2503\u2503 \t| | \u25ae \u25ae |\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 26 ===\r\nHAMMING CODES\r\n  The Hamming Code is the use of extra parity bits to allow the     identification of an error.\r\nGeneral Algorithm of Hamming code : 1. Write the bit positions starting from 1 in binary form (1, 10, 11, 100,  etc ). 2.  All the bit positions that are a power of 2 are marked as parity bits (1, 2, 4, 8 ,  etc ). 3.  All the other bit positions are marked as data bits . 4. Each data bit is included in a unique set of parity bits, as determined by its bit position in binary form. a. Parity bit 1 covers all the bits positions whose binary representation includes a 1 in the  least significant position  (1, 3, 5, 7, 9, 11,  etc ). b. Parity bit 2 covers all the bits positions whose binary representation includes a 1 in the  second position  from the least significant bit (2, 3, 6, 7, 10, 11,  etc ).\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 27 ===\r\nHAMMING CODES (2)\r\nc. Parity bit 4 covers all the bits positions whose binary representation includes a 1 in the  third position  from the least significant bit (4\u20137, 12\u201315, 20\u201323,  etc ).\r\nd. Parity bit 8 covers all the bits positions whose binary representation includes a 1 in the  fourth position  from the least significant bit bits (8\u201315, 24\u201331, 40\u201347,  etc ).\r\ne. In general, each parity bit covers all bits where the bitwise AND of the  parity  position and the bit position is non-zero .\r\n5. For even parity, set a parity bit to 1 if the total number of ones in the positions it checks is odd.\r\n6. Set a parity bit to 0 if the total number of ones in the positions it checks is even .\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 28 ===\r\nHAMMING CODES (3)\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 29 ===\r\nHAMMING CODES (4) Determining the position of redundant bits\r\nThese redundancy bits are placed at the positions which correspond to the power of 2. Example \u2013 Assume an 11 bit transmission or storage :\r\nThe number of data bits = 7\r\nThe number of redundant bits = 4\r\nThe total number of bits = 11\r\nThe redundant bits are placed at positions corresponding to power of two \u2013  i.e :  1, 2, 4, and 8\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 30 ===\r\nHAMMING CODES (5)\r\nSuppose the data to be transmitted is  1011001 , the bits will be placed as follows:\r\nDetermining the Parity bits \u2013\r\nR1 bit is calculated using parity check at all the bits positions whose binary representation includes a 1 in the least significant position.\r\nR1: bits 1, 3, 5, 7, 9, 11\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 31 ===\r\nAPT2030 - Gerald Chege\r\nTo find the redundant bit R1, we check for even parity. Since the total number of 1\u2019s in all the bit positions corresponding to R1 is an even number the value of R1 (parity bit\u2019s value) = 0\r\nR2 bit is calculated using parity check at all the bits positions whose binary representation includes a 1 in the second position from the least significant bit.\r\nR2: bits 2,3,6,7,10,11\r\n\r\n=== SLIDE 32 ===\r\nTo find the redundant bit R2, we check for even parity. Since the total number of 1\u2019s in all the bit positions corresponding to R2 is odd the value of R2(parity bit\u2019s value)=1\r\nR4 bit is calculated using parity check at all the bits positions whose binary representation includes a 1 in the third position from the least significant bit.\r\nR4: bits 4, 5, 6, 7\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 33 ===\r\nTo find the redundant bit R4, we check for even parity. Since the total number of 1\u2019s in all the bit positions corresponding to R4 is odd the value of R4(parity bit\u2019s value) = 1\r\nR8 bit is calculated using parity check at all the bits positions whose binary representation includes a 1 in the fourth position from the least significant bit.\r\nR8: bit 8,9,10,11\r\nAPT2030 - Gerald Chege\r\n\r\n=== SLIDE 34 ===\r\nAPT2030 - Gerald Chege\r\nTo find the redundant bit R8, we check for even parity. Since the total number of 1\u2019s in all the bit positions corresponding to R8 is an even number the value of R8(parity bit\u2019s value)=0.\r\nThus, the data transferred is:\r\n\r\n=== SLIDE 35 ===\r\nExample : Suppose the 6th bit is changed from 0 to 1 during data transmission, then it gives new parity values in the binary number;\r\nPosition 6 is checked by R4 and R2 which will be 1\u2019s indication a parity error; Hence R8=0; R4=1; R2=1; R1=0; The parity bits give the binary number as 0110 (R8 R4 R2 R1) whose decimal representation is 6. Thus,  bit 6 contains an error . To correct the error the 6th bit is changed from 1 to 0.\r\nError detection:  The decimal equivalent of the parity bits binary values is calculated. If it is 0, there is no error. If is non-zero, then an error is detected. The value  R8R4R2R1  is called a  syndrome . \r\nError correction : The error position = decimal equivalent of parity bits ( e.g  R8 R4 R2 R1 = (0110) 2  = 6 10  in above case. \r\nAPT2030 - Gerald Chege\r\nError detection and correction\r\n\r\n=== SLIDE 36 ===\r\nTable 1.13 Two Hamming Codes for 4-Bit Information Words\r\n\r\n=== SLIDE 37 ===\r\nTable 1.14 Effects of Errors on Code Words for Hamming Code 1\r\n\r\n=== SLIDE 38 ===\r\nTable 1.15 Syndromes for Code Word 0100110 for Hamming Code 1\r\n\r\n=== SLIDE 39 ===\r\nWord Size of Distance-3 and Distance-4 Extended Hamming Codes\r\n\r\n=== SLIDE 40 ===\r\nFigure 1.6 Relationship between the  minimum distance  between code words and the ability to detect and correct bit errors (Connected words differ in exactly one bit position.) (a) Single-error detection ( S E  D).  (b) Single-error correction ",
+      "extracted_concepts": [
+        "slide",
+        "figure",
+        "bits",
+        "parity",
+        "gerald",
+        "chege",
+        "table",
+        "logic",
+        "number",
+        "binary",
+        "positions",
+        "circuit",
+        "digital",
+        "apt2030",
+        "position",
+        "codes",
+        "code",
+        "apt2030a",
+        "hamming",
+        "decimal",
+        "representation",
+        "error",
+        "value",
+        "symbol"
+      ],
+      "ingested_at": "2026-11-22T12:44:35.234237"
+    },
+    {
+      "id": "swe2030_swe2030_software_requirements_engineerin",
+      "course_code": "SWE2030",
+      "title": "SWE2030 Software Requirements Engineering Tasks 1-18 Project Specification",
+      "content": "SWE 2030 GROUPWORK\nOverview\nThe course project is a collection of requirements and specification deliverables, including a final Software Requirements Specification (SRS), for a project of your choosing that is hypothetically to be developed by another team.\nYour team will choose a real-world problem that you think can be addressed or mitigated by software. I encourage you to use this course project as an opportunity to think about how software can be used to improve people\u2019s lives (e.g., improve mental health and happiness, reduce waste and share resources, combat climate change, promote equity and inclusion, etc.).\nStarting from a vision for your project, you are responsible for identifying the customers and users for whom you are developing; understanding their problems and needs; expressing their work and needs using lightweight models; resolving, analyzing, and prioritizing needs into the requirements of a proposed solution; testing your hypotheses, ideas, and prototypes along the way; and documenting the final requirements and specifications in a Software Requirements Specification.\nTask 1\nProject Topic\nEach project team will choose their own topic. Your project topic needs to be rich enough to support several substantial use cases.\nRequired:\nGenerate 10 candidate use cases.\nGroup them into related functions.\nSelect the FIVE most substantial use cases to develop in detail (e.g., use case diagrams, descriptions, scenarios, requirements).\nMention the remaining use cases as future enhancements or additional system capabilities if appropriate.\nTask 2\nCreate a Lean Canvas Model\nIdentify one or two customer/user segments to which you want to target your project. This group(s) should best represent the early adopters of your project.\nCreate a Lean Canvas business model for that customer segment. Here are blank Lean Canvas templates in\u00a0PDF\u00a0and\u00a0MS Word\u00a0formats.\nI strongly recommend that each team member create their own Lean Canvas model, and then have the team collaborate on a joint Lean Canvas. Submit only the final Lean Canvas created jointly by the team.\nProvide also a one-page Supplement (two pages max) to your Lean Canvas model that provides descriptions of (1) the customer/user segment(s), (2) their key problems, (3) the elements of your solution that address these problems, (4) the unique value propositions explaining how your proposed solution is better than existing approaches, and (5) the metrics you plan to track for measuring success. The purpose of the supplement is to help (the leader) understand your project and the motivation behind it. (Think of the Supplement as the verbal explanation you would give to someone if you were presenting your model to them.)\nDeliverable\nThe final Lean Canvas created jointly by the team.\none-page Supplement (two pages max) to your Lean Canvas model as in 4 above.\nTask 3\nProblem-Fit Hypothesis Questions\nMost of the information in your Lean Canvas are hypotheses about your proposed project. Identify five (5) hypotheses in your Lean Canvas that reflect the riskiest parts of your plan regarding\nYour target customer segments (who are your early adaptors? do they care about the identified problems?)\nThe customers\u2019 problems (what are their most significant problems? how important are they?)\nYour competition (how do your target customers solve their problems now? is their current solution good enough?)\nFor each hypothesis, construct a pass/fail test (falsifiable hypothesis) that will be used in future Problem-Fit Interviews. Here is are\u00a0example Problem-Fit Hypotheses and Questions\u00a0for the Modern Family project.\nInclude your answer (five Lean Canvas hypotheses, and\u00a0\u00a0a set of questions for each hypothesis)\nHere is are\u00a0example Problem-Fit Hypotheses and Questions\u00a0for the Modern Family project.\nNB; Focus on the hypotheses you want to test and on how to ask unbiased scientific questions that get to the heart of your hypotheses.\nDeliverable.\nThe Lean Canvas hypotheses and the corresponding Problem-Fit Interview questions. It will be marked on the basis of whether (i) your problem-fit questions cover your hypotheses about customer segments and their problems, and (ii) the degree to which your pass/fail tests are falsifiable (i.e., designed to test rather than confirm your hypotheses).\nTask 4\nFeedback on Buddy Team\u2019s Problem-Fit Interviews\nEach team will meet with another team to practice conducting your Problem-Fit Interviews on members of the other team, and provide feedback on your buddy teams\u2019 Problem-Fit Interviews. In essence, you are conducting a Pilot Study of your interview plans, using classmates as practice subjects, before conducting your real interviews.\nYou should:\nSolicit feedback from your buddy team on your team\u2019s hypotheses and interview questions.\nPractice delivering your interview, and solicit feedback on your delivery and interview script.\nConsider whether any of the buddy-team\u2019s feedback (with respect to your project\u2019s target customer segment, target problem, unique value proposition, or interview questions) are worth addressing and document any revisions to your problem-fit interview.\nDeliverable:\nA report that includes the following information:\nThe names of your team members who participated in this activity\nThe name of the buddy team that you worked with on this activity, and the names of their team members who participated\nDescribe 2-3 concrete examples of feedback and suggestions for improvement that your team\u00a0provided\u00a0to your buddy team.\nDescribe 2-3 concrete examples of feedback and suggestions for improvement that your team\u00a0received\u00a0from your buddy team, and describe what changes your team made (e.g., to your project, lean canvas, interview script) in response to this feedback.\nIndicate the quality of the feedback that your team received or the degree to which your buddy team participated in this activity (outstanding, excellent, very good, good, satisfactory, unsatisfactory)\nTask 5\nPerform a Stakeholder Analysis\nIdentify and provide details about the stakeholders who might be interested in or impacted by your project. Identify at least 10 distinct relevant types of stakeholders. Your list must include at least 8 stakeholder types that are distinct from roles held by your team members; your list must include a champion stakeholder; no more than 5 stakeholder types can be distinct customer/user segments; and no more than one member of your team counts as a technical expert towards your goal of 10 stakeholders. For each stakeholder, provide\ndemographic information about customer/user stakeholder types (i.e., relevant user characteristics: age range, gender, occupation, education background, technical expertise, goals, etc.)\nthe type of stakeholder (as discussed in lecture)\nhow your team plans to contact such a stakeholder or a proxy\nthe kinds of information you expect to elicit from them\nOrganize your answer to this part of the deliverable in a\u00a0Stakeholder Analysis Matrix.\nDeliverable:\nStakeholder Analysis Matrix.\nTask 6\nCreate Personas\nYou are to create two personas for the customer segments that have been identified as being the earliest adopters of your software project. Give priority to customer segments or variants that\u00a0differ\u00a0from who are you interviewing - especially customer segments or variants that are difficult to reach. Include details about their personal background and who they are, their technical background, their experiences (that affect their user characteristics), their drivers and goals, and the problems and pain points that they would like have addressed.\nHere are\u00a0example Personas\u00a0from the Modern Family project.\nDeliverable:\nPersonas.\nPersonas will be assessed on:\n(1) the Completeness of the Personas, (2) the quality of the Presentation of the Personas, and (3) the relevance of the Personas with respect to your Targer Customer Segments.\nTask 7\nStart Conducting Problem-Fit Interviews\nStart recruiting at least five members of your project\u2019s target customer segment to participate in Problem-Fit Interviews. Interviewees cannot be minors (i.e., must be a least 13 years of age) and cannot be close friends or family. Try to find target users beyond just fellow students. You must follow ethics procedure (be sure to pay attention to Data Protection)\nHere is an\u00a0example Problem-Fit Interview Analysis\u00a0(including hypotheses, interview questions, and interview results) for the Modern Family project, which helps busy families in North America to stay connected and to coordinate timing of activities or sharing of resources while minimizing conflicts.\nDeliverable:\n1. A writeup that include anonymized data about the interviewees (e.g., type of stakeholder, demographics).\n2. Provide a clear and professional summary of the results of the interviews (e.g., percentages of responses per test answer, insights learned). If your initial hypotheses are false, provide a pivot hypothesis.\n3. Provide an analysis of the data collected from your five interviews and create a report that summarizes the results of the interviews and your analysis.\nNB: This writeup should include anonymized data about the interviewees. This includes the type of stakeholder, type of customer segment, and demographics of the interviewee (e.g., gender, race, age, education, employment, level of experience). Provide a clear and professional summary of the results of the interviews (e.g., ratio (#responses/#interviewees) per test answer, insights learned). If your initial hypotheses are false, provide pivot hypotheses.\nTask 8\nWorking with Other Teams, Elicit Innovative Features\nEach team needs to pair up with one other team to work with synchronously. It should be different than the team you worked with previously.\nUsing one or more of the creativity-based elicitation techniques that lead to innovative requirements (i.e., systemic thinking, brainstorming, relaxation of constraints, analogical reasoning) identify at least two (2+) new innovative use cases for your project.\nThese elicitation techniques comprise two phases: (1) generating ideas for new features and capabilities, and (2) evaluating the generated ideas for their added value to the project\u2019s existing use cases. Seek the input of your buddy team in generating (a minimum of 10, ideally 15-20) new use cases or features for your project, and help your buddy team elicit new use cases for their project. Later, working just with your team, evaluate the value propositions of the ideas generated for your project and whittle the number of ideas down to the 2+ new use cases that look to be the most promising additions to your project.\nDeliverable:\nCreate a document that describes the elicitation techniques that you used in eliciting innovative features and ideas for your project, lists all of the ideas that were generated, and identifies the 2+ new use cases that your team believes provide the highest value proposition. These 2+ new use cases need to be orthogonal to your existing use cases. Include in your answer\nThe names of your team members who participated in this activity\nThe name of the buddy team that you worked with on this activity, and the names of their team members who participated\nThe elicitation techniques that you and the buddy team used in this activity\nNames and short descriptions of all the new use cases / features / extensions that your team and the buddy team elicited for your team\u2019s project. Highlight the two use cases that your team believes provide the highest value proposition and explain the rationale of your choice.\nDescribe the degree to which your buddy team participated in your team\u2019s elicitation exercises (outstanding, excellent, very good, good, satisfactory, unsatisfactory)\nTask 9\nSystem Modelling\nProvide the following for your project:\nNB: use a diagram or modelling tool for the system modelling Tasks\nUse Case Diagram\nProvide a complete Use Case diagram for your project, including all adjacent systems and entities.\nUser Stories\nFrom the set of use cases in your use-c",
+      "extracted_concepts": [
+        "your",
+        "team",
+        "project",
+        "cases",
+        "each",
+        "hypotheses",
+        "customer",
+        "provide",
+        "case",
+        "lean",
+        "canvas",
+        "user",
+        "task",
+        "problem-fit",
+        "interviews",
+        "buddy",
+        "interview",
+        "stakeholder",
+        "diagram",
+        "model",
+        "target",
+        "should",
+        "questions",
+        "activity"
+      ],
+      "ingested_at": "2026-11-22T12:44:35.246839"
+    },
+    {
+      "id": "swe3020b_swe3020b___swe3050_software_quality_ass",
+      "course_code": "SWE3020B",
+      "title": "SWE3020B / SWE3050 Software Quality Assurance, V&V & Testing Syllabus + Official Rubric",
+      "content": "Max Score\nAchieved Score\nRemarks\nProject \u2013 Brief description of the project, including the context and target users.\n2\nFunctional requirements\n4\nNon-functional requirements\n1\nDesign diagrams \u2013\nUse Case Diagram(2 Marks)\nClass Diagram (3 Marks)\n5\nDemo - Demonstrate your final implementation and core functionalities.\n5\nUse Interface - Designing and developing user-friendly interfaces (simplicity, accessibility, and usability of the interface)\n2\nSoftware Design Principles - the extent to which the project demonstrates principles that promote modularity, reusability, and maintainability.\n4\nSOLID Principles \u2013 Applying SOLID design principles to write scalable and maintainable code.\n5\n2 principles\nTesting \u2013 Conducting unit tests, integration tests, and other forms of testing to ensure code quality and functionality.\n3\nVersion Control \u2013 Utilizing version control systems to manage code and track changes.\nCI/CD \u2013 Implementing automated build and deployment pipelines.\nDevOps \u2013 Adopting DevOps principles and practices.\n//Demonstrate how you have applied the above software development practices in your project (Any of the above).\n3\nTeamwork \u2013 Collaborating effectively as a team throughout the project period - Demonstrate clear role assignments, regular meetings, and shared decision-making. Mention communication tools used to manage your collaboration.\n3\n4-5\nProject Management \u2013 Demonstrate the tool (s) you are using to keep track of your project activities.\n1\nQuality plan  and inspection checklist\n7\nInclude references/ reflections\nTotal Marks\n/45\nSWE 3050SoftwareVerification&Validation\nFall2025\nClass Time:  TTH  9.00am \u2013 10:40am\nInstructor:   Dr. Gachanga. E\nEmail:   egachanga @usiu.ac.ke\nOffice Hour:  Set an appointment\nReferences:\nP.C.Jorgensen,SoftwareTesting:ACraftsman\u2019sApproach(FourthEdition),AuerbachPub-lications,2013,ISBN:978-1466560680.\nG.J.Myers,TheARTofSoftwareTesting(ThirdEdition),JohnWiley&Sons,2012,ISBN:978-1-118-03196-4.\nP.AmmannandJ.Offutt,IntroductiontoSoftwareTesting,CambrdigeUniversityPress,2008,ISBN:978-0-521-88038-1.\nJoseBacelarAlmeidaetal.,RigorousSoftwareDevelopment:AnIntroductionto\nProgramVerification,Springer-VerlagLondon,2011,ISBN:978-0-85729017-5.\nB.Berardetal.,SystemsandSoftwareVerification:ModelCheckingTechniquesandTools,Springer-Verlag,2001,ISBN:3-540-41523-8.\nRussMilesandKimHamilton,LearningUML2.0,O\u2019ReillyPublications,2006,ISBN:0-596-00982-8.\nGrading:\nMid-TermExam20%\nFinalExam30%\nCourseWork     50%\nCourse Description:\nThis course explains the need for verification andvalidation, discussesthemethods (formal, informal and diagrammatic) and techniques (prototypingand theoretical prooftechniques) that implementverification and validation,and provides hands-on experienceto apply these methods andtechniques tosomesimplecase studies. Automation ofverification and validation methods willalso be briefly discussed.\nLearning Outcomes:\nBy theend ofthis course, you willbe able to:\nUnderstand informal, diagrammatic and formal verification technique\nUnderstand various types and levels of software testing\nApplyappropriate verification techniques during software development.\nApplyappropriatetestingtechniques for a software system under test.\nCourse Contents (may notfollowing exact order)\nFunctionalTesting\nUML ModelTesting/Verification\nStructural Testing\nProgram Verification\nGUI Testing\nLate Projects, Missed Quizzes /Exams\nAssignmentswill not be accepted after the due date; no make-up test or exam will be given except for University-excused absences.\nGrading Scale\nAs per university policy\u2026\nSCORE\nGRADE     GRADE\n90-100\nA\n87-89\nA-\n84-86\nB+\n80-83\nB\n77-79\nB-\n74-76\nC+\n70-73\nC\n67-69\nC-\n64-66\nD+\n62-63\nD\n60-61\nD-\n00-59\nF",
+      "extracted_concepts": [
+        "project",
+        "principles",
+        "isbn",
+        "software",
+        "testing",
+        "verification",
+        "demonstrate",
+        "your",
+        "course",
+        "score",
+        "design",
+        "marks",
+        "code",
+        "validation",
+        "description",
+        "requirements",
+        "diagram",
+        "class",
+        "interface",
+        "solid",
+        "tests",
+        "quality",
+        "version",
+        "control"
+      ],
+      "ingested_at": "2026-11-22T12:44:35.261565"
     },
     {
       "id": "apt3040_apt3040_week_5_distributed_ledger___supp",
@@ -263,105 +363,144 @@
         "latency",
         "reductions"
       ],
-      "ingested_at": "2026-11-22T11:59:52.008592"
+      "ingested_at": "2026-11-22T12:47:26.203786"
     }
   ],
   "staged_student_concepts": [
     {
-      "concept": "chain",
-      "peer_frequency": 1,
+      "concept": "limitations",
+      "peer_frequency": 5,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "methodologies",
-      "peer_frequency": 1,
+      "concept": "reduces",
+      "peer_frequency": 5,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "summarizes",
-      "peer_frequency": 1,
+      "concept": "ledger",
+      "peer_frequency": 4,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "compared",
-      "peer_frequency": 1,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)",
+        "Mercy Emurugat SWE3020B Quality Plan (674749)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
       "concept": "strong",
-      "peer_frequency": 1,
+      "peer_frequency": 4,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Zainab Hassan (669102)",
+        "David Kimani (669205)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "cloud-integrated",
-      "peer_frequency": 1,
+      "concept": "compared",
+      "peer_frequency": 4,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "restocking",
-      "peer_frequency": 1,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "fulfillment",
-      "peer_frequency": 1,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Zainab Hassan (669102)",
+        "David Kimani (669205)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
       "concept": "critical",
-      "peer_frequency": 1,
+      "peer_frequency": 4,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)",
+        "Mercy Emurugat SWE3020B Quality Plan (674749)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "initial",
-      "peer_frequency": 1,
+      "concept": "impact",
+      "peer_frequency": 3,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Zainab Hassan (669102)",
+        "Mercy Emurugat SWE3020B Quality Plan (674749)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "logistics",
-      "peer_frequency": 1,
+      "concept": "adoption",
+      "peer_frequency": 3,
       "supporting_high_performers": [
-        "Amina Wanjiku (665421)"
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "because",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "against",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Zainab Hassan (669102)",
+        "Mercy Emurugat SWE3020B Quality Plan (674749)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "inventory",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "therefore",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
@@ -370,6 +509,7 @@
   "lecturer_approved_student_concepts": [
     "distributors",
     "balanced",
-    "sustainable"
+    "sustainable",
+    "transforms"
   ]
 }

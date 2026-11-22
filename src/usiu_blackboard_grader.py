@@ -469,14 +469,16 @@ def inspect_submission_security_and_anomalies(text: str, all_rubric_keywords: Li
         if m:
             injection_hits.append(m.group(0))
 
-    # Check for keyword stuffing: high concentration of rubric keywords in a short/repetitive block
+    # Check for keyword stuffing using a 100-word Moving-Window Type-Token Ratio (Heaps'-Law safe for long technical labs & truth tables)
     kw_set = {k.lower() for k in all_rubric_keywords}
     total_kw_occurrences = sum(1 for w in words if w in kw_set)
     kw_density = round(total_kw_occurrences / max(1, word_count), 3)
     sentences = [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 20]
+    window_words = [w for w in words if len(w) >= 3][:100]
+    window_ttr = round(len(set(window_words)) / max(1, len(window_words)), 3)
 
     keyword_stuffing_detected = (
-        (word_count >= 25 and lexical_diversity < 0.32)
+        (word_count >= 25 and window_ttr < 0.24 and kw_density >= 0.20)
         or (kw_density > 0.35 and len(sentences) <= 2)
     )
 
@@ -539,8 +541,14 @@ def evaluate_submission_deterministic(
     # Check for APA year citations like (2023) or (Smith, 2021) or [2024]
     citation_matches = re.findall(r"[\(\[][A-Za-z\s,&.\-]*?(?:19|20)\d{2}[a-z]?[\)\]]", text)
 
-    # Compute overall semantic alignment with uploaded USIU Course Materials
-    semantic_similarity = compute_semantic_course_similarity(text, combined_course_notes)
+    # Compute overall semantic alignment against the best-matching uploaded USIU Course Material (prevents multi-course dilution)
+    if course_materials:
+        semantic_similarity = max(
+            (compute_semantic_course_similarity(text, m.get("content", "")) for m in course_materials),
+            default=0.0
+        )
+    else:
+        semantic_similarity = 0.0
     matched_course_concepts = [c for c in course_concepts if c in lower_text or stem_academic_token(c) in stem_set]
 
     # Run Zero-Trust Security & Anti-Gaming Scanner
