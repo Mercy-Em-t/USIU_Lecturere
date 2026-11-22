@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USIU-Africa Student Draft Coach & Pre-Submission Readiness Portal v2.4</title>
+  <style>
+    :root {
+      --bg: #05070a;
+      --panel: #101622;
+      --border: #00e5ff;
+      --text: #ffffff;
+      --accent: #ffd600;
+      --green: #00e676;
+      --red: #ff5252;
+      --blue: #00e5ff;
+      --base-size: 24px;
+    }
+
+    body.light-contrast {
+      --bg: #fffdf5;
+      --panel: #f4eed7;
+      --border: #002b5c;
+      --text: #05070a;
+      --accent: #002b5c;
+      --green: #005a2b;
+      --red: #a30000;
+      --blue: #003c8f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 22px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Arial Black", "Segoe UI", Verdana, sans-serif;
+      font-size: var(--base-size);
+      font-weight: 900;
+      line-height: 1.55;
+      letter-spacing: 0.02em;
+    }
+
+    .container {
+      max-width: 1480px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .a11y-bar {
+      background: var(--panel);
+      border: 5px solid var(--border);
+      border-radius: 18px;
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .a11y-title {
+      font-size: 1.35em;
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .a11y-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .big-btn {
+      background: var(--bg);
+      color: var(--text);
+      border: 4px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 20px;
+      font-family: inherit;
+      font-size: 0.95em;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .big-btn:hover, .big-btn:focus {
+      background: var(--accent);
+      color: #000;
+      outline: 4px solid var(--green);
+    }
+
+    .btn-speak {
+      background: var(--accent);
+      color: #000;
+      border-color: #000;
+    }
+
+    .btn-coach {
+      background: var(--green);
+      color: #000;
+      border-color: #000;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 5px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    input, select, textarea, label {
+      width: 100%;
+      font-family: inherit;
+      font-size: 1.02em;
+      font-weight: 900;
+    }
+
+    input, select, textarea {
+      background: var(--bg);
+      color: var(--text);
+      border: 4px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+
+    .drop-zone {
+      background: var(--panel);
+      border: 5px dashed var(--accent);
+      border-radius: 18px;
+      padding: 22px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--green);
+      background: rgba(0, 230, 118, 0.12);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-weight: 900;
+      font-size: 0.88em;
+      background: var(--accent);
+      color: #000;
+      border: 2px solid #000;
+    }
+
+    .pillar-box {
+      background: var(--bg);
+      border: 4px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 26px;
+      background: #1a2233;
+      border: 3px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      transition: width 0.25s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- TOP ACCESSIBILITY & NAVIGATION BAR -->
+    <div class="a11y-bar" role="region" aria-label="Student Accessibility & Audio Controls">
+      <div>
+        <div class="a11y-title">🎒 USIU-Africa Student Draft Coach & Pre-Submission Self-Check v2.4</div>
+        <div>
+          Formative Academic Writing Coach • APA 7th Citation Checker • Zero Answer-Key Leak
+          <span id="studentServerBadge" class="badge">Mode: Instant Formative Coach Ready</span>
+        </div>
+      </div>
+      <div class="a11y-controls">
+        <button class="big-btn" onclick="setZoom(20)">🔍 100%</button>
+        <button class="big-btn" onclick="setZoom(24)">🔍 130% BOLD</button>
+        <button class="big-btn" onclick="setZoom(30)">🔍 170% GIANT</button>
+        <button class="big-btn" onclick="toggleContrast()">🌓 CREAM / DARK</button>
+        <button class="big-btn btn-speak" onclick="speakCoachSummary()">🔊 HEAR COACH FEEDBACK</button>
+        <button class="big-btn" onclick="proofreadDraftAloud()">🗣️ PROOFREAD MY ESSAY ALOUD</button>
+        <button class="big-btn" onclick="stopSpeech()">⏹️ STOP</button>
+        <a href="index.html" class="big-btn">👩‍🏫 Lecturer Hub</a>
+      </div>
+    </div>
+
+    <!-- STEP 1: STUDENT DETAILS & COURSE RUBRIC SELECTION -->
+    <div class="card">
+      <div style="font-size:1.25em; color:var(--accent);">STEP 1: Select Your USIU Course Rubric & Student Details</div>
+      <div class="grid-3">
+        <div>
+          <label for="stuIdInput">Your USIU Student ID:</label>
+          <input type="text" id="stuIdInput" value="667890" placeholder="e.g. 665421" />
+        </div>
+        <div>
+          <label for="stuNameInput">Your Full Name:</label>
+          <input type="text" id="stuNameInput" value="Brian Otieno" placeholder="e.g. Amina Wanjiku" />
+        </div>
+        <div>
+          <label for="stuRubricSelect">USIU School & Assignment Rubric:</label>
+          <select id="stuRubricSelect" onchange="runStudentSelfCheck()">
+            <option value="standard_research_paper">SST / General — Standardized Research & Term Paper (APT3040 / SWE3020)</option>
+            <option value="csb_business_case_study">CSB — Chandaria School of Business Case Study (BUS4010 / MBA6010)</option>
+            <option value="shss_humanities_essay">SHSS — Humanities & IR Policy Essay (IRL3020 / PSY3010)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:12px;">
+        <button class="big-btn" onclick="loadSampleDraft('developing')">📝 Load Sample Developing Draft (65% D+ -> Practice Improving It!)</button>
+        <button class="big-btn" onclick="loadSampleDraft('distinction')">🌟 Load Sample Distinction Draft (97% A Exemplar Structure)</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: DRAG-AND-DROP OR LIVE ESSAY DRAFT EDITOR -->
+    <div class="grid-2">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="font-size:1.25em; color:var(--accent);">STEP 2: Upload or Edit Your Assignment Draft</div>
+          <button class="big-btn btn-coach" onclick="runStudentSelfCheck()">🧭 Check My Draft Now</button>
+        </div>
+
+        <div
+          id="studentDropZone"
+          class="drop-zone"
+          tabindex="0"
+          role="button"
+          onclick="document.getElementById('studentFileInput').click()"
+        >
+          <div style="font-size:1.15em; color:var(--accent);">📂 Drop Your Draft (.docx, .pdf, .txt, .md) or Click to Browse</div>
+          <div style="font-size:0.9em;">100% Local Privacy — Your draft stays on your computer while you revise</div>
+          <input
+            type="file"
+            id="studentFileInput"
+            accept=".txt,.md,.docx,.pdf"
+            style="display:none"
+            onchange="handleStudentFile(this.files)"
+          />
+        </div>
+
+        <label for="draftEditor">Live Assignment Draft Editor (Edit below & click "Check My Draft Now"):</label>
+        <textarea
+          id="draftEditor"
+          rows="13"
+          style="line-height:1.6; font-size:0.98em;"
+          oninput="runStudentSelfCheck()"
+        ></textarea>
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+          <button class="big-btn btn-coach" style="flex:1;" onclick="downloadBlackboardReadyFile()">⬇️ Download Blackboard-Ready Final File</button>
+          <button class="big-btn btn-speak" style="flex:1;" onclick="downloadSelfCheckReceipt()">⬇️ Download Self-Check Receipt (.MD)</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: INSTANT READINESS DASHBOARD & 5-POINT PRE-SUBMISSION CHECKLIST -->
+      <div class="card" id="readinessSummaryCard" aria-live="polite"></div>
+    </div>
+
+    <!-- STEP 4: PILLAR-BY-PILLAR SOCRATIC WRITING COACH -->
+    <div class="card">
+      <div style="font-size:1.3em; color:var(--accent);">STEP 3: Pillar-by-Pillar Socratic Writing Coach (How to Elevate Your Draft Before Submitting)</div>
+      <div id="pillarCoachContainer" style="display:flex; flex-direction:column; gap:16px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:8085";
+    let backendOnline = false;
+    let latestEvaluation = null;
+
+    const USIU_SCALE = [
+      { min: 90, letter: "A",  gpa: "4.0", standing: "Distinction — Exceptional mastery of course concepts" },
+      { min: 87, letter: "A-", gpa: "3.7", standing: "Excellent — Strong analytical depth and evidence" },
+      { min: 84, letter: "B+", gpa: "3.3", standing: "Very Good — Well-structured argument with minor gaps" },
+      { min: 80, letter: "B",  gpa: "3.0", standing: "Good — Solid understanding and competent execution" },
+      { min: 77, letter: "B-", gpa: "2.7", standing: "Above Average — Clear effort but needs deeper synthesis" },
+      { min: 74, letter: "C+", gpa: "2.3", standing: "Satisfactory Plus — Meets core criteria" },
+      { min: 70, letter: "C",  gpa: "2.0", standing: "Satisfactory — Acceptable baseline work" },
+      { min: 67, letter: "C-", gpa: "1.7", standing: "Marginal Pass — Weak citation or structural issues" },
+      { min: 64, letter: "D+", gpa: "1.3", standing: "Below Average — Incomplete analysis" },
+      { min: 62, letter: "D",  gpa: "1.0", standing: "Minimum Pass — Significant conceptual gaps" },
+      { min: 60, letter: "D-", gpa: "0.7", standing: "Low Pass — Barely meets minimum submission threshold" },
+      { min: 0,  letter: "F",  gpa: "0.0", standing: "Fail — Does not meet academic standards" }
+    ];
+
+    const RUBRICS = {
+      standard_research_paper: {
+        id: "standard_research_paper",
+        course_code: "APT3040",
+        title: "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
+        min_words: 220,
+        expected_citations: 3,
+        criteria: [
+          { id: "thesis_clarity", name: "1. Thesis, Problem Formulation & Core Argument", weight: 30, keywords: ["objective", "hypothesis", "problem", "thesis", "purpose", "framework", "strategy", "research", "aim", "architecture", "telemetry"] },
+          { id: "evidence_citations", name: "2. Empirical Evidence, Literature & APA 7th Citations", weight: 30, keywords: ["study", "data", "evidence", "according", "et al", "202", "199", "table", "findings", "source", "reference", "literature"] },
+          { id: "critical_analysis", name: "3. Critical Evaluation, Methodology & Depth", weight: 25, keywords: ["however", "analysis", "methodology", "compared", "implication", "limitation", "evaluate", "impact", "because", "therefore", "trade-off"] },
+          { id: "academic_structure", name: "4. Academic Structure, Coherence & APA 7th Style", weight: 15, keywords: ["introduction", "conclusion", "references", "section", "summary", "recommendations", "abstract"] }
+        ]
+      },
+      csb_business_case_study: {
+        id: "csb_business_case_study",
+        course_code: "BUS4010",
+        title: "Chandaria School of Business (CSB) Strategic Case Study Rubric",
+        min_words: 220,
+        expected_citations: 3,
+        criteria: [
+          { id: "strategic_diagnosis", name: "1. Strategic Problem Diagnosis & Regional Context", weight: 25, keywords: ["market", "competitive", "problem", "challenge", "stakeholder", "industry", "kenya", "africa", "nairobi", "supply chain", "logistics"] },
+          { id: "analytical_frameworks", name: "2. Application of SWOT / PESTEL / Porter's 5 Forces", weight: 30, keywords: ["swot", "pestel", "porter", "strength", "weakness", "opportunity", "threat", "value chain", "strategy", "framework", "advantage"] },
+          { id: "financial_operational_evidence", name: "3. Financial & Operational Data Justification", weight: 25, keywords: ["revenue", "cost", "margin", "roi", "growth", "percent", "kes", "usd", "table", "data", "efficiency", "stockout", "latency"] },
+          { id: "action_plan", name: "4. Actionable Recommendations & Implementation Roadmap", weight: 20, keywords: ["recommend", "implementation", "timeline", "risk", "mitigation", "conclusion", "governance", "roadmap"] }
+        ]
+      },
+      shss_humanities_essay: {
+        id: "shss_humanities_essay",
+        course_code: "IRL3020",
+        title: "School of Humanities & Social Sciences (SHSS) Critical Policy & IR Rubric",
+        min_words: 220,
+        expected_citations: 3,
+        criteria: [
+          { id: "theoretical_framing", name: "1. Theoretical Framing, Thesis & Conceptual Clarity", weight: 30, keywords: ["theory", "thesis", "paradigm", "realism", "liberalism", "constructivism", "cognitive", "policy", "argument", "discourse", "perspective"] },
+          { id: "historical_empirical_sources", name: "2. Primary/Secondary Sources & APA 7th Scholarship", weight: 30, keywords: ["treaty", "study", "according", "et al", "202", "199", "scholar", "historical", "evidence", "empirical", "archive", "united nations", "au"] },
+          { id: "comparative_critique", name: "3. Comparative Analysis, Counter-Arguments & Nuance", weight: 25, keywords: ["however", "conversely", "critique", "limitation", "compared", "implication", "whereas", "ethics", "regional", "sovereignty", "diplomacy"] },
+          { id: "rhetorical_coherence", name: "4. Rhetorical Coherence, Structure & APA 7th Formatting", weight: 15, keywords: ["introduction", "conclusion", "references", "section", "synthesis", "recommendations"] }
+        ]
+      }
+    };
+
+    const SAMPLE_DRAFTS = {
+      developing: {
+        id: "667890",
+        name: "Brian Otieno",
+        text: `Introduction
+The purpose of this writeup is to show that computers help supermarkets keep track of items on their shelves in Nairobi. Many shops in Nairobi use computers every day to count boxes and manage orders.
+
+However, buying software can be expensive for small businesses because of maintenance and internet costs.
+
+Conclusion
+In conclusion, supermarkets should buy good computers so they do not run out of stock.`
+      },
+      distinction: {
+        id: "665421",
+        name: "Amina Wanjiku",
+        text: `Section 1: Introduction & Problem Statement
+The primary objective and central hypothesis of this research paper is to evaluate how real-time predictive telemetry frameworks reduce pharmaceutical supply chain stockout latency across East African distribution corridors. Traditional batch-oriented inventory systems suffer from severe visibility bottlenecks.
+
+Section 2: Empirical Literature & APA 7th Evidence
+According to empirical data collected by Kamau et al. (2024) and the Nairobi Metropolitan Logistics Study (Ochieng & Wambui, 2023), integrating automated IoT telemetry nodes lowered regional stockout rates by 42.8 percent across 114 county clinics. Furthermore, longitudinal findings by Njoroge (2022) confirm that cloud ERP integration improves cold-chain compliance.
+
+Section 3: Comparative Methodology & Critical Trade-Offs
+However, when compared against legacy ERP batch-processing methodologies, continuous edge telemetry introduces significant cybersecurity implications and bandwidth limitations. Our comparative analysis evaluates zero-trust role-based access control (RBAC) as a mitigation strategy to balance latency against data sovereignty.
+
+Section 4: Conclusion, Recommendations & References
+In conclusion, we recommend a phased implementation roadmap for Kenyan distributors.
+References:
+Kamau, J., Otieno, P., & Muli, S. (2024). Predictive Telemetry in East African Healthcare Logistics. Journal of African Information Systems, 14(2), 44-61.
+Ochieng, D., & Wambui,M. (2023). Cloud ERP Adoption in Nairobi Retail Corridors. USIU-Africa Press.`
+      }
+    };
+
+    const SYNONYM_CLUSTERS = {
+      objective: ["objective", "aim", "purpose", "goal", "intent", "focus", "seeks to", "investigates", "examines", "explores"],
+      hypothesis: ["hypothesis", "thesis", "proposition", "central argument", "core claim", "posits", "contends", "premise"],
+      problem: ["problem", "challenge", "bottleneck", "gap", "dilemma", "issue", "vulnerability", "inefficiency", "constraint"],
+      framework: ["framework", "model", "architecture", "paradigm", "taxonomy", "structure", "system", "topology", "blueprint"],
+      strategy: ["strategy", "strategic", "roadmap", "initiative", "approach", "policy", "intervention", "governance"],
+      study: ["study", "research", "investigation", "survey", "report", "inquiry", "empirical", "literature", "scholarship"],
+      data: ["data", "dataset", "statistics", "metrics", "figures", "evidence", "empirical", "quantitative", "findings", "results"],
+      according: ["according", "demonstrates", "indicates", "reveals", "argues", "notes", "established by", "reported by"],
+      however: ["however", "conversely", "nevertheless", "nonetheless", "whereas", "although", "despite", "in contrast"],
+      analysis: ["analysis", "analytical", "evaluate", "evaluation", "assessment", "critique", "examination", "synthesis"],
+      methodology: ["methodology", "method", "approach", "procedure", "design", "protocol", "implementation", "comparative"],
+      limitation: ["limitation", "trade-off", "drawback", "risk", "weakness", "constraint", "barrier", "implication"],
+      introduction: ["introduction", "background", "context", "overview", "foundation", "abstract"],
+      conclusion: ["conclusion", "summary", "synthesis", "concluding", "final", "outcome"],
+      recommendations: ["recommendations", "recommend", "action plan", "roadmap", "mitigation", "proposed", "way forward"],
+      references: ["references", "bibliography", "works cited", "sources", "et al", "journal", "press"]
+    };
+
+    const COURSE_NOTES_CORPUS =
+      "Enterprise systems and real-time predictive telemetry architectures reduce supply chain stockout latency across East African distribution networks. Cloud ERP migration lowers upfront capital hardware expenditure for medium-sized retail enterprises in Nairobi and Kenya. Key frameworks include SWOT, PESTEL, Porter's Five Forces, Zero-Trust RBAC, and empirical APA 7th scholarship (Kamau et al., 2024; Ochieng & Wambui, 2023; Njoroge et al., 2024; Mutua, 2023).";
+
+    function stemToken(word) {
+      let w = (word || "").toLowerCase().trim();
+      if (w.length <= 5) return w;
+      const suffixes = ["ization", "ational", "ologies", "ology", "ments", "ment", "ating", "ition", "ation", "ities", "ally", "ical", "ance", "ence", "ings", "ing", "ies", "ion", "ive", "ous", "ful", "ed", "es", "ly", "s"];
+      for (const suf of suffixes) {
+        if (w.endsWith(suf) && w.length - suf.length >= 4) return w.slice(0, -suf.length);
+      }
+      return w;
+    }
+
+    function computeSemanticAlignment(studentText, notesText) {
+      const stop = new Set(["the", "and", "for", "that", "this", "with", "from", "are", "was", "were", "have", "has", "not", "but", "into", "than", "their", "which", "about"]);
+      const tokA = (studentText.toLowerCase().match(/\b[a-z]{4,}\b/g) || []).filter(w => !stop.has(w)).map(stemToken);
+      const tokB = (notesText.toLowerCase().match(/\b[a-z]{4,}\b/g) || []).filter(w => !stop.has(w)).map(stemToken);
+      if (!tokA.length || !tokB.length) return 0;
+      const freqA = {}, freqB = {};
+      tokA.forEach(t => { freqA[t] = (freqA[t] || 0) + 1; });
+      tokB.forEach(t => { freqB[t] = (freqB[t] || 0) + 1; });
+      let dot = 0, normA = 0, normB = 0;
+      for (const [k, v] of Object.entries(freqA)) {
+        normA += v * v;
+        if (freqB[k]) dot += v * freqB[k];
+      }
+      for (const v of Object.values(freqB)) normB += v * v;
+      const cos = (normA > 0 && normB > 0) ? (dot / (Math.sqrt(normA) * Math.sqrt(normB))) : 0;
+      return Math.min(1.0, cos / 0.28);
+    }
+
+    function mapScoreToUsiu(score) {
+      for (const row of USIU_SCALE) {
+        if (score >= row.min) return row;
+      }
+      return USIU_SCALE[USIU_SCALE.length - 1];
+    }
+
+    function evaluateStudentDraftClientSide(studentId, studentName, text, rubricId) {
+      const rubric = RUBRICS[rubricId] || RUBRICS.standard_research_paper;
+      const lowerText = (text || "").toLowerCase();
+      const words = lowerText.match(/\b\w+\b/g) || [];
+      const wordSet = new Set(words);
+      const stemSet = new Set(words.filter(w => w.length >= 4).map(stemToken));
+      const wordCount = words.length;
+      const sentences = (text || "").split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 25);
+      const detectedCitations = (text || "").match(/[\(\[][A-Za-z\s,&.\-]*?(?:19|20)\d{2}[a-z]?[\)\]]/g) || [];
+      const citationsCount = detectedCitations.length;
+
+      // Integrity & anti-injection check
+      const injRegex = /ignore\s+(?:all\s+)?(?:previous|prior|above)\s+(?:instructions|rubrics|prompts)|(?:give|award|assign)\s+(?:this\s+student|me)\s+(?:100|full\s+marks)/i;
+      const injectionDetected = injRegex.test(text || "");
+      const alphaWords = lowerText.match(/\b[a-z]{3,}\b/g) || [];
+      const ttr = alphaWords.length > 0 ? (new Set(alphaWords).size / alphaWords.length) : 1.0;
+      const stuffingDetected = alphaWords.length >= 30 && ttr < 0.32;
+      const integrityClean = !injectionDetected && !stuffingDetected;
+
+      const semanticAlignment = computeSemanticAlignment(text || "", COURSE_NOTES_CORPUS);
+      const minWords = rubric.min_words || 220;
+      const expCites = rubric.expected_citations || 3;
+      const lengthFactor = Math.min(1.0, wordCount / minWords);
+
+      const socraticPrompts = [
+        "To reach Distinction (A) on Pillar 1, explicitly state your central research objective, hypothesis, or strategic problem and anchor it in a named conceptual architecture or regional context.",
+        "To strengthen Pillar 2, support every major claim with empirical data, quantitative metrics, or peer-reviewed APA 7th citations e.g., (Author, Year) rather than general assertions.",
+        "To elevate Pillar 3, go beyond description: compare alternative methodologies, evaluate operational trade-offs or limitations (using markers like 'however', 'conversely', 'implication'), and explain *why*.",
+        "To polish Pillar 4, organize your paper with clear academic section headings (Introduction, Empirical Analysis, Comparative Critique, Conclusion & Recommendations, and APA 7th References)."
+      ];
+
+      let totalScore = 0;
+      let fairnessBoost = false;
+
+      const pillarCoaching = rubric.criteria.map((crit, idx) => {
+        let synHits = 0;
+        for (const kw of crit.keywords) {
+          const kwLow = kw.toLowerCase();
+          const kwStem = stemToken(kwLow);
+          const cluster = SYNONYM_CLUSTERS[kwLow] || [kwLow];
+          if (wordSet.has(kwLow) || lowerText.includes(kwLow) || stemSet.has(kwStem) || cluster.some(syn => lowerText.includes(syn))) {
+            synHits++;
+          }
+        }
+        let kwRatio = Math.min(1.0, synHits / Math.max(1.0, crit.keywords.length * 0.45));
+        const discourseCoherence = Math.min(1.0, (sentences.length / 6.0) * 0.6 + (semanticAlignment * 0.4));
+        if (semanticAlignment >= 0.55 && wordCount >= 90 && kwRatio < 0.78 && integrityClean) {
+          const boosted = Math.max(kwRatio, (kwRatio * 0.55) + (semanticAlignment * 0.30) + (discourseCoherence * 0.15));
+          if (boosted > kwRatio + 0.05) fairnessBoost = true;
+          kwRatio = boosted;
+        }
+        const citeBonus = (crit.id.includes("citation") || crit.id.includes("sources") || crit.id.includes("evidence"))
+          ? Math.min(0.15, (citationsCount / expCites) * 0.15) : 0.0;
+        let rawRatio = Math.min(1.0, 0.45 + (0.45 * kwRatio) + (0.10 * lengthFactor) + citeBonus);
+        if (wordCount < 40) rawRatio *= 0.55;
+        if (!integrityClean) rawRatio = Math.min(rawRatio, 0.52);
+
+        const earned = Math.round(crit.weight * rawRatio * 10) / 10;
+        totalScore += earned;
+        const pct = Math.round((earned / crit.weight) * 1000) / 10;
+
+        const expandedTerms = crit.keywords.flatMap(k => SYNONYM_CLUSTERS[k.toLowerCase()] || [k.toLowerCase()]);
+        const quoteSent = sentences.find(s => expandedTerms.some(k => s.toLowerCase().includes(k)))
+          || sentences[0] || "No substantive sentence detected yet.";
+
+        let status = "NEEDS_REVISION_BEFORE_UPLOAD";
+        let coachTip = "Priority Revision Area: " + socraticPrompts[idx];
+        if (pct >= 88) {
+          status = "READY_FOR_DISTINCTION";
+          coachTip = "Strong mastery demonstrated! Your draft clearly articulates and supports this rubric pillar.";
+        } else if (pct >= 75) {
+          status = "ON_TRACK_CAN_STRENGTHEN";
+          coachTip = socraticPrompts[idx];
+        }
+
+        return {
+          id: crit.id,
+          criterion: crit.name,
+          weight: crit.weight,
+          estimated_earned: earned,
+          mastery_pct: pct,
+          readiness_status: status,
+          your_strongest_quote: quoteSent.length > 160 ? quoteSent.slice(0, 160) + "..." : quoteSent,
+          socratic_coach_tip: coachTip
+        };
+      });
+
+      totalScore = Math.round(Math.min(100, totalScore) * 10) / 10;
+      const gradeInfo = mapScoreToUsiu(totalScore);
+      const hasIntro = ["introduction", "background", "problem", "objective", "thesis", "purpose"].some(k => lowerText.includes(k));
+      const hasConclusion = ["conclusion", "summary", "recommend", "synthesis", "roadmap", "way forward"].some(k => lowerText.includes(k));
+      const hasReferences = ["references", "works cited", "bibliography", "et al", "journal"].some(k => lowerText.includes(k));
+
+      const checklist = [
+        {
+          item: "Minimum Academic Word Depth",
+          passed: wordCount >= minWords,
+          current: `${wordCount} words`,
+          target: `>= ${minWords} words`,
+          advice: wordCount >= minWords ? "Great length depth!" : `Expand your analysis by at least ${Math.max(0, minWords - wordCount)} more words with concrete examples.`
+        },
+        {
+          item: "APA 7th In-Text Empirical Citations",
+          passed: citationsCount >= expCites,
+          current: `${citationsCount} citation(s) (${detectedCitations.slice(0, 4).join(", ") || "None"})`,
+          target: `>= ${expCites} APA (Author, Year) citations`,
+          advice: citationsCount >= expCites ? "Strong APA 7th citation grounding!" : `Add ${Math.max(0, expCites - citationsCount)} more in-text APA 7th citation(s) such as (Kamau et al., 2024) or (Ochieng & Wambui, 2023).`
+        },
+        {
+          item: "Clear Thesis / Problem Statement Framing",
+          passed: hasIntro,
+          current: hasIntro ? "Detected" : "Missing explicit framing",
+          target: "Introduction + Core Research Objective / Thesis",
+          advice: hasIntro ? "Clear opening problem formulation." : "State your central thesis, objective, or strategic problem explicitly in the opening paragraph."
+        },
+        {
+          item: "Concluding Synthesis & APA References List",
+          passed: hasConclusion && hasReferences,
+          current: (hasConclusion && hasReferences) ? "Complete" : "Incomplete",
+          target: "Conclusion + APA References Section",
+          advice: (hasConclusion && hasReferences) ? "Includes concluding synthesis and scholarly references." : "Ensure your draft ends with a 'Conclusion & Recommendations' section followed by an APA 7th 'References' list."
+        },
+        {
+          item: "Academic Integrity & Originality Pre-Check",
+          passed: integrityClean,
+          current: `Lexical Diversity TTR: ${ttr.toFixed(2)}`,
+          target: "Zero Prompt Injection / Natural Academic Prose",
+          advice: integrityClean ? "Passed academic integrity pre-check." : "Warning: Remove repetitive keyword blocks or meta-instructions to the grader before submitting."
+        }
+      ];
+
+      const lowBand = Math.max(0, Math.round((totalScore - 2.5) * 10) / 10);
+      const highBand = Math.min(100, Math.round((totalScore + 2.0) * 10) / 10);
+      const cleanName = (studentName || "Student").replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, "");
+      const recFilename = `${rubric.course_code || "APT3040"}_${studentId || "665000"}_${cleanName}_Final.txt`;
+
+      return {
+        student_id: studentId,
+        student_name: studentName,
+        rubric_id: rubric.id,
+        rubric_title: rubric.title,
+        word_count: wordCount,
+        citations_detected: citationsCount,
+        detected_citations: detectedCitations,
+        course_material_alignment_pct: Math.round(semanticAlignment * 100),
+        fairness_guard_active: fairnessBoost,
+        estimated_score: totalScore,
+        estimated_score_band: `${lowBand}% – ${highBand}%`,
+        estimated_letter_grade: gradeInfo.letter,
+        estimated_gpa: gradeInfo.gpa,
+        standing: gradeInfo.standing,
+        ready_for_blackboard_submission: Boolean(totalScore >= 75 && integrityClean && citationsCount >= 1),
+        recommended_blackboard_filename: recFilename,
+        pre_submission_checklist: checklist,
+        pillar_coaching: pillarCoaching
+      };
+    }
+
+    async function runStudentSelfCheck() {
+      const sid = document.getElementById("stuIdInput").value.trim() || "667890";
+      const sname = document.getElementById("stuNameInput").value.trim() || "USIU Student";
+      const rubricId = document.getElementById("stuRubricSelect").value;
+      const text = document.getElementById("draftEditor").value;
+
+      let evalResult = evaluateStudentDraftClientSide(sid, sname, text, rubricId);
+
+      if (backendOnline) {
+        try {
+          const res = await fetch(`${API_BASE}/api/student/precheck`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ student_id: sid, student_name: sname, rubric_id: rubricId, text })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.evaluation) evalResult = data.evaluation;
+          }
+        } catch (_) {}
+      }
+
+      latestEvaluation = evalResult;
+      renderStudentReadiness(evalResult);
+    }
+
+    function renderStudentReadiness(ev) {
+      const summaryBox = document.getElementById("readinessSummaryCard");
+      const statusColor = ev.ready_for_blackboard_submission ? "var(--green)" : "var(--accent)";
+      const readyText = ev.ready_for_blackboard_submission
+        ? "✅ READY FOR BLACKBOARD UPLOAD"
+        : "🛠️ REVISION RECOMMENDED BEFORE BLACKBOARD UPLOAD";
+
+      const checklistHtml = (ev.pre_submission_checklist || []).map(item => `
+        <div class="pillar-box" style="border-color:${item.passed ? "var(--green)" : "#ff9900"}; padding:14px;">
+          <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <strong>${item.passed ? "✅" : "⚠️"} ${item.item}</strong>
+            <span class="badge" style="background:${item.passed ? "var(--green)" : "#ff9900"};">${item.current} (Target: ${item.target})</span>
+          </div>
+          <div style="font-size:0.92em;">💡 ${item.advice}</div>
+        </div>
+      `).join("");
+
+      summaryBox.innerHTML = `
+        <div style="font-size:1.25em; color:var(--accent);">Readiness Diagnosis & 5-Point Pre-Submission Checklist</div>
+        <div class="pillar-box" style="border-color:${statusColor};">
+          <div style="font-size:1.1em; color:${statusColor};">${readyText}</div>
+          <div style="font-size:1.45em; color:var(--green);">
+            Estimated Band: ${ev.estimated_score_band} (Projected Grade: ${ev.estimated_letter_grade} • GPA ${ev.estimated_gpa})
+          </div>
+          <div>${ev.standing}</div>
+          <div style="font-size:0.92em; margin-top:6px;">
+            📝 Words: <strong>${ev.word_count}</strong> •
+            📚 APA Citations: <strong>${ev.citations_detected}</strong> •
+            🧠 Course Lecture-Note Alignment: <strong style="color:var(--green);">${ev.course_material_alignment_pct}%</strong>
+            ${ev.fairness_guard_active ? " • ⚖️ <strong style='color:var(--accent);'>Paraphrase Fairness Guard Active</strong>" : ""}
+          </div>
+          <div style="font-size:0.88em; color:var(--accent);">
+            📎 Official Blackboard Filename: <code>${ev.recommended_blackboard_filename}</code>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          ${checklistHtml}
+        </div>
+      `;
+
+      const coachBox = document.getElementById("pillarCoachContainer");
+      coachBox.innerHTML = (ev.pillar_coaching || []).map((p, idx) => {
+        const pColor = p.readiness_status === "READY_FOR_DISTINCTION"
+          ? "var(--green)"
+          : (p.readiness_status === "ON_TRACK_CAN_STRENGTHEN" ? "var(--accent)" : "var(--red)");
+        return `
+          <div class="pillar-box" style="border-color:${pColor};">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div style="font-size:1.15em;"><strong>${p.criterion}</strong></div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span class="badge" style="background:${pColor};">${p.readiness_status.replace(/_/g, " ")} • ${p.mastery_pct}% (${p.estimated_earned}/${p.weight} pts)</span>
+                <button class="big-btn btn-speak" style="padding:8px 14px;" onclick="speakSinglePillarCoach(${idx})">🔊 Hear Coach Tip</button>
+              </div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:${Math.min(100, p.mastery_pct)}%; background:${pColor};"></div>
+            </div>
+            <div style="font-size:0.95em;">
+              <strong style="color:var(--accent);">Your Strongest Sentence Detected:</strong> "${p.your_strongest_quote}"
+            </div>
+            <div style="font-size:1em; color:var(--green);">
+              <strong>🧭 Writing Coach Recommendation:</strong> ${p.socratic_coach_tip}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function extractBrowserFileText(file) {
+      const name = file.name.toLowerCase();
+      const buf = await file.arrayBuffer();
+      const bytes = new Uint8Array(buf);
+
+      if (name.endsWith(".docx") && "DecompressionStream" in window) {
+        try {
+          const view = new DataView(buf);
+          let offset = 0;
+          while (offset + 30 < buf.byteLength) {
+            if (view.getUint32(offset, true) !== 0x04034b50) break;
+            const compMethod = view.getUint16(offset + 8, true);
+            const compSize = view.getUint32(offset + 18, true);
+            const nameLen = view.getUint16(offset + 26, true);
+            const extraLen = view.getUint16(offset + 28, true);
+            const entryName = new TextDecoder().decode(bytes.subarray(offset + 30, offset + 30 + nameLen));
+            const dataStart = offset + 30 + nameLen + extraLen;
+            const compData = bytes.subarray(dataStart, dataStart + compSize);
+            offset = dataStart + compSize;
+            if (entryName === "word/document.xml") {
+              let xmlStr = "";
+              if (compMethod === 0) {
+                xmlStr = new TextDecoder().decode(compData);
+              } else if (compMethod === 8) {
+                const ds = new DecompressionStream("deflate-raw");
+                const writer = ds.writable.getWriter();
+                writer.write(compData);
+                writer.close();
+                const outBuf = await new Response(ds.readable).arrayBuffer();
+                xmlStr = new TextDecoder().decode(outBuf);
+              }
+              return xmlStr.replace(/<\/w:p>/g, "\n").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+            }
+          }
+        } catch (_) {}
+      }
+      if (name.endsWith(".pdf")) {
+        const rawLatin = new TextDecoder("latin1").decode(bytes);
+        const matches = rawLatin.match(/\(([^()\\]{3,})\)/g) || [];
+        if (matches.length > 0) {
+          return matches.map(m => m.slice(1, -1)).join(" ");
+        }
+      }
+      return new TextDecoder("utf-8").decode(bytes);
+    }
+
+    async function handleStudentFile(fileList) {
+      if (!fileList || !fileList.length) return;
+      const file = fileList[0];
+      const stem = file.name.replace(/\.[^/.]+$/, "");
+      const idMatch = stem.match(/^(\d{5,8})[_\-\s]+(.+)$/);
+      if (idMatch) {
+        document.getElementById("stuIdInput").value = idMatch[1];
+        document.getElementById("stuNameInput").value = idMatch[2].replace(/[_-]/g, " ").trim();
+      }
+      const text = await extractBrowserFileText(file);
+      document.getElementById("draftEditor").value = text;
+      await runStudentSelfCheck();
+      speakCoachSummary();
+    }
+
+    function loadSampleDraft(kind) {
+      const sample = SAMPLE_DRAFTS[kind] || SAMPLE_DRAFTS.developing;
+      document.getElementById("stuIdInput").value = sample.id;
+      document.getElementById("stuNameInput").value = sample.name;
+      document.getElementById("draftEditor").value = sample.text;
+      runStudentSelfCheck();
+    }
+
+    function speakText(text) {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 0.96;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function stopSpeech() {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    }
+
+    function speakCoachSummary() {
+      if (!latestEvaluation) return;
+      const ev = latestEvaluation;
+      const unmet = (ev.pre_submission_checklist || []).filter(c => !c.passed).map(c => c.advice).join(" ");
+      speakText(
+        `Student Draft Readiness Check for ${ev.student_name}. Projected Grade Band ${ev.estimated_score_band}, Letter Grade ${ev.estimated_letter_grade}. ` +
+        `Word count ${ev.word_count}. APA citations detected: ${ev.citations_detected}. ` +
+        (unmet ? `Priority revisions before Blackboard upload: ${unmet}` : `All 5 pre-submission checklist targets met! Ready for Blackboard upload.`)
+      );
+    }
+
+    function speakSinglePillarCoach(idx) {
+      if (!latestEvaluation || !latestEvaluation.pillar_coaching[idx]) return;
+      const p = latestEvaluation.pillar_coaching[idx];
+      speakText(`${p.criterion}. Readiness ${p.mastery_pct} percent. ${p.socratic_coach_tip}`);
+    }
+
+    function proofreadDraftAloud() {
+      const txt = document.getElementById("draftEditor").value.trim();
+      if (!txt) {
+        speakText("Your draft editor is currently empty.");
+        return;
+      }
+      speakText("Proofreading your draft aloud: " + txt);
+    }
+
+    function downloadBlackboardReadyFile() {
+      if (!latestEvaluation) runStudentSelfCheck();
+      const txt = document.getElementById("draftEditor").value;
+      const blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = latestEvaluation.recommended_blackboard_filename || "USIU_Assignment_Final.txt";
+      a.click();
+    }
+
+    function downloadSelfCheckReceipt() {
+      if (!latestEvaluation) runStudentSelfCheck();
+      const ev = latestEvaluation;
+      const lines = [
+        "# 🎒 USIU-Africa Student Pre-Submission Self-Check Receipt",
+        `- **Student:** ${ev.student_name} (${ev.student_id})`,
+        `- **Rubric:** ${ev.rubric_title}`,
+        `- **Estimated Readiness Band:** ${ev.estimated_score_band} (Projected Grade: ${ev.estimated_letter_grade} | GPA ${ev.estimated_gpa})`,
+        `- **Word Count:** ${ev.word_count} words`,
+        `- **APA 7th Citations Detected:** ${ev.citations_detected}`,
+        `- **Course Lecture-Note Alignment:** ${ev.course_material_alignment_pct}%`,
+        `- **Recommended Blackboard Filename:** \`${ev.recommended_blackboard_filename}\``,
+        "",
+        "## 1. 5-Point Pre-Submission Checklist",
+        ...(ev.pre_submission_checklist || []).map(c => `- [${c.passed ? "x" : " "}] **${c.item}** (${c.current} / Target: ${c.target}) — *${c.advice}*`),
+        "",
+        "## 2. Pillar-by-Pillar Writing Coach Reflection",
+        ...(ev.pillar_coaching || []).map(p => `- **${p.criterion} (${p.mastery_pct}%):** ${p.socratic_coach_tip}`)
+      ];
+      const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `USIU_SelfCheck_Receipt_${ev.student_id}.md`;
+      a.click();
+    }
+
+    function setZoom(px) {
+      document.documentElement.style.setProperty("--base-size", px + "px");
+    }
+
+    function toggleContrast() {
+      document.body.classList.toggle("light-contrast");
+    }
+
+    async function checkServer() {
+      try {
+        const res = await fetch(`${API_BASE}/api/health`);
+        if (res.ok) {
+          backendOnline = true;
+          document.getElementById("studentServerBadge").textContent = "🟢 Local USIU Coach Server Connected (:8085)";
+          runStudentSelfCheck();
+        }
+      } catch (_) {
+        backendOnline = false;
+      }
+    }
+
+    const dz = document.getElementById("studentDropZone");
+    ["dragenter", "dragover"].forEach(evt => {
+      dz.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); dz.classList.add("dragover"); });
+    });
+    ["dragleave", "drop"].forEach(evt => {
+      dz.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); dz.classList.remove("dragover"); });
+    });
+    dz.addEventListener("drop", e => {
+      if (e.dataTransfer && e.dataTransfer.files) handleStudentFile(e.dataTransfer.files);
+    });
+
+    loadSampleDraft("developing");
+    checkServer();
+  </script>
+</body>
+</html>

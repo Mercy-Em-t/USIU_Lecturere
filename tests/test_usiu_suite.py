@@ -23,6 +23,7 @@ if str(SRC_DIR) not in sys.path:
 
 from usiu_blackboard_grader import (
     approve_staged_student_concept,
+    evaluate_student_draft_formative,
     evaluate_submission_deterministic,
     extract_submission_text,
     extract_verified_student_cohort_concepts,
@@ -235,6 +236,28 @@ class TestUSIUAccessibleGraderSuite(unittest.TestCase):
         md = format_intervention_report_markdown(report)
         self.assertIn("Priority Attention & Lecturer Intervention Queue", md)
         self.assertIn("Pedagogical Recommendations", md)
+
+    def test_student_formative_draft_coach_zero_answer_key_leak(self):
+        rubric = get_rubric_by_id("standard_research_paper")
+        sample_dir = DATA_DIR / "sample_submissions"
+        txt_brian = extract_submission_text(sample_dir / "667890_Brian_Otieno.txt")
+        txt_amina = extract_submission_text(sample_dir / "665421_Amina_Wanjiku.txt")
+
+        # 1. Developing draft (Brian Otieno) gets flagged as not yet ready and receives Socratic coach tips
+        coach_brian = evaluate_student_draft_formative("667890", "Brian Otieno", txt_brian, rubric)
+        self.assertFalse(coach_brian["ready_for_blackboard_submission"])
+        self.assertEqual(len(coach_brian["pre_submission_checklist"]), 5)
+        self.assertEqual(len(coach_brian["pillar_coaching"]), 4)
+        self.assertIn("667890_Brian_Otieno_Final.txt", coach_brian["recommended_blackboard_filename"])
+        # Ensure zero raw answer-key keyword arrays are leaked in pillar_coaching
+        for p in coach_brian["pillar_coaching"]:
+            self.assertNotIn("keywords", p)
+            self.assertTrue(len(p["socratic_coach_tip"]) > 20)
+
+        # 2. Distinction draft (Amina Wanjiku) is marked ready for Blackboard submission
+        coach_amina = evaluate_student_draft_formative("665421", "Amina Wanjiku", txt_amina, rubric)
+        self.assertTrue(coach_amina["ready_for_blackboard_submission"])
+        self.assertEqual(coach_amina["estimated_letter_grade"], "A")
 
 
 if __name__ == "__main__":

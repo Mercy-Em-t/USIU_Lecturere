@@ -42,6 +42,7 @@ from usiu_blackboard_grader import (
     USIU_GRADE_SCALE,
     USIUBlackboardClient,
     approve_staged_student_concept,
+    evaluate_student_draft_formative,
     evaluate_submission_deterministic,
     extract_submission_bytes,
     extract_submission_text,
@@ -363,6 +364,17 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(raw)
             return
 
+        if path in {"/student", "/student.html"}:
+            student_file = ROOT_DIR / "student.html"
+            raw = student_file.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(raw)))
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(raw)
+            return
+
         if path == "/api/health":
             self._send_json({
                 "status": "ONLINE",
@@ -598,6 +610,31 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
                 "submissions": self.db.list_assessments()
             })
             return
+
+        if path == "/api/student/precheck":
+            if "multipart/form-data" in content_type:
+                fields, files = parse_multipart_files(content_type, body)
+                rubric = get_rubric_by_id(fields.get("rubric_id", "standard_research_paper"))
+                sid = fields.get("student_id", "665000")
+                sname = fields.get("student_name", "USIU Student")
+                text = fields.get("text", "")
+                fname = "Draft.txt"
+                if files:
+                    fname, fbytes = files[0]
+                    text = extract_submission_bytes(fname, fbytes)
+                formative = evaluate_student_draft_formative(sid, sname, text, rubric, source_filename=fname)
+                self._send_json({"status": "PRECHECK_COMPLETE", "extracted_text": text, "evaluation": formative})
+                return
+            else:
+                payload = json.loads(body.decode("utf-8") or "{}")
+                rubric = get_rubric_by_id(payload.get("rubric_id", "standard_research_paper"))
+                sid = payload.get("student_id", "665000")
+                sname = payload.get("student_name", "USIU Student")
+                text = payload.get("text", "")
+                fname = payload.get("filename", "Draft.txt")
+                formative = evaluate_student_draft_formative(sid, sname, text, rubric, source_filename=fname)
+                self._send_json({"status": "PRECHECK_COMPLETE", "evaluation": formative})
+                return
 
         if path == "/api/knowledge/approve-concept":
             payload = json.loads(body.decode("utf-8") or "{}")

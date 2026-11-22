@@ -952,6 +952,144 @@ def format_intervention_report_markdown(report: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def evaluate_student_draft_formative(
+    student_id: str,
+    student_name: str,
+    text: str,
+    rubric: Dict[str, Any],
+    source_filename: str = ""
+) -> Dict[str, Any]:
+    """
+    USIU-Africa Student Self-Assessment & Formative Writing Coach Engine (v2.4).
+    Evaluates a student's draft before Blackboard submission WITHOUT leaking raw answer-key
+    keyword arrays. Provides:
+      1. Estimated Readiness Score, USIU Grade Band, and Course Lecture-Note Alignment %
+      2. 5-Point Pre-Submission Checklist (Word Count, APA 7th Citations, Intro/Thesis, Conclusion, References, Integrity)
+      3. Pillar-by-Pillar Socratic Writing Coach Prompts & Verbatim Quote Reflection
+      4. Standardized Blackboard Filename Generator (`Course_66xxxx_StudentName_Final`)
+    """
+    base_eval = evaluate_submission_deterministic(
+        student_id=student_id,
+        student_name=student_name,
+        text=text,
+        rubric=rubric,
+        source_filename=source_filename
+    )
+
+    lower_text = text.lower()
+    min_words = int(rubric.get("min_words", 220))
+    expected_cites = int(rubric.get("expected_citations", 3))
+    word_count = int(base_eval.get("word_count", 0))
+    citations_detected = int(base_eval.get("citations_detected", 0))
+    detected_citation_strings = re.findall(r"[\(\[][A-Za-z\s,&.\-]*?(?:19|20)\d{2}[a-z]?[\)\]]", text)
+
+    has_intro = any(k in lower_text for k in ["introduction", "background", "problem", "objective", "thesis", "purpose"])
+    has_conclusion = any(k in lower_text for k in ["conclusion", "summary", "recommend", "synthesis", "roadmap", "way forward"])
+    has_references = any(k in lower_text for k in ["references", "works cited", "bibliography", "et al", "journal"])
+    sec_scan = base_eval.get("security_scan", {})
+    integrity_clean = not bool(sec_scan.get("quarantined_from_learning"))
+
+    checklist = [
+        {
+            "item": "Minimum Academic Word Depth",
+            "passed": word_count >= min_words,
+            "current": f"{word_count} words",
+            "target": f">= {min_words} words",
+            "advice": "Great length depth!" if word_count >= min_words else f"Expand your analysis by at least {max(0, min_words - word_count)} more words with concrete examples."
+        },
+        {
+            "item": "APA 7th In-Text Empirical Citations",
+            "passed": citations_detected >= expected_cites,
+            "current": f"{citations_detected} citation(s) ({', '.join(detected_citation_strings[:4]) or 'None'})",
+            "target": f">= {expected_cites} APA (Author, Year) citations",
+            "advice": "Strong APA 7th citation grounding!" if citations_detected >= expected_cites else f"Add {max(0, expected_cites - citations_detected)} more in-text APA 7th citation(s) such as (Kamau et al., 2024) or (Ochieng & Wambui, 2023)."
+        },
+        {
+            "item": "Clear Thesis / Problem Statement Framing",
+            "passed": has_intro,
+            "current": "Detected" if has_intro else "Missing explicit framing",
+            "target": "Introduction + Core Research Objective / Thesis",
+            "advice": "Clear opening problem formulation." if has_intro else "State your central thesis, objective, or strategic problem explicitly in the opening paragraph."
+        },
+        {
+            "item": "Concluding Synthesis & Actionable Recommendations",
+            "passed": has_conclusion and has_references,
+            "current": "Complete" if (has_conclusion and has_references) else "Incomplete",
+            "target": "Conclusion + APA References Section",
+            "advice": "Includes concluding synthesis and scholarly references." if (has_conclusion and has_references) else "Ensure your draft ends with a 'Conclusion & Recommendations' section followed by an APA 7th 'References' list."
+        },
+        {
+            "item": "Academic Integrity & Originality Pre-Check",
+            "passed": integrity_clean,
+            "current": f"Lexical Diversity TTR: {sec_scan.get('lexical_diversity', 1.0)}",
+            "target": "Zero Prompt Injection / Natural Academic Prose",
+            "advice": "Passed academic integrity pre-check." if integrity_clean else "Warning: Remove repetitive keyword blocks or meta-instructions to the grader before submitting."
+        }
+    ]
+
+    socratic_prompts_by_index = [
+        "To reach Distinction (A) on Pillar 1, explicitly state your central research objective, hypothesis, or strategic problem and anchor it in a named conceptual architecture or regional context.",
+        "To strengthen Pillar 2, support every major claim with empirical data, quantitative metrics, or peer-reviewed APA 7th citations e.g., (Author, Year) rather than general assertions.",
+        "To elevate Pillar 3, go beyond description: compare alternative methodologies, evaluate operational trade-offs or limitations (using markers like 'however', 'conversely', 'implication'), and explain *why*.",
+        "To polish Pillar 4, organize your paper with clear academic section headings (Introduction, Empirical Analysis, Comparative Critique, Conclusion & Recommendations, and APA 7th References)."
+    ]
+
+    pillar_coaching = []
+    for idx, c in enumerate(base_eval.get("criteria_breakdown", [])):
+        weight = max(1.0, float(c["weight"]))
+        earned = float(c["earned"])
+        pct = round((earned / weight) * 100.0, 1)
+        if pct >= 88.0:
+            status = "READY_FOR_DISTINCTION"
+            coach_tip = "Strong mastery demonstrated! Your draft clearly articulates and supports this rubric pillar."
+        elif pct >= 75.0:
+            status = "ON_TRACK_CAN_STRENGTHEN"
+            coach_tip = socratic_prompts_by_index[min(idx, len(socratic_prompts_by_index) - 1)]
+        else:
+            status = "NEEDS_REVISION_BEFORE_UPLOAD"
+            coach_tip = "Priority Revision Area: " + socratic_prompts_by_index[min(idx, len(socratic_prompts_by_index) - 1)]
+
+        pillar_coaching.append({
+            "id": c.get("id", f"crit_{idx+1}"),
+            "criterion": c["criterion"],
+            "weight": weight,
+            "estimated_earned": earned,
+            "mastery_pct": pct,
+            "readiness_status": status,
+            "your_strongest_quote": c.get("evidence_quote", ""),
+            "socratic_coach_tip": coach_tip
+        })
+
+    score = float(base_eval["total_score"])
+    low_band = max(0.0, round(score - 2.5, 1))
+    high_band = min(100.0, round(score + 2.0, 1))
+    clean_sname = re.sub(r"[^A-Za-z0-9]+", "_", student_name.strip()).strip("_") or "Student"
+    course_prefix = rubric.get("course_code", "APT3040").split("/")[0].strip().replace(" ", "")
+    recommended_filename = f"{course_prefix}_{student_id}_{clean_sname}_Final.txt"
+
+    return {
+        "student_id": student_id,
+        "student_name": student_name,
+        "rubric_id": base_eval["rubric_id"],
+        "rubric_title": base_eval["rubric_title"],
+        "word_count": word_count,
+        "citations_detected": citations_detected,
+        "detected_citations": detected_citation_strings,
+        "course_material_alignment_pct": base_eval.get("course_material_alignment_pct", 0.0),
+        "fairness_guard_active": base_eval.get("fairness_guard_triggered", False),
+        "estimated_score": score,
+        "estimated_score_band": f"{low_band}% – {high_band}%",
+        "estimated_letter_grade": base_eval["letter_grade"],
+        "estimated_gpa": base_eval["gpa_points"],
+        "standing": base_eval["standing"],
+        "ready_for_blackboard_submission": bool(score >= 75.0 and integrity_clean and citations_detected >= 1),
+        "recommended_blackboard_filename": recommended_filename,
+        "pre_submission_checklist": checklist,
+        "pillar_coaching": pillar_coaching,
+        "security_scan": sec_scan
+    }
+
+
 def recalculate_with_overrides(
     assessment: Dict[str, Any],
     criterion_overrides: Dict[str, float],
