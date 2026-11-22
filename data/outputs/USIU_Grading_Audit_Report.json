@@ -9,16 +9,16 @@
     "citations_detected": 4,
     "course_material_alignment_pct": 100,
     "matched_course_concepts": [
-      "table",
-      "transforms",
       "balanced",
-      "governance",
-      "latency",
-      "distributors",
-      "demonstrate",
-      "predictive",
+      "sustainable",
+      "reductions",
       "stockout",
-      "ochieng"
+      "telemetry",
+      "distributors",
+      "predictive",
+      "provide",
+      "supply chain",
+      "across"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -74,7 +74,7 @@
       }
     ],
     "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Amina Wanjiku (665421) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (20 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.347968",
+    "graded_at": "2026-11-22T13:04:10.323177",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/665421",
@@ -95,14 +95,14 @@
     "citations_detected": 3,
     "course_material_alignment_pct": 100,
     "matched_course_concepts": [
-      "balanced",
-      "governance",
-      "zero-trust",
-      "should",
-      "control",
       "otieno",
+      "control",
+      "balanced",
+      "should",
+      "zero-trust",
       "multi-factor",
-      "cybersecurity"
+      "cybersecurity",
+      "governance"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -158,7 +158,7 @@
       }
     ],
     "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Kelvin Mwangi (666104) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (8 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.355281",
+    "graded_at": "2026-11-22T13:04:10.346860",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/666104",
@@ -179,10 +179,10 @@
     "citations_detected": 0,
     "course_material_alignment_pct": 40,
     "matched_course_concepts": [
-      "software",
-      "should",
+      "supply chain",
       "nairobi",
-      "supply chain"
+      "software",
+      "should"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -238,7 +238,7 @@
       }
     ],
     "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Brian Otieno (667890) | Score: 65.3/100 (D+ | GPA 1.3) Overall Standing: Below Average \u2014 Incomplete analysis. Course Material Alignment: 39% (4 lecture concepts matched). Strengths: 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth.",
-    "graded_at": "2026-11-22T12:47:44.361625",
+    "graded_at": "2026-11-22T13:04:10.368076",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/667890",
@@ -260,15 +260,15 @@
     "course_material_alignment_pct": 84,
     "matched_course_concepts": [
       "mutua",
-      "digital",
-      "table",
-      "governance",
-      "latency",
-      "demonstrate",
-      "error",
       "provide",
       "across",
-      "empirical"
+      "nairobi",
+      "digital",
+      "mobile money",
+      "demonstrate",
+      "governance",
+      "latency",
+      "error"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -324,7 +324,7 @@
       }
     ],
     "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Faith Chepkoech (668312) | Score: 98.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 83% (13 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.367439",
+    "graded_at": "2026-11-22T13:04:10.394611",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/668312",
@@ -345,16 +345,16 @@
     "citations_detected": 4,
     "course_material_alignment_pct": 100,
     "matched_course_concepts": [
-      "table",
-      "transforms",
       "balanced",
-      "governance",
-      "latency",
-      "distributors",
-      "demonstrate",
-      "predictive",
+      "sustainable",
+      "reductions",
       "stockout",
-      "ochieng"
+      "telemetry",
+      "distributors",
+      "predictive",
+      "provide",
+      "supply chain",
+      "across"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -410,7 +410,7 @@
       }
     ],
     "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Zainab Hassan (669102) | Score: 97.8/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (20 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.374161",
+    "graded_at": "2026-11-22T13:04:10.424092",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/669102",
@@ -431,14 +431,14 @@
     "citations_detected": 3,
     "course_material_alignment_pct": 100,
     "matched_course_concepts": [
-      "balanced",
-      "governance",
-      "zero-trust",
-      "should",
-      "control",
       "otieno",
+      "control",
+      "balanced",
+      "should",
+      "zero-trust",
       "multi-factor",
-      "cybersecurity"
+      "cybersecurity",
+      "governance"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -494,7 +494,7 @@
       }
     ],
     "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: David Kimani (669205) | Score: 96.6/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 100% (8 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.547271",
+    "graded_at": "2026-11-22T13:04:11.185440",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/669205",
@@ -509,22 +509,22 @@
     "student_id": "674748",
     "student_name": "Mercy Emurugat APT2030 Lab3",
     "source_filename": "674748_Mercy_Emurugat_APT2030_Lab3.docx",
-    "rubric_id": "standard_research_paper",
-    "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
+    "rubric_id": "apt2030_digital_electronics",
+    "rubric_title": "APT2030A_FS2026 \u2014 Digital Electronics Lab & Written Rubric (Prof. Gerald Chege)",
     "word_count": 2246,
     "citations_detected": 0,
     "course_material_alignment_pct": 34,
     "matched_course_concepts": [
-      "testing",
-      "digital",
-      "table",
-      "apt2030a",
-      "binary",
+      "class",
+      "requirements",
       "case",
-      "lean",
+      "code",
       "canvas",
-      "description",
-      "cases"
+      "apt2030a",
+      "lean",
+      "gerald",
+      "provide",
+      "figure"
     ],
     "fairness_guard_triggered": false,
     "security_scan": {
@@ -532,62 +532,62 @@
       "injection_matches": [],
       "keyword_stuffing_detected": false,
       "lexical_diversity": 0.187,
-      "keyword_density": 0.02,
+      "keyword_density": 0.112,
       "quarantined_from_learning": false,
       "security_alerts": []
     },
     "needs_lecturer_intervention": true,
-    "total_score": 94.2,
+    "total_score": 100.0,
     "letter_grade": "A",
     "gpa_points": 4.0,
     "standing": "Distinction \u2014 Exceptional mastery of course concepts",
     "criteria_breakdown": [
       {
-        "id": "thesis_clarity",
-        "criterion": "1. Thesis, Problem Formulation & Core Argument",
-        "weight": 30,
-        "earned": 27.4,
-        "exact_hits": 3,
-        "synonym_or_stem_hits": 4,
+        "id": "boolean_kmap_derivation",
+        "criterion": "1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification",
+        "weight": 30.0,
+        "earned": 30.0,
+        "exact_hits": 8,
+        "synonym_or_stem_hits": 8,
+        "evidence_quote": "Figure #1: 2-to-4 Decoder with Enable Input (E) \u2013 (a) Logic Diagram, (b) Truth Table\n1"
+      },
+      {
+        "id": "cmos_ieee754_architecture",
+        "criterion": "2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis",
+        "weight": 30.0,
+        "earned": 30.0,
+        "exact_hits": 7,
+        "synonym_or_stem_hits": 7,
         "evidence_quote": "UNITED STATES INTERNATIONAL UNIVERSITY \u2013 AFRICASchool of Science and Technology | Department of ComputingAPT2030A \u2013 Digital Electronics  |  Fall Semester 2026La..."
       },
       {
-        "id": "evidence_citations",
-        "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
-        "weight": 30,
-        "earned": 29.0,
-        "exact_hits": 4,
-        "synonym_or_stem_hits": 5,
+        "id": "digital_works_simulation",
+        "criterion": "3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification",
+        "weight": 25.0,
+        "earned": 25.0,
+        "exact_hits": 10,
+        "synonym_or_stem_hits": 10,
         "evidence_quote": "UNITED STATES INTERNATIONAL UNIVERSITY \u2013 AFRICASchool of Science and Technology | Department of ComputingAPT2030A \u2013 Digital Electronics  |  Fall Semester 2026La..."
       },
       {
-        "id": "critical_analysis",
-        "criterion": "3. Critical Evaluation, Methodology & Depth",
-        "weight": 25,
-        "earned": 22.8,
-        "exact_hits": 3,
-        "synonym_or_stem_hits": 4,
-        "evidence_quote": "Per submission guidelines, student name ('MERCYTRYPHENA EMURUGAT') and student ID ('674748') appear as an embedded label directly on the design template canvas ..."
-      },
-      {
-        "id": "academic_structure",
-        "criterion": "4. Academic Structure, Coherence & APA 7th Style",
-        "weight": 15,
+        "id": "lab_integrity_documentation",
+        "criterion": "4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity",
+        "weight": 15.0,
         "earned": 15.0,
-        "exact_hits": 3,
-        "synonym_or_stem_hits": 4,
+        "exact_hits": 9,
+        "synonym_or_stem_hits": 9,
         "evidence_quote": "UNITED STATES INTERNATIONAL UNIVERSITY \u2013 AFRICASchool of Science and Technology | Department of ComputingAPT2030A \u2013 Digital Electronics  |  Fall Semester 2026La..."
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Mercy Emurugat APT2030 Lab3 (674748) | Score: 94.2/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 34% (27 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.572520",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT2030A_FS2026) Student: Mercy Emurugat APT2030 Lab3 (674748) | Score: 100.0/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 34% (27 lecture concepts matched). Strengths: 1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification, 2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis, 3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification, 4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-22T13:04:11.314046",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/674748",
       "payload": {
-        "score": 94.2,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Mercy Emurugat APT2030 Lab3 (674748) | Score: 94.2/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 34% (27 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Mercy Emurugat APT2030 Lab3 (674748) | Score: 94.2/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 34% (27 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
+        "score": 100.0,
+        "text": "USIU-Africa Official Assessment Receipt (APT2030A_FS2026) Student: Mercy Emurugat APT2030 Lab3 (674748) | Score: 100.0/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 34% (27 lecture concepts matched). Strengths: 1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification, 2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis, 3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification, 4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (APT2030A_FS2026) Student: Mercy Emurugat APT2030 Lab3 (674748) | Score: 100.0/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 34% (27 lecture concepts matched). Strengths: 1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification, 2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis, 3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification, 4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   },
@@ -595,22 +595,22 @@
     "student_id": "674749",
     "student_name": "Mercy Emurugat SWE3020B Quality Plan",
     "source_filename": "674749_Mercy_Emurugat_SWE3020B_Quality_Plan.docx",
-    "rubric_id": "standard_research_paper",
-    "rubric_title": "USIU-Africa Standardized Research & Term Paper Rubric (SST / General)",
+    "rubric_id": "swe3020b_sqa_project",
+    "rubric_title": "SWE3020B \u2014 Software Quality Assurance, SOLID Design & DevOps Rubric (Official 45-Mark Scaled)",
     "word_count": 916,
     "citations_detected": 0,
     "course_material_alignment_pct": 82,
     "matched_course_concepts": [
-      "testing",
-      "digital",
-      "roi",
+      "control",
+      "version",
       "balanced",
-      "user",
-      "number",
-      "target",
+      "requirements",
       "case",
-      "software",
-      "quality"
+      "code",
+      "task",
+      "team",
+      "tests",
+      "interface"
     ],
     "fairness_guard_triggered": true,
     "security_scan": {
@@ -618,62 +618,62 @@
       "injection_matches": [],
       "keyword_stuffing_detected": false,
       "lexical_diversity": 0.468,
-      "keyword_density": 0.009,
+      "keyword_density": 0.04,
       "quarantined_from_learning": false,
       "security_alerts": []
     },
     "needs_lecturer_intervention": true,
-    "total_score": 86.2,
-    "letter_grade": "B+",
-    "gpa_points": 3.3,
-    "standing": "Very Good \u2014 Well-structured argument with minor gaps",
+    "total_score": 95.3,
+    "letter_grade": "A",
+    "gpa_points": 4.0,
+    "standing": "Distinction \u2014 Exceptional mastery of course concepts",
     "criteria_breakdown": [
       {
-        "id": "thesis_clarity",
-        "criterion": "1. Thesis, Problem Formulation & Core Argument",
-        "weight": 30,
-        "earned": 26.3,
-        "exact_hits": 0,
+        "id": "requirements_uml_diagrams",
+        "criterion": "1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams) [12/45 -> 27 pts]",
+        "weight": 27.0,
+        "earned": 24.1,
+        "exact_hits": 3,
         "synonym_or_stem_hits": 3,
-        "evidence_quote": "Why quality matters here: the system handles members' money and personal data"
+        "evidence_quote": "Quality Plan: Sacco Digital Savings Tracker\nSWE3020 Software Quality Assurance and Security \u00b7 CAT 2 \u00b7 Prof"
       },
       {
-        "id": "evidence_citations",
-        "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
-        "weight": 30,
-        "earned": 24.6,
-        "exact_hits": 1,
-        "synonym_or_stem_hits": 2,
-        "evidence_quote": "Product Introduction\nThe Sacco Digital Savings Tracker is a web and mobile application that replaces paper ledgers and spreadsheets in SACCOs and chamas"
-      },
-      {
-        "id": "critical_analysis",
-        "criterion": "3. Critical Evaluation, Methodology & Depth",
-        "weight": 25,
-        "earned": 22.0,
-        "exact_hits": 1,
-        "synonym_or_stem_hits": 3,
+        "id": "solid_design_ui_demo",
+        "criterion": "2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI [16/45 -> 35 pts]",
+        "weight": 35.0,
+        "earned": 33.2,
+        "exact_hits": 4,
+        "synonym_or_stem_hits": 4,
         "evidence_quote": "Requirements and design\nUse cases (UC-01 to UC-14), Figma prototype, database schema\nRequirements and design review; usability walkthrough of the prototype\n2"
       },
       {
-        "id": "academic_structure",
-        "criterion": "4. Academic Structure, Coherence & APA 7th Style",
-        "weight": 15,
-        "earned": 13.3,
-        "exact_hits": 1,
-        "synonym_or_stem_hits": 2,
-        "evidence_quote": "Product Introduction\nThe Sacco Digital Savings Tracker is a web and mobile application that replaces paper ledgers and spreadsheets in SACCOs and chamas"
+        "id": "testing_cicd_devops",
+        "criterion": "3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps [6/45 -> 14 pts]",
+        "weight": 14.0,
+        "earned": 14.0,
+        "exact_hits": 7,
+        "synonym_or_stem_hits": 7,
+        "evidence_quote": "Quality Plan: Sacco Digital Savings Tracker\nSWE3020 Software Quality Assurance and Security \u00b7 CAT 2 \u00b7 Prof"
+      },
+      {
+        "id": "quality_plan_teamwork",
+        "criterion": "4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References [11/45 -> 24 pts]",
+        "weight": 24.0,
+        "earned": 24.0,
+        "exact_hits": 5,
+        "synonym_or_stem_hits": 5,
+        "evidence_quote": "Quality Plan: Sacco Digital Savings Tracker\nSWE3020 Software Quality Assurance and Security \u00b7 CAT 2 \u00b7 Prof"
       }
     ],
-    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Mercy Emurugat SWE3020B Quality Plan (674749) | Score: 86.2/100 (B+ | GPA 3.3) Overall Standing: Very Good \u2014 Well-structured argument with minor gaps. Course Material Alignment: 82% (26 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-    "graded_at": "2026-11-22T12:47:44.589029",
+    "feedback_for_blackboard": "USIU-Africa Official Assessment Receipt (SWE3020B) Student: Mercy Emurugat SWE3020B Quality Plan (674749) | Score: 95.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 82% (26 lecture concepts matched). Strengths: 1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams) [12/45 -> 27 pts], 2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI [16/45 -> 35 pts], 3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps [6/45 -> 14 pts], 4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References [11/45 -> 24 pts]. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+    "graded_at": "2026-11-22T13:04:11.383442",
     "blackboard_sync": {
       "status": "STAGED_FOR_BLACKBOARD_SYNC",
       "endpoint": "PATCH https://blackboard.usiu.ac.ke/learn/api/public/v2/courses/_10482_1/gradebook/columns/_58291_1/users/674749",
       "payload": {
-        "score": 86.2,
-        "text": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Mercy Emurugat SWE3020B Quality Plan (674749) | Score: 86.2/100 (B+ | GPA 3.3) Overall Standing: Very Good \u2014 Well-structured argument with minor gaps. Course Material Alignment: 82% (26 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
-        "feedback": "USIU-Africa Official Assessment Receipt (APT3040 / IST4035) Student: Mercy Emurugat SWE3020B Quality Plan (674749) | Score: 86.2/100 (B+ | GPA 3.3) Overall Standing: Very Good \u2014 Well-structured argument with minor gaps. Course Material Alignment: 82% (26 lecture concepts matched). Strengths: 1. Thesis, Problem Formulation & Core Argument, 2. Empirical Evidence, Literature & APA 7th Citations, 3. Critical Evaluation, Methodology & Depth, 4. Academic Structure, Coherence & APA 7th Style. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
+        "score": 95.3,
+        "text": "USIU-Africa Official Assessment Receipt (SWE3020B) Student: Mercy Emurugat SWE3020B Quality Plan (674749) | Score: 95.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 82% (26 lecture concepts matched). Strengths: 1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams) [12/45 -> 27 pts], 2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI [16/45 -> 35 pts], 3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps [6/45 -> 14 pts], 4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References [11/45 -> 24 pts]. Areas to Strengthen: Maintain strong APA 7th empirical grounding.",
+        "feedback": "USIU-Africa Official Assessment Receipt (SWE3020B) Student: Mercy Emurugat SWE3020B Quality Plan (674749) | Score: 95.3/100 (A | GPA 4.0) Overall Standing: Distinction \u2014 Exceptional mastery of course concepts. Course Material Alignment: 82% (26 lecture concepts matched). Strengths: 1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams) [12/45 -> 27 pts], 2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI [16/45 -> 35 pts], 3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps [6/45 -> 14 pts], 4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References [11/45 -> 24 pts]. Areas to Strengthen: Maintain strong APA 7th empirical grounding."
       }
     }
   }

@@ -42,6 +42,7 @@ from usiu_blackboard_grader import (
     USIU_GRADE_SCALE,
     USIUBlackboardClient,
     approve_staged_student_concept,
+    detect_best_rubric_id,
     evaluate_student_draft_formative,
     evaluate_submission_deterministic,
     extract_submission_bytes,
@@ -50,6 +51,7 @@ from usiu_blackboard_grader import (
     format_blackboard_csv_string,
     format_intervention_report_markdown,
     generate_cohort_intervention_report,
+    generate_cue_senate_moderation_portfolio_markdown,
     get_rubric_by_id,
     ingest_course_material_document,
     ingest_zip_bytes,
@@ -270,7 +272,8 @@ def seed_initial_submissions(db: USIUGradingDatabase):
         if f.suffix.lower() in {".txt", ".md", ".docx", ".pdf"}:
             sid, sname = parse_student_identity_from_filename(f.name)
             text = extract_submission_text(f)
-            res = evaluate_submission_deterministic(sid, sname, text, rubric, source_filename=f.name)
+            best_rubric = get_rubric_by_id(detect_best_rubric_id(f.name, text))
+            res = evaluate_submission_deterministic(sid, sname, text, best_rubric, source_filename=f.name)
             res["blackboard_sync"] = bb_client.post_grade_to_blackboard(
                 "_10482_1", "_58291_1", sid, res["total_score"], res["feedback_for_blackboard"]
             )
@@ -420,6 +423,19 @@ class USIULecturerRequestHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "text/markdown; charset=utf-8")
             self.send_header("Content-Disposition", 'attachment; filename="USIU_Intervention_And_Recommendations_Report.md"')
+            self.send_header("Content-Length", str(len(raw)))
+            self._send_cors_headers()
+            self.end_headers()
+            self.wfile.write(raw)
+            return
+
+        if path == "/api/export/moderation-md":
+            all_rows = self.db.list_assessments()
+            md = generate_cue_senate_moderation_portfolio_markdown(all_rows)
+            raw = md.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/markdown; charset=utf-8")
+            self.send_header("Content-Disposition", 'attachment; filename="USIU_CUE_Senate_Moderation_Portfolio.md"')
             self.send_header("Content-Length", str(len(raw)))
             self._send_cors_headers()
             self.end_headers()

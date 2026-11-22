@@ -960,6 +960,161 @@ def format_intervention_report_markdown(report: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def detect_best_rubric_id(
+    filename: str = "",
+    text: str = "",
+    fallback_rubric_id: str = "standard_research_paper"
+) -> str:
+    """
+    Smart USIU Course & Rubric Auto-Detector (v3.0):
+    Inspects filename and submission text to automatically match course-specific rubrics
+    (APT2030A Digital Electronics, SWE2030 Requirements SRS, SWE3020B SQA & SOLID, CSB, SHSS).
+    """
+    combined = f"{filename} {text[:3500]}".lower()
+    available = load_all_rubrics()
+
+    if "apt2030_digital_electronics" in available and any(
+        k in combined for k in ["apt2030", "digital works", "k-map", "karnaugh", "2-to-4", "multiplexer", "ieee-754", "pmos"]
+    ):
+        return "apt2030_digital_electronics"
+
+    if "swe3020b_sqa_project" in available and any(
+        k in combined for k in ["swe3020", "swe 3020", "quality plan", "inspection checklist", "solid principles", "sacco digital savings"]
+    ):
+        return "swe3020b_sqa_project"
+
+    if "swe2030_requirements_srs" in available and any(
+        k in combined for k in ["swe2030", "swe 2030", "lean canvas", "crazy-8", "navigation diagram", "problem-fit", "solution-fit"]
+    ):
+        return "swe2030_requirements_srs"
+
+    if "csb_business_case_study" in available and any(
+        k in combined for k in ["bus4010", "mba6010", "pestel", "porter's five", "chandaria"]
+    ):
+        return "csb_business_case_study"
+
+    if "shss_humanities_essay" in available and any(
+        k in combined for k in ["irl3020", "psy3010", "constructivism", "realism", "treaty"]
+    ):
+        return "shss_humanities_essay"
+
+    return fallback_rubric_id if fallback_rubric_id in available else "standard_research_paper"
+
+
+def generate_cue_senate_moderation_portfolio_markdown(assessments: List[Dict[str, Any]]) -> str:
+    """
+    Generates an official Commission for University Education (CUE Kenya) & USIU-Africa Senate
+    Course Assessment Moderation Portfolio (.md), including:
+      1. Cohort Statistical Summary & USIU Grade Distribution Histogram (A to F)
+      2. Stratified 3-Script Moderation Dossier (Top/High Script, Median/Middle Script, Lowest/At-Risk Script)
+      3. Paraphrase Fairness Guard, Zero-Trust Security & Lecturer Override Audit Trail
+      4. Official Internal & External Examiner Sign-Off Block
+    """
+    if not assessments:
+        return "# 🏛️ USIU-Africa CUE & Senate Moderation Portfolio\n\nNo graded scripts available."
+
+    sorted_rows = sorted(assessments, key=lambda x: float(x["total_score"]), reverse=True)
+    n = len(sorted_rows)
+    mean_score = round(sum(float(x["total_score"]) for x in sorted_rows) / n, 1)
+    top_script = sorted_rows[0]
+    mid_script = sorted_rows[n // 2]
+    low_script = sorted_rows[-1]
+
+    grade_buckets: Dict[str, int] = {}
+    for _, letter, _, _ in USIU_GRADE_SCALE:
+        grade_buckets[letter] = 0
+    for r in sorted_rows:
+        lg = r.get("letter_grade", "F")
+        grade_buckets[lg] = grade_buckets.get(lg, 0) + 1
+
+    lines = [
+        "# 🏛️ USIU-AFRICA & CUE (KENYA) SENATE EXAMINATION MODERATION PORTFOLIO",
+        "- **Institution:** United States International University – Africa (USIU-Africa)",
+        "- **Quality Assurance Standard:** Commission for University Education (CUE) & USIU Senate Moderation Protocol",
+        f"- **Generated Timestamp:** `{datetime.now().isoformat()}`",
+        f"- **Total Moderated Scripts:** `{n}`",
+        f"- **Cohort Mean Mark:** `{mean_score} / 100`",
+        "",
+        "---",
+        "",
+        "## 1. Official USIU Grade Distribution Table",
+        "",
+        "| USIU Letter Grade | Count | Percentage (%) | Visual Histogram |",
+        "|:---:|:---:|:---:|:---|"
+    ]
+    for _, letter, gpa, desc in USIU_GRADE_SCALE:
+        cnt = grade_buckets.get(letter, 0)
+        if cnt > 0 or letter in {"A", "B", "C", "D", "F"}:
+            pct = round((cnt / n) * 100.0, 1)
+            bar = "█" * max(1, int(pct / 5)) if cnt > 0 else "·"
+            lines.append(f"| **{letter}** (GPA {gpa}) | `{cnt}` | `{pct}%` | `{bar}` ({desc.split('—')[0].strip()}) |")
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## 2. Stratified 3-Tier Moderation Sample Scripts (High / Median / Low)",
+        ""
+    ])
+
+    for tier_label, sample in [
+        ("🏆 TIER 1 — HIGH / DISTINCTION EXEMPLAR SCRIPT", top_script),
+        ("⚖️ TIER 2 — MEDIAN / BENCHMARK SCRIPT", mid_script),
+        ("🛠️ TIER 3 — LOWEST / REMEDIATION SAMPLE SCRIPT", low_script),
+    ]:
+        lines.extend([
+            f"### {tier_label}",
+            f"- **Student:** **{sample['student_name']}** (USIU ID: `{sample['student_id']}`)",
+            f"- **Source File:** `{sample.get('source_filename', 'Submission')}`",
+            f"- **Active Locked Rubric:** `{sample.get('rubric_title', 'USIU Locked Rubric')}`",
+            f"- **Awarded Score & Standing:** **`{sample['total_score']} / 100` (`{sample['letter_grade']}` | GPA `{sample['gpa_points']}`)** — *{sample.get('standing', '')}*",
+            f"- **Course Material Semantic Alignment:** `{sample.get('course_material_alignment_pct', 0)}%`",
+            "",
+            "| Rubric Criterion | Weight | Awarded | Verbatim Evidence Quote Extracted from Script |",
+            "|:---|:---:|:---:|:---|"
+        ])
+        for c in sample.get("criteria_breakdown", []):
+            quote = str(c.get("evidence_quote", "")).replace("|", "/")
+            lines.append(f"| {c['criterion']} | `{c['weight']}` | **`{c['earned']}`** | *\"{quote}\"* |")
+        lines.extend([
+            "",
+            f"- **Official Blackboard Grade Center Feedback Receipt:** `{sample.get('feedback_for_blackboard', '')}`",
+            ""
+        ])
+
+    lines.extend([
+        "---",
+        "",
+        "## 3. Fairness Guard, Anti-Injection Security & Lecturer Override Audit Log",
+        "",
+        "| Student ID | Student Name | Rubric ID | Fairness Guard | Security Quarantine | Lecturer Manual Override | Final Mark |",
+        "|:---|:---|:---|:---:|:---:|:---:|:---:|"
+    ])
+    for r in sorted_rows:
+        sec_q = "🚨 QUARANTINED" if r.get("security_scan", {}).get("quarantined_from_learning") else "✅ CLEAN"
+        fg = "⚖️ BOOSTED" if r.get("fairness_guard_triggered") else "Standard"
+        ov = "✍️ OVERRIDDEN" if r.get("overridden_by_lecturer") else "Auto-Verified"
+        lines.append(
+            f"| `{r['student_id']}` | {r['student_name']} | `{r.get('rubric_id', '')}` | {fg} | {sec_q} | {ov} | **{r['total_score']}% ({r['letter_grade']})** |"
+        )
+
+    lines.extend([
+        "",
+        "---",
+        "",
+        "## 4. USIU-Africa Senate & External Examiner Sign-Off",
+        "",
+        "| Role | Name & Title | Signature | Date |",
+        "|:---|:---|:---|:---|",
+        "| **Internal Course Lecturer** | _______________________________ | ____________________ | ____________ |",
+        "| **Department Chair (SST / CSB / SHSS)** | _______________________________ | ____________________ | ____________ |",
+        "| **External Examiner / CUE Moderator** | _______________________________ | ____________________ | ____________ |",
+        "| **Dean of School** | _______________________________ | ____________________ | ____________ |",
+        ""
+    ])
+    return "\n".join(lines)
+
+
 def evaluate_student_draft_formative(
     student_id: str,
     student_name: str,
@@ -1254,7 +1409,11 @@ def main():
 
         student_id, student_name = parse_student_identity_from_filename(f.name)
         text = extract_submission_text(f)
-        eval_res = evaluate_submission_deterministic(student_id, student_name, text, rubric, source_filename=f.name)
+        active_rubric = rubric
+        if args.rubric_id in {"standard_research_paper", "auto"}:
+            detected_id = detect_best_rubric_id(f.name, text, args.rubric_id)
+            active_rubric = get_rubric_by_id(detected_id)
+        eval_res = evaluate_submission_deterministic(student_id, student_name, text, active_rubric, source_filename=f.name)
         bb_sync = bb_client.post_grade_to_blackboard(
             args.course_id, args.column_id, student_id, eval_res["total_score"], eval_res["feedback_for_blackboard"]
         )
@@ -1263,6 +1422,7 @@ def main():
         assessments_with_texts.append((eval_res, text))
 
         print(f"👤 STUDENT: {student_name} (ID: {student_id}) [{f.name}]")
+        print(f"   • RUBRIC:      {active_rubric.get('title')}")
         print(f"   • FINAL MARK:  {eval_res['total_score']}/100  [{eval_res['letter_grade']} | GPA {eval_res['gpa_points']}]")
         print(f"   • STANDING:    {eval_res['standing']}")
         for c in eval_res["criteria_breakdown"]:
@@ -1274,25 +1434,29 @@ def main():
                 f"Student {student_name}. Score {eval_res['total_score']} out of 100. Grade {eval_res['letter_grade']}. {eval_res['standing']}."
             )
 
-    # Smart anti-poisoning student cohort concept learning + Executive Intervention Report
+    # Smart anti-poisoning student cohort concept learning + Executive Intervention Report + CUE Senate Moderation Portfolio
     extract_verified_student_cohort_concepts(assessments_with_texts)
     intervention_report = generate_cohort_intervention_report(results)
     report_md = format_intervention_report_markdown(intervention_report)
+    moderation_md = generate_cue_senate_moderation_portfolio_markdown(results)
 
     args.out_csv.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
 
     report_md_path = args.out_json.parent / "USIU_Intervention_And_Recommendations_Report.md"
     report_json_path = args.out_json.parent / "USIU_Intervention_Report.json"
+    moderation_md_path = args.out_json.parent / "USIU_CUE_Senate_Moderation_Portfolio.md"
 
     args.out_csv.write_text(format_blackboard_csv_string(results), encoding="utf-8")
     args.out_json.write_text(json.dumps(results, indent=2), encoding="utf-8")
     report_md_path.write_text(report_md, encoding="utf-8")
     report_json_path.write_text(json.dumps(intervention_report, indent=2), encoding="utf-8")
+    moderation_md_path.write_text(moderation_md, encoding="utf-8")
 
     print(f"✅ [EXPORTED] Blackboard Grade Center CSV: {args.out_csv}")
     print(f"✅ [EXPORTED] Full Rubric Audit JSON:      {args.out_json}")
     print(f"🚨 [EXPORTED] Lecturer Intervention MD:    {report_md_path} ({intervention_report['intervention_alerts_count']} alerts)")
+    print(f"🏛️ [EXPORTED] CUE Senate Moderation Pack:  {moderation_md_path}")
 
 
 if __name__ == "__main__":

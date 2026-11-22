@@ -282,6 +282,7 @@
         <button class="big-btn" onclick="setZoom(38)" title="Ultra Giant 220% Poster Text">🔍 220% ULTRA</button>
         <button class="big-btn" onclick="toggleContrast()">🌓 CREAM / DARK</button>
         <button class="big-btn btn-speak" onclick="speakCurrentStudent()">🔊 READ GRADE ALOUD</button>
+        <button class="big-btn" id="voiceCmdBtn" style="background:var(--blue); color:#000; border-color:#000;" onclick="toggleVoiceCommandListener()" title="Speak commands like 'Next student', 'Add 1 point to criterion 1', 'Open report'">🎙️ VOICE COMMAND (V)</button>
         <button class="big-btn" onclick="stopSpeech()">⏹️ STOP AUDIO</button>
       </div>
     </div>
@@ -290,6 +291,7 @@
     <div class="shortcuts-bar" role="note" aria-label="Voice-First Keyboard Shortcuts">
       <div><strong>⌨️ Zero-Mouse Low-Vision Shortcuts:</strong></div>
       <div><span class="kbd">Space</span> Read Grade Aloud</div>
+      <div><span class="kbd">V</span> Speak Voice Command</div>
       <div><span class="kbd">N</span> / <span class="kbd">P</span> Next / Previous Student</div>
       <div><span class="kbd">1</span>–<span class="kbd">4</span> Hear Criterion 1–4</div>
       <div><span class="kbd">Alt+Z</span> Cycle Zoom (100/135/175%)</div>
@@ -356,9 +358,10 @@
         <div class="step-num">STEP 3: Sync to USIU Blackboard</div>
         <label>Export or Live REST PATCH (`blackboard.usiu.ac.ke`):</label>
         <button class="big-btn btn-post" onclick="postToBlackboard()">📤 3. Post All Grades to Blackboard</button>
-        <div style="display:flex; gap:10px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
           <button class="big-btn" style="flex:1;" onclick="downloadBlackboardCsv()">⬇️ Grade Center CSV</button>
           <button class="big-btn" style="flex:1;" onclick="downloadAuditJson()">⬇️ Audit JSON</button>
+          <button class="big-btn btn-speak" style="flex:1;" onclick="downloadCueModerationPortfolio()">🏛️ CUE / Senate Pack</button>
         </div>
       </div>
     </div>
@@ -659,6 +662,50 @@
           { id: "academic_structure", criterion: "4. Academic Structure, Coherence & APA 7th Style", earned: 10.9, weight: 15, evidence_quote: "Short introduction and conclusion summary." }
         ],
         feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (APT3040 / BUS4010) Student: Brian Otieno (667890) | Score: 64.3/100 (D+ | GPA 1.3) Overall Standing: Below Average — Incomplete analysis."
+      },
+      {
+        student_id: "674748",
+        student_name: "Mercy Emurugat (APT2030 Lab 3: Decoders & MUX)",
+        source_filename: "674748_Mercy_Emurugat_APT2030_Lab3.docx",
+        rubric_id: "apt2030_digital_electronics",
+        rubric_title: "APT2030A_FS2026 — Digital Electronics Lab & Written Rubric (Prof. Gerald Chege)",
+        word_count: 1712,
+        citations_detected: 2,
+        course_material_alignment_pct: 94,
+        fairness_guard_triggered: false,
+        total_score: 100.0,
+        letter_grade: "A",
+        gpa_points: 4.0,
+        standing: "Distinction — Exceptional mastery of course concepts",
+        criteria_breakdown: [
+          { id: "boolean_kmap_derivation", criterion: "1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification", earned: 30.0, weight: 30, evidence_quote: "The circuit utilizes three NOT gates (inverters) and four 3-input NAND gates to generate inverted literals A', B', E' and minterm decode outputs D0..D3." },
+          { id: "cmos_ieee754_architecture", criterion: "2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis", earned: 30.0, weight: 30, evidence_quote: "A decoder is a combinational logic circuit that converts binary information from n input lines to a maximum of 2^n unique output lines with active-low enable E." },
+          { id: "digital_works_simulation", criterion: "3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification", earned: 25.0, weight: 25, evidence_quote: "Digital Works 3.04 was used to implement and simulate all combinational circuits across all active and disabled input combinations of E, A, and B." },
+          { id: "lab_integrity_documentation", criterion: "4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity", earned: 15.0, weight: 15, evidence_quote: "Student name ('MERCYTRYPHENA EMURUGAT') and student ID ('674748') appear as an embedded label directly on the design template canvas across every state." }
+        ],
+        feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (APT2030A_FS2026 — Digital Electronics) | Student: Mercy Emurugat (674748) | Score: 100.0/100 (A | GPA 4.0) | Overall Standing: Distinction — Exceptional mastery of Combinational Decoders, Multiplexers, and Digital Works state verification."
+      },
+      {
+        student_id: "674749",
+        student_name: "Mercy Emurugat (SWE3020B: Sacco Quality Plan)",
+        source_filename: "674749_Mercy_Emurugat_SWE3020B_Quality_Plan.docx",
+        rubric_id: "swe3020b_sqa_project",
+        rubric_title: "SWE3020B — Software Quality Assurance, SOLID Design & DevOps Rubric",
+        word_count: 1480,
+        citations_detected: 4,
+        course_material_alignment_pct: 88,
+        fairness_guard_triggered: false,
+        total_score: 95.3,
+        letter_grade: "A",
+        gpa_points: 4.0,
+        standing: "Distinction — Exceptional mastery of course concepts",
+        criteria_breakdown: [
+          { id: "requirements_uml_diagrams", criterion: "1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams)", earned: 24.1, weight: 27, evidence_quote: "Defines complete functional and non-functional requirements and architectural verification boundaries for the Sacco Digital Savings Tracker System." },
+          { id: "solid_design_ui_demo", criterion: "2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI", earned: 33.2, weight: 35, evidence_quote: "Enforces modularity, Single Responsibility, and accessible user interface verification standards across all financial ledger components." },
+          { id: "testing_cicd_devops", criterion: "3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps", earned: 14.0, weight: 14, evidence_quote: "Automated unit tests, integration tests, Git version control gates, and CI/CD verification pipelines validate every transaction state." },
+          { id: "quality_plan_teamwork", criterion: "4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References", earned: 24.0, weight: 24, evidence_quote: "Comprehensive Software Quality Assurance Plan, formal inspection checklist, risk mitigation matrix, and team governance audit trail." }
+        ],
+        feedback_for_blackboard: "USIU-Africa Official Assessment Receipt (SWE3020B — Software Quality Assurance) | Student: Mercy Emurugat (674749) | Score: 95.3/100 (A | GPA 4.0) | Overall Standing: Distinction — Exceptional SQA Quality Plan, SOLID modularity, and CI/CD test coverage."
       }
     ];
 
@@ -1809,6 +1856,130 @@
       a.click();
     }
 
+    function downloadCueModerationPortfolio() {
+      if (backendOnline) {
+        window.location.href = `${API_BASE}/api/export/moderation-md`;
+        return;
+      }
+      const sorted = [...submissions].sort((a, b) => Number(b.total_score) - Number(a.total_score));
+      const n = Math.max(1, sorted.length);
+      const mean = Math.round((sorted.reduce((acc, s) => acc + Number(s.total_score), 0) / n) * 10) / 10;
+      const top = sorted[0];
+      const mid = sorted[Math.floor(n / 2)];
+      const low = sorted[n - 1];
+
+      const lines = [
+        "# 🏛️ USIU-AFRICA & CUE (KENYA) SENATE EXAMINATION MODERATION PORTFOLIO",
+        "- **Institution:** United States International University – Africa (USIU-Africa)",
+        `- **Total Moderated Scripts:** ${n}`,
+        `- **Cohort Mean Mark:** ${mean} / 100`,
+        "",
+        "## 1. Stratified 3-Tier Moderation Sample Scripts (High / Median / Low)",
+        ...[
+          ["🏆 TIER 1 — HIGH / DISTINCTION EXEMPLAR SCRIPT", top],
+          ["⚖️ TIER 2 — MEDIAN / BENCHMARK SCRIPT", mid],
+          ["🛠️ TIER 3 — LOWEST / REMEDIATION SAMPLE SCRIPT", low]
+        ].map(([title, s]) => [
+          `### ${title}`,
+          `- **Student:** ${s.student_name} (ID: ${s.student_id})`,
+          `- **Awarded Score:** **${s.total_score} / 100 (${s.letter_grade} | GPA ${s.gpa_points})** — *${s.standing}*`,
+          ...(s.criteria_breakdown || []).map(c => `  - **${c.criterion}:** ${c.earned}/${c.weight} pts — *"${c.evidence_quote}"*`),
+          ""
+        ].join("\n")),
+        "## 2. USIU-Africa Senate & External Examiner Sign-Off",
+        "- **Internal Course Lecturer:** _______________________________ Date: ____________",
+        "- **Department Chair (SST / CSB / SHSS):** ____________________ Date: ____________",
+        "- **External Examiner / CUE Moderator:** ______________________ Date: ____________"
+      ];
+      const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "USIU_CUE_Senate_Moderation_Portfolio.md";
+      a.click();
+      speakText("Downloaded official CUE and USIU Senate Examination Moderation Portfolio.");
+    }
+
+    // Hands-Free Voice Command Recognition for Low-Vision Lecturers
+    let voiceRecognizer = null;
+    let voiceListening = false;
+
+    function toggleVoiceCommandListener() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const btn = document.getElementById("voiceCmdBtn");
+      if (!SpeechRec) {
+        speakText("Voice command recognition requires Chrome or Microsoft Edge. Keyboard shortcuts Space, N, P, and 1 to 4 are active.");
+        return;
+      }
+      if (voiceListening && voiceRecognizer) {
+        voiceRecognizer.stop();
+        voiceListening = false;
+        btn.textContent = "🎙️ VOICE COMMAND (V)";
+        btn.style.background = "var(--blue)";
+        return;
+      }
+      voiceRecognizer = new SpeechRec();
+      voiceRecognizer.lang = "en-US";
+      voiceRecognizer.interimResults = false;
+      voiceRecognizer.maxAlternatives = 1;
+
+      voiceListening = true;
+      btn.textContent = "🔴 LISTENING... SPEAK NOW";
+      btn.style.background = "#ff4d4d";
+      btn.style.color = "#fff";
+      speakText("Listening for voice command. Say next student, read grade, criterion 1 to 4, add 1 point to criterion 1, or open report.");
+
+      voiceRecognizer.onresult = (event) => {
+        const transcript = (event.results[0][0].transcript || "").toLowerCase().trim();
+        handleVoiceCommandTranscript(transcript);
+      };
+      voiceRecognizer.onend = () => {
+        voiceListening = false;
+        btn.textContent = "🎙️ VOICE COMMAND (V)";
+        btn.style.background = "var(--blue)";
+        btn.style.color = "#000";
+      };
+      voiceRecognizer.start();
+    }
+
+    function handleVoiceCommandTranscript(cmd) {
+      const sIdx = parseInt(document.getElementById("studentSelect").value || "0", 10);
+      if (cmd.includes("next")) {
+        stepStudent(1);
+      } else if (cmd.includes("previous") || cmd.includes("back")) {
+        stepStudent(-1);
+      } else if (cmd.includes("report") || cmd.includes("intervention")) {
+        toggleInterventionReport();
+        speakInterventionReportSummary();
+      } else if (cmd.includes("moderation") || cmd.includes("senate")) {
+        downloadCueModerationPortfolio();
+      } else if (cmd.includes("add") || cmd.includes("plus") || cmd.includes("increase")) {
+        const cMatch = cmd.match(/(?:criterion|pillar|number)?\s*([1-4]|one|two|three|four)/);
+        const mapNum = { "1": 0, "2": 1, "3": 2, "4": 3, "one": 0, "two": 1, "three": 2, "four": 3 };
+        const cIdx = cMatch ? mapNum[cMatch[1]] : 0;
+        stepCriterionScore(sIdx, cIdx, 1);
+      } else if (cmd.includes("subtract") || cmd.includes("minus") || cmd.includes("decrease")) {
+        const cMatch = cmd.match(/(?:criterion|pillar|number)?\s*([1-4]|one|two|three|four)/);
+        const mapNum = { "1": 0, "2": 1, "3": 2, "4": 3, "one": 0, "two": 1, "three": 2, "four": 3 };
+        const cIdx = cMatch ? mapNum[cMatch[1]] : 0;
+        stepCriterionScore(sIdx, cIdx, -1);
+      } else if (cmd.includes("criterion 1") || cmd.includes("criterion one")) {
+        speakSingleCriterion(0);
+      } else if (cmd.includes("criterion 2") || cmd.includes("criterion two")) {
+        speakSingleCriterion(1);
+      } else if (cmd.includes("criterion 3") || cmd.includes("criterion three")) {
+        speakSingleCriterion(2);
+      } else if (cmd.includes("criterion 4") || cmd.includes("criterion four")) {
+        speakSingleCriterion(3);
+      } else if (cmd.includes("contrast") || cmd.includes("theme")) {
+        toggleContrast();
+        speakText("Toggled high-contrast color theme.");
+      } else if (cmd.includes("post") || cmd.includes("blackboard")) {
+        postToBlackboard();
+      } else {
+        speakCurrentStudent();
+      }
+    }
+
     // Setup Drag-and-Drop Event Listeners
     const dz = document.getElementById("dropZone");
     ["dragenter", "dragover"].forEach(evt => {
@@ -1839,6 +2010,9 @@
       if (e.code === "Space") {
         e.preventDefault();
         speakCurrentStudent();
+      } else if (e.key === "v" || e.key === "V") {
+        e.preventDefault();
+        toggleVoiceCommandListener();
       } else if (e.key === "n" || e.key === "N") {
         e.preventDefault();
         stepStudent(1);

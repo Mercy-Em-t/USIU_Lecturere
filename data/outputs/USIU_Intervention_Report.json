@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-22T12:47:44.593568",
+  "generated_at": "2026-11-22T13:04:11.398474",
   "cohort_size": 8,
-  "mean_score": 91.6,
+  "mean_score": 93.5,
   "satisfactory_pass_rate_pct": 87.5,
-  "distinction_rate_pct": 75.0,
+  "distinction_rate_pct": 87.5,
   "intervention_alerts_count": 4,
   "intervention_alerts": [
     {
@@ -21,7 +21,7 @@
       "category": "MISSING_APA_CITATIONS",
       "student_id": "674748",
       "student_name": "Mercy Emurugat APT2030 Lab3",
-      "score": 94.2,
+      "score": 100.0,
       "letter_grade": "A",
       "trigger": "Zero in-text APA (Author, Year) empirical citations detected in submission.",
       "recommended_action": "Remind student to ground claims in peer-reviewed regional literature."
@@ -31,8 +31,8 @@
       "category": "MISSING_APA_CITATIONS",
       "student_id": "674749",
       "student_name": "Mercy Emurugat SWE3020B Quality Plan",
-      "score": 86.2,
-      "letter_grade": "B+",
+      "score": 95.3,
+      "letter_grade": "A",
       "trigger": "Zero in-text APA (Author, Year) empirical citations detected in submission.",
       "recommended_action": "Remind student to ground claims in peer-reviewed regional literature."
     },
@@ -41,8 +41,8 @@
       "category": "FAIRNESS_GUARD_PARAPHRASE_BOOST",
       "student_id": "674749",
       "student_name": "Mercy Emurugat SWE3020B Quality Plan",
-      "score": 86.2,
-      "letter_grade": "B+",
+      "score": 95.3,
+      "letter_grade": "A",
       "trigger": "Student paraphrased concepts with 82% lecture-note alignment; Fairness Guard prevented unfair keyword penalty.",
       "recommended_action": "Press 1\u20134 to hear verbatim quote and confirm agreement with Fairness Guard adjustment."
     }
@@ -51,36 +51,96 @@
     {
       "criterion": "1. Thesis, Problem Formulation & Core Argument",
       "weight": 30.0,
-      "cohort_average_pct": 92.0,
+      "cohort_average_pct": 92.9,
       "status": "STRONG"
     },
     {
       "criterion": "2. Empirical Evidence, Literature & APA 7th Citations",
       "weight": 30.0,
-      "cohort_average_pct": 90.9,
+      "cohort_average_pct": 91.4,
       "status": "STRONG"
     },
     {
       "criterion": "3. Critical Evaluation, Methodology & Depth",
       "weight": 25.0,
-      "cohort_average_pct": 89.8,
+      "cohort_average_pct": 89.9,
       "status": "STRONG"
     },
     {
       "criterion": "4. Academic Structure, Coherence & APA 7th Style",
       "weight": 15.0,
-      "cohort_average_pct": 95.2,
+      "cohort_average_pct": 95.4,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "1. Boolean Algebra, Truth Tables & Karnaugh Map (K-Map) Simplification",
+      "weight": 30.0,
+      "cohort_average_pct": 100.0,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "2. Combinational MSI Logic (Decoders / MUX) or CMOS & IEEE-754 Analysis",
+      "weight": 30.0,
+      "cohort_average_pct": 100.0,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "3. Digital Works (DW) Circuit Schematics & Multi-State LED Verification",
+      "weight": 25.0,
+      "cohort_average_pct": 100.0,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "4. USIU Lab Integrity Stamp (Student Name/ID on Canvas) & Technical Clarity",
+      "weight": 15.0,
+      "cohort_average_pct": 100.0,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "1. Project Context, Functional/Non-Functional Requirements & UML (Use Case + Class Diagrams) [12/45 -> 27 pts]",
+      "weight": 27.0,
+      "cohort_average_pct": 89.3,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "2. Software Design Principles (Modularity, Reusability), SOLID Principles & Accessible UI [16/45 -> 35 pts]",
+      "weight": 35.0,
+      "cohort_average_pct": 94.9,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "3. Unit/Integration Testing, Version Control (Git), CI/CD Pipelines & DevOps [6/45 -> 14 pts]",
+      "weight": 14.0,
+      "cohort_average_pct": 100.0,
+      "status": "STRONG"
+    },
+    {
+      "criterion": "4. SQA Quality Plan, Inspection Checklist, Project Management (Jira) & References [11/45 -> 24 pts]",
+      "weight": 24.0,
+      "cohort_average_pct": 100.0,
       "status": "STRONG"
     }
   ],
   "pedagogical_recommendations": [
     {
       "target_pillar": "Overall Cohort Mastery",
-      "cohort_average_pct": 91.6,
-      "recommendation": "Cohort demonstrated strong mastery (91.6% average). Consider introducing advanced comparative East African case study counter-arguments in the next module."
+      "cohort_average_pct": 93.5,
+      "recommendation": "Cohort demonstrated strong mastery (93.5% average). Consider introducing advanced comparative East African case study counter-arguments in the next module."
     }
   ],
   "staged_student_concepts": [
+    {
+      "concept": "reduces",
+      "peer_frequency": 5,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Kelvin Mwangi (666104)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
     {
       "concept": "limitations",
       "peer_frequency": 5,
@@ -94,13 +154,25 @@
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "reduces",
-      "peer_frequency": 5,
+      "concept": "critical",
+      "peer_frequency": 4,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)",
+        "Mercy Emurugat SWE3020B Quality Plan (674749)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "compared",
+      "peer_frequency": 4,
       "supporting_high_performers": [
         "Amina Wanjiku (665421)",
         "Kelvin Mwangi (666104)",
-        "Faith Chepkoech (668312)",
-        "Zainab Hassan (669102)"
+        "Zainab Hassan (669102)",
+        "David Kimani (669205)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
@@ -130,86 +202,62 @@
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
-      "concept": "compared",
-      "peer_frequency": 4,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)",
-        "Kelvin Mwangi (666104)",
-        "Zainab Hassan (669102)",
-        "David Kimani (669205)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "critical",
-      "peer_frequency": 4,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)",
-        "Faith Chepkoech (668312)",
-        "Zainab Hassan (669102)",
-        "Mercy Emurugat SWE3020B Quality Plan (674749)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "impact",
+      "concept": "legacy",
       "peer_frequency": 3,
       "supporting_high_performers": [
         "Amina Wanjiku (665421)",
-        "Zainab Hassan (669102)",
-        "Mercy Emurugat SWE3020B Quality Plan (674749)"
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "automated",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "retail",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "methodologies",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
+      ],
+      "status": "PENDING_LECTURER_APPROVAL",
+      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
+    },
+    {
+      "concept": "capital",
+      "peer_frequency": 3,
+      "supporting_high_performers": [
+        "Amina Wanjiku (665421)",
+        "Faith Chepkoech (668312)",
+        "Zainab Hassan (669102)"
       ],
       "status": "PENDING_LECTURER_APPROVAL",
       "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
     },
     {
       "concept": "adoption",
-      "peer_frequency": 3,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)",
-        "Faith Chepkoech (668312)",
-        "Zainab Hassan (669102)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "because",
-      "peer_frequency": 3,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)",
-        "Faith Chepkoech (668312)",
-        "Zainab Hassan (669102)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "against",
-      "peer_frequency": 3,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)",
-        "Zainab Hassan (669102)",
-        "Mercy Emurugat SWE3020B Quality Plan (674749)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "inventory",
-      "peer_frequency": 3,
-      "supporting_high_performers": [
-        "Amina Wanjiku (665421)",
-        "Faith Chepkoech (668312)",
-        "Zainab Hassan (669102)"
-      ],
-      "status": "PENDING_LECTURER_APPROVAL",
-      "safety_verification": "Passed Anti-Injection, Entropy & Course-Alignment Gates (A/A- Cohort)"
-    },
-    {
-      "concept": "therefore",
       "peer_frequency": 3,
       "supporting_high_performers": [
         "Amina Wanjiku (665421)",

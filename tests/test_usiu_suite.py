@@ -23,6 +23,7 @@ if str(SRC_DIR) not in sys.path:
 
 from usiu_blackboard_grader import (
     approve_staged_student_concept,
+    detect_best_rubric_id,
     evaluate_student_draft_formative,
     evaluate_submission_deterministic,
     extract_submission_text,
@@ -30,6 +31,7 @@ from usiu_blackboard_grader import (
     format_blackboard_csv_string,
     format_intervention_report_markdown,
     generate_cohort_intervention_report,
+    generate_cue_senate_moderation_portfolio_markdown,
     get_rubric_by_id,
     ingest_course_material_document,
     ingest_zip_bytes,
@@ -258,6 +260,41 @@ class TestUSIUAccessibleGraderSuite(unittest.TestCase):
         coach_amina = evaluate_student_draft_formative("665421", "Amina Wanjiku", txt_amina, rubric)
         self.assertTrue(coach_amina["ready_for_blackboard_submission"])
         self.assertEqual(coach_amina["estimated_letter_grade"], "A")
+
+    def test_auto_rubric_detection_and_cue_senate_moderation_portfolio(self):
+        # 1. Verify Smart Course & Rubric Auto-Detection
+        self.assertEqual(
+            detect_best_rubric_id("674748_APT2030_Lab3.docx", "2-to-4 decoder and multiplexer in Digital Works"),
+            "apt2030_digital_electronics"
+        )
+        self.assertEqual(
+            detect_best_rubric_id("SWE2030_Groupwork.docx", "Lean Canvas problem-fit interview and Crazy-8 navigation diagram"),
+            "swe2030_requirements_srs"
+        )
+        self.assertEqual(
+            detect_best_rubric_id("Quality_Plan.docx", "SWE3020B Sacco Digital Savings Tracker SOLID principles and inspection checklist"),
+            "swe3020b_sqa_project"
+        )
+
+        # 2. Verify CUE & USIU Senate Moderation Portfolio Markdown generation
+        sample_dir = DATA_DIR / "sample_submissions"
+        r1 = evaluate_submission_deterministic(
+            "674748",
+            "Mercy Emurugat",
+            extract_submission_text(sample_dir / "674748_Mercy_Emurugat_APT2030_Lab3.docx"),
+            get_rubric_by_id("apt2030_digital_electronics")
+        )
+        r2 = evaluate_submission_deterministic(
+            "667890",
+            "Brian Otieno",
+            extract_submission_text(sample_dir / "667890_Brian_Otieno.txt"),
+            get_rubric_by_id("standard_research_paper")
+        )
+        mod_md = generate_cue_senate_moderation_portfolio_markdown([r1, r2])
+        self.assertIn("SENATE EXAMINATION MODERATION PORTFOLIO", mod_md)
+        self.assertIn("TIER 1 — HIGH / DISTINCTION EXEMPLAR SCRIPT", mod_md)
+        self.assertIn("TIER 3 — LOWEST / REMEDIATION SAMPLE SCRIPT", mod_md)
+        self.assertIn("External Examiner / CUE Moderator", mod_md)
 
 
 if __name__ == "__main__":
